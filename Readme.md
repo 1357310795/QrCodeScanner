@@ -8,6 +8,6 @@ C# WPF 原生开发，在电脑上识别二维码。
 
 截图识别+摄像头识别
 
-![](screenshot\p1.png)
+![](.\screenshot\p1.png)
 
-![](screenshot\p2.png)
+![](.\screenshot\p2.png)
