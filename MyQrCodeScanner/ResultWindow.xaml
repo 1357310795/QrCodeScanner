@@ -332,6 +332,7 @@
                 <Button Grid.Column="1" Margin="5" Height="30" Content="继续扫描" Click="Button1_Click"/>
                 <Button Grid.Column="2" Margin="5" Height="30" Content="关闭程序" Click="Button2_Click"/>
             </Grid>
+            <Button x:Name="uributton" DockPanel.Dock="Bottom" Margin="5" Content="打开此Uri并关闭程序" Click="uributton_Click"/>
             <TextBox x:Name="t1" Margin="5" BorderBrush="Gray" BorderThickness="1"></TextBox>
         </DockPanel>
     </Grid>

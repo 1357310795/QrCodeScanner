@@ -27,7 +27,20 @@ namespace MyQrCodeScanner
             InitializeComponent();
             isdailog = isdialog1;
             t1.Text = res;
+            CheckURI(res);
             Snackbar1.MessageQueue= new SnackbarMessageQueue();
+        }
+
+        private void CheckURI(string s)
+        {
+            try
+            {
+                var t = new Uri(s);
+            }
+            catch (Exception ex)
+            {
+                uributton.Visibility= Visibility.Collapsed;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -52,6 +65,12 @@ namespace MyQrCodeScanner
         {
             if (isdailog)
                 this.DialogResult = cont;
+        }
+
+        private void uributton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(t1.Text);
+            Application.Current.Shutdown();
         }
     }
 }

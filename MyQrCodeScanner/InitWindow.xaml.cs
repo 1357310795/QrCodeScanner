@@ -28,7 +28,7 @@ namespace MyQrCodeScanner
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("");
+            System.Diagnostics.Process.Start("https://github.com/1357310795/QrCodeScanner");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace MyQrCodeScanner
             this.Hide();
             this.Opacity = 0;
             this.Dispatcher.Invoke(DispatcherPriority.Render, (NoArgDelegate)delegate { });
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             m.DoCapture();
             m.Show();
             this.Close();
