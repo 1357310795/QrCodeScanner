@@ -54,6 +54,17 @@ namespace MyQrCodeScanner
 
         }
 
+        public static System.Drawing.Bitmap GetBitmap(BitmapSource source)
+        {
+            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(source));
+                encoder.Save(ms);
+                return new System.Drawing.Bitmap(ms);
+            }
+        }
+
         public static System.Drawing.Bitmap RenderVisual(UIElement elt, int x, int y)
         {
             PresentationSource source = PresentationSource.FromVisual(elt);

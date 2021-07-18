@@ -7,7 +7,8 @@
         mc:Ignorable="d" Icon="logo\logo.ico"
         Height="347" Width="735" 
         Title="扫描结果" 
-        Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+        Closing="Window_Closing" Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -333,7 +334,9 @@
                 <Button Grid.Column="2" Margin="5" Height="30" Content="关闭程序" Click="Button2_Click"/>
             </Grid>
             <Button x:Name="uributton" DockPanel.Dock="Bottom" Margin="5" Content="打开此Uri并关闭程序" Click="uributton_Click"/>
-            <TextBox x:Name="t1" Margin="5" BorderBrush="Gray" BorderThickness="1"></TextBox>
+            <TextBox x:Name="t1" Margin="5" 
+                     BorderBrush="Gray" BorderThickness="1"
+                     TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" AutoWordSelection="True"></TextBox>
         </DockPanel>
     </Grid>
 </Window>

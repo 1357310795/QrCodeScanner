@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyQrCodeScanner"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="简易二维码扫描" Height="273" Width="463" 
-        Icon="\logo\logo.ico">
+        Title="简易二维码扫描" Height="279" Width="569" 
+        Icon="\logo\logo.ico"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid Opacity="0.2">
             <Grid.Background>
@@ -17,8 +18,8 @@
                             />
             </Grid.Background>
         </Grid>
-        
-        <TextBlock FontSize="16" Margin="10">版本：1.0</TextBlock>
+
+        <TextBlock FontSize="16" Margin="10">版本：1.01</TextBlock>
         <TextBlock Text="项目主页" Margin="10" HorizontalAlignment="Right" FontSize="16" Foreground="Blue" TextDecorations="Underline" MouseDown="TextBlock_MouseDown" VerticalAlignment="Top"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Style="{StaticResource MaterialDesignOutlinedButton}"
@@ -29,6 +30,34 @@
                     Content="从摄像头捕获" Margin="10"
                     Width="150" Height="150" FontSize="18" Click="Button_Click_1"
                     />
+            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Content="扫描本地图片" Margin="10"
+                    Width="150" Height="150" FontSize="18" Click="Button_Click_2"
+                    />
+        </StackPanel>
+        <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
+            <TextBlock FontSize="18" Text="截取屏幕快捷键：" VerticalAlignment="Center" />
+            <ComboBox FontSize="18"
+                    Width="70"
+                    Margin="10,0,0,0"
+                    IsEditable="False"
+                    SelectedIndex="0"
+                    ItemsSource="{Binding Types}"
+                    SelectedItem="{Binding SelectType}" />
+            <TextBlock
+                    Text="+"
+                    Margin="15,0"
+                    FontSize="20" />
+            <ComboBox FontSize="18"
+                    Width="80"
+                    SelectedIndex="0"
+                    IsEditable="False"
+                    ItemsSource="{Binding Keys}"
+                    SelectedItem="{Binding SelectKey}" />
+            <Button Margin="15,0" 
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Content="应用"
+                    Click="Save_Click"/>
         </StackPanel>
     </Grid>
 </Window>

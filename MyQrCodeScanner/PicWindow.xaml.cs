@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using ThoughtWorks.QRCode.Codec;
 using ThoughtWorks.QRCode.Codec.Data;
 using WPFCaptureScreenShot;
@@ -20,15 +22,27 @@ using BarcodeReader = ZXing.Presentation.BarcodeReader;
 
 namespace MyQrCodeScanner
 {
-    public partial class CaptureScreen : Window
+    public partial class PicWindow : Window
     {
-        public CaptureScreen()
+        public PicWindow(System.Drawing.Bitmap t)
         {
             InitializeComponent();
+            back = t;
+            image1.Source = BitmapHelper.GetBitmapImage(back);
+            bs = BitmapHelper.GetBitmapSource(t);
+        }
+
+        public PicWindow(BitmapSource t)
+        {
+            InitializeComponent();
+            back = BitmapHelper.GetBitmap(t);
+            bs = t;
+            image1.Source = t;
         }
 
         private Point p0, p1,p2,p3;
         private System.Drawing.Bitmap img,back;
+        private BitmapSource bs;
         private string resultstr;
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -37,6 +51,16 @@ namespace MyQrCodeScanner
             maskborder.Opacity = 1;
             MaskGrid.Height = 0;
             MaskGrid.Width = 0;
+        }
+
+        private delegate void NoArgDelegate();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(DispatcherPriority.Render, (NoArgDelegate)delegate { });
+            Thread.Sleep(200);
+            if(!PicDecode3(bs))
+                TextHint.Text= "直接识别失败，请尝试手动框选要识别的二维码。";
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -83,7 +107,8 @@ namespace MyQrCodeScanner
                     Convert.ToInt32((p3.Y - p2.Y) * back.Height));
                 p3 = p2;
                 //img.Save(@"E:\1.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                PicDecode2(img);
+                if (PicDecode2(img))
+                    TextHint.Text = "直接识别失败，请尝试手动框选要识别的二维码。";
             }
         }
         
@@ -157,10 +182,10 @@ namespace MyQrCodeScanner
 
         //}
 
-        private void PicDecode2(System.Drawing.Bitmap cur)
+        private bool PicDecode2(System.Drawing.Bitmap cur)
         {
             if (cur == null)
-                return;
+                return false;
             BarcodeReader reader = new BarcodeReader();
             Result result = null;
             try
@@ -177,18 +202,41 @@ namespace MyQrCodeScanner
                 resultstr = result.Text;
                 ResultWindow rw = new ResultWindow(result.Text,false);
                 rw.Show();
+                return true;
             }
             else
             {
                 TextHint.Text = "未识别到二维码，请重新选择";
+                return false;
             }
         }
-
-        public void DoCapture()
+        private bool PicDecode3(BitmapSource cur)
         {
-            back = BitmapHelper.CaptureScreenToBitmap(0, 0, 
-                ScreenHelper.GetLogicalWidth(), ScreenHelper.GetLogicalHeight());
-            image1.Source = BitmapHelper.GetBitmapImage(back);
+            if (cur == null)
+                return false;
+            BarcodeReader reader = new BarcodeReader();
+            Result result = null;
+            try
+            {
+                result = reader.Decode(cur);
+            }
+            catch (ReaderException ex)
+            {
+                resultstr = ex.ToString();
+                TextHint.Text = resultstr;
+            }
+            if (result != null)
+            {
+                resultstr = result.Text;
+                ResultWindow rw = new ResultWindow(result.Text, false);
+                rw.Show();
+                return true;
+            }
+            else
+            {
+                TextHint.Text = "未识别到二维码，请重新选择";
+                return false;
+            }
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿<Window x:Class="MyQrCodeScanner.CaptureScreen"
+﻿<Window x:Class="MyQrCodeScanner.PicWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyQrCodeScanner"
+        xmlns:local="clr-namespace:MyQrCodeScanner" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Icon="logo\logo.ico"
         Title="屏幕捕获二维码扫描" 
         Height="450" Width="800" 
-        WindowState="Maximized">
+        WindowState="Maximized" Loaded="Window_Loaded">
     <Grid>
         <Grid HorizontalAlignment="Center"
-               VerticalAlignment="Center">
+               VerticalAlignment="Center"
+              Margin="0,50,0,0">
             <Image x:Name="image1"/>
             <Canvas x:Name="canvas1" Background="#00FFFFFF"
                     Width="{Binding ElementName=image1,Path=ActualWidth}"
@@ -36,6 +37,12 @@
                 </Grid>
             </Canvas>
         </Grid>
-        <TextBlock x:Name="TextHint" HorizontalAlignment="Center" Margin="5" Background="#99FFFFFF" VerticalAlignment="Top" FontSize="16" Foreground="Red">请框选要识别的二维码。</TextBlock>
+        <materialDesign:Card HorizontalAlignment="Center" 
+                             VerticalAlignment="Top" 
+                             Margin="5"
+                             Opacity="0.5">
+            <TextBlock x:Name="TextHint" Margin="10" FontSize="16" Foreground="Red">二维码识别成功</TextBlock>
+        </materialDesign:Card>
+        
     </Grid>
 </Window>

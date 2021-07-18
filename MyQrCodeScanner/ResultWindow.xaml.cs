@@ -31,6 +31,12 @@ namespace MyQrCodeScanner
             Snackbar1.MessageQueue= new SnackbarMessageQueue();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(t1.Text);
+            Snackbar1.MessageQueue.Enqueue("已复制到剪切板！");
+        }
+
         private void CheckURI(string s)
         {
             try
@@ -72,5 +78,7 @@ namespace MyQrCodeScanner
             System.Diagnostics.Process.Start(t1.Text);
             Application.Current.Shutdown();
         }
+
+        
     }
 }

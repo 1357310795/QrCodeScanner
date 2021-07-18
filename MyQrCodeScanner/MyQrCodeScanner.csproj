@@ -87,9 +87,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BitmapHelper.cs" />
-    <Compile Include="CaptureScreen.xaml.cs">
-      <DependentUpon>CaptureScreen.xaml</DependentUpon>
+    <Compile Include="Modules\BitmapHelper.cs" />
+    <Compile Include="HotkeyHelper\EKey.cs" />
+    <Compile Include="HotkeyHelper\HotKeyHelper.cs" />
+    <Compile Include="HotkeyHelper\HotKeyManager.cs" />
+    <Compile Include="HotkeyHelper\HotKeyModel.cs" />
+    <Compile Include="Modules\IniHelper.cs" />
+    <Compile Include="PicWindow.xaml.cs">
+      <DependentUpon>PicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InitWindow.xaml.cs">
       <DependentUpon>InitWindow.xaml</DependentUpon>
@@ -97,8 +102,8 @@
     <Compile Include="ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ScreenHelper.cs" />
-    <Page Include="CaptureScreen.xaml">
+    <Compile Include="Modules\ScreenHelper.cs" />
+    <Page Include="PicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
