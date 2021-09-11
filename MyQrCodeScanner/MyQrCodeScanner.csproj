@@ -115,39 +115,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GoButton.xaml.cs">
+    <Compile Include="Windows\GoButton.xaml.cs">
       <DependentUpon>GoButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GoPanel.xaml.cs">
+    <Compile Include="Windows\GoPanel.xaml.cs">
       <DependentUpon>GoPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\AnimationHelper.cs" />
     <Compile Include="Modules\BitmapHelper.cs" />
-    <Compile Include="HotkeyHelper\EKey.cs" />
-    <Compile Include="HotkeyHelper\HotKeyHelper.cs" />
-    <Compile Include="HotkeyHelper\HotKeyManager.cs" />
-    <Compile Include="HotkeyHelper\HotKeyModel.cs" />
-    <Compile Include="Modules\Class1.cs" />
+    <Compile Include="Modules\HotkeyHelper\EKey.cs" />
+    <Compile Include="Modules\HotkeyHelper\HotKeyHelper.cs" />
+    <Compile Include="Modules\HotkeyHelper\HotKeyManager.cs" />
+    <Compile Include="Modules\HotkeyHelper\HotKeyModel.cs" />
+    <Compile Include="Modules\StringHelper.cs" />
     <Compile Include="Modules\IniHelper.cs" />
     <Compile Include="Modules\MyScanner.cs" />
-    <Compile Include="PicWindow.xaml.cs">
+    <Compile Include="Modules\Tubao.cs" />
+    <Compile Include="Windows\PicWindow.xaml.cs">
       <DependentUpon>PicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InitWindow.xaml.cs">
       <DependentUpon>InitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResultWindow.xaml.cs">
+    <Compile Include="Windows\ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\ScreenHelper.cs" />
-    <Page Include="GoButton.xaml">
+    <Page Include="Windows\GoButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GoPanel.xaml">
+    <Page Include="Windows\GoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PicWindow.xaml">
+    <Page Include="Windows\PicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,7 +157,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CamWindow.xaml">
+    <Page Include="Windows\CamWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -163,11 +165,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CamWindow.xaml.cs">
+    <Compile Include="Windows\CamWindow.xaml.cs">
       <DependentUpon>CamWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ResultWindow.xaml">
+    <Page Include="Windows\ResultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,13 +204,13 @@
   <ItemGroup>
     <Resource Include="logo\1024.png" />
     <Resource Include="logo\48.png" />
-    <Content Include="libiconv-2.dll">
+    <Content Include="lib\libiconv-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="libzbar-cil.dll">
+    <Content Include="lib\libzbar-cil.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="libzbar.dll">
+    <Content Include="lib\libzbar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="logo\Artboard.svg" />

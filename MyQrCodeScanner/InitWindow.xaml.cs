@@ -27,11 +27,38 @@ namespace MyQrCodeScanner
     /// </summary>
     public partial class InitWindow : Window, INotifyPropertyChanged
     {
+        #region private field
         private IntPtr hwnd;
+        #endregion
+
+        #region 构造函数
         public InitWindow()
         {
             InitializeComponent();
             this.DataContext = this;
+        }
+        #endregion
+
+        #region 主功能
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
+            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
+            if (hWndSource != null) hWndSource.AddHook(WndProc);
+            EType type = EType.Alt;
+            EKey eKey = EKey.Z;
+            Enum.TryParse<EType>(IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath), true, out type);
+            Enum.TryParse<EKey>(IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath), true, out eKey);
+            SelectKey = eKey;
+            SelectType = type;
+            try
+            {
+                RegisterHotkey(new HotKeyModel() { SelectKey = eKey, SelectType = type });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -39,8 +66,23 @@ namespace MyQrCodeScanner
             System.Diagnostics.Process.Start("https://github.com/1357310795/QrCodeScanner");
         }
 
+        private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wideParam, IntPtr longParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case HotKeyManager.WM_HOTKEY:
+                    //Console.WriteLine("ok");
+                    CaptureScreenStart();
+                    handled = true;
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+        #endregion
+
+        #region 截图识别
         private delegate void NoArgDelegate();
-        //截图识别
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             CaptureScreenStart();
@@ -58,16 +100,18 @@ namespace MyQrCodeScanner
             m.Show();
             this.Close();
         }
+        #endregion
 
-        //摄像头识别
+        #region 摄像头识别
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             CamWindow m=new CamWindow();
             m.Show();
             this.Close();
         }
+        #endregion
 
-        //本地图片识别
+        #region 本地图片识别
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog
@@ -99,7 +143,9 @@ namespace MyQrCodeScanner
             
         }
 
+        #endregion
 
+        #region 快捷键设置
         public Array Keys { get { return Enum.GetValues(typeof(EKey)); } }
 
         public Array Types { get { return Enum.GetValues(typeof(EType)); } }
@@ -117,23 +163,7 @@ namespace MyQrCodeScanner
             get { return _selectType; }
             set { _selectType = value; RaisePropertyChanged("SelectType"); }
         }
-
-        #region INotifyPropertyChanged members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                var e = new PropertyChangedEventArgs(propertyName);
-                handler(this, e);
-            }
-        }
-
-        #endregion
-
+        
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             IniHelper.SetKeyValue("main", "EType", SelectType.ToString(), IniHelper.inipath);
@@ -151,38 +181,23 @@ namespace MyQrCodeScanner
             return HotKeyHelper.RegisterHotKey(h, hwnd);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+        #endregion
+
+        #region INotifyPropertyChanged members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string propertyName)
         {
-            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
-            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
-            if (hWndSource != null) hWndSource.AddHook(WndProc);
-            EType type = EType.Alt;
-            EKey eKey = EKey.Z;
-            Enum.TryParse<EType>(IniHelper.GetKeyValue("main","EType","Alt",IniHelper.inipath), true, out type);
-            Enum.TryParse<EKey>(IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath), true, out eKey);
-            SelectKey = eKey;
-            SelectType = type;
-            try
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
             {
-                RegisterHotkey(new HotKeyModel() { SelectKey = eKey, SelectType = type });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败",MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                var e = new PropertyChangedEventArgs(propertyName);
+                handler(this, e);
             }
         }
 
-        private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wideParam, IntPtr longParam, ref bool handled)
-        {
-            switch (msg)
-            {
-                case HotKeyManager.WM_HOTKEY:
-                    //Console.WriteLine("ok");
-                    CaptureScreenStart();
-                    handled = true;
-                    break;
-            }
-            return IntPtr.Zero;
-        }
+        #endregion
     }
 }

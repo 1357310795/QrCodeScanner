@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,22 +12,31 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MyQrCodeScanner
 {
     /// <summary>
-    /// GoPanel.xaml 的交互逻辑
+    /// Interaction logic for ResultWindow.xaml
     /// </summary>
-    public partial class GoPanel : UserControl, INotifyPropertyChanged
+    public partial class ResultWindow : Window, INotifyPropertyChanged
     {
-        public GoPanel()
+        private bool cont;
+        private bool isdailog;
+        public ResultWindow(string res,string type,bool isdialog1,bool cancontinue)
         {
             InitializeComponent();
             this.DataContext = this;
+            isdailog = isdialog1;
+            Data = res;
+            if (!CheckURI(res))
+                grid1.ColumnDefinitions[0].Width = new GridLength(0, GridUnitType.Star);
+            CodeType = type;
+            if (!cancontinue)
+                grid1.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
         }
 
+        #region 属性
         private string codetype;
 
         public string CodeType
@@ -47,16 +57,6 @@ namespace MyQrCodeScanner
             set
             {
                 data = value;
-                if (CheckURI(data))
-                {
-                    text_panel.Visibility = Visibility.Collapsed;
-                    uri_panel.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    text_panel.Visibility = Visibility.Visible;
-                    uri_panel.Visibility = Visibility.Collapsed;
-                }
                 this.OnPropertyChanged("Data");
             }
         }
@@ -74,16 +74,37 @@ namespace MyQrCodeScanner
             return true;
         }
 
+        #endregion
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(text1.Text);
+        }
 
         private void ButtonCopy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(Data);
-            ((Button)sender).Content = "已复制到剪切板";
+            text1.SelectAll();
+            text1.Copy();
+            ButtonCopy.Style = (Style)Application.Current.Resources["MaterialDesignRaisedButton"];
+            ButtonCopyText.Text = "已复制";
+        }
+
+        private void ButtonContinue_Click(object sender, RoutedEventArgs e)
+        {
+            cont = true;
+            this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isdailog)
+                this.DialogResult = cont;
         }
 
         private void ButtonGo_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(Data);
+            System.Diagnostics.Process.Start(text1.Text);
+            Application.Current.Shutdown();
         }
 
         #region INotifyPropertyChanged members
@@ -101,6 +122,5 @@ namespace MyQrCodeScanner
         }
 
         #endregion
-
     }
 }
