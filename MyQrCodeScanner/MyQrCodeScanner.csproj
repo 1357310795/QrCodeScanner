@@ -202,15 +202,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Windows\logo.ico" />
     <Resource Include="logo\1024.png" />
     <Resource Include="logo\48.png" />
-    <Content Include="lib\libiconv-2.dll">
+    <Content Include="libiconv-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="lib\libzbar-cil.dll">
+    <Content Include="libzbar-cil.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="lib\libzbar.dll">
+    <Content Include="libzbar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="logo\Artboard.svg" />

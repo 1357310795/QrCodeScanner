@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="摄像头二维码扫描"
         Width="900" Height="665"
-        Icon="logo\logo.ico" Loaded="Window_Loaded"
+        Icon="logo.ico" Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Grid>

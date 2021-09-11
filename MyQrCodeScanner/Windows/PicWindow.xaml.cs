@@ -1,35 +1,26 @@
-﻿using MyQrCodeScanner.Modules;
+﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Threading;
-using ThoughtWorks.QRCode.Codec;
-using ThoughtWorks.QRCode.Codec.Data;
-using WPFCaptureScreenShot;
-using ZXing;
-using BarcodeReader = ZXing.Presentation.BarcodeReader;
 
 namespace MyQrCodeScanner
 {
     public partial class PicWindow : Window
     {
+        #region 构造函数
         public PicWindow(System.Drawing.Bitmap t)
         {
             InitializeComponent();
             back = t;
             image1.Source = BitmapHelper.GetBitmapImage(back);
             bs = BitmapHelper.GetBitmapSource(t);
+            sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+            snackbar1.MessageQueue = sm;
         }
 
         public PicWindow(BitmapSource t)
@@ -38,27 +29,19 @@ namespace MyQrCodeScanner
             back = BitmapHelper.GetBitmap(t);
             bs = t;
             image1.Source = t;
+            sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+            snackbar1.MessageQueue = sm;
         }
-   
+        #endregion
+
+        #region private fields
         private System.Drawing.Bitmap img,back;
         private BitmapSource bs;
         private string resultstr;
+        private SnackbarMessageQueue sm;
+        #endregion
 
-        private delegate void NoArgDelegate();
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.Dispatcher.Invoke(DispatcherPriority.Render, (NoArgDelegate)delegate { });
-            Thread.Sleep(200);
-            if(!PicDecode3(bs))
-            {
-                TextHint.Text= "直接识别失败，请尝试手动框选要识别的二维码。";
-                enable_select = true;
-            }
-                
-        }
-
-        #region Canvas
+        #region Canvas手动框选
         private Point p0, p1, p2, p3;
         private bool enable_select=false;
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -117,13 +100,26 @@ namespace MyQrCodeScanner
                     Convert.ToInt32((p3.Y - p2.Y) * back.Height));
                 p3 = p2;
                 //img.Save(@"E:\1.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                if (PicDecode2(img))
-                    TextHint.Text = "直接识别失败，请尝试手动框选要识别的二维码。";
+                PicDecode2(img);
             }
         }
         #endregion
 
+        #region 扫描
         private MyResult myResult;
+
+        public void PreScan()
+        {
+            if (!PicDecode3(bs))
+            {
+                snackbar1.MessageQueue.Clear();
+                snackbar1.MessageQueue.Enqueue("直接识别失败，请尝试手动框选要识别的二维码。");
+                texthint.Text = "请手动框选要识别的二维码";
+                enable_select = true;
+                this.Show();
+            }
+        }
+
         private bool PicDecode2(System.Drawing.Bitmap cur)
         {
             if (cur == null)
@@ -134,8 +130,6 @@ namespace MyQrCodeScanner
             {
                 case result_status.error:
                     resultstr = res.data[0].data;
-                    TextHint.Text = resultstr;
-
                     break;
                 case result_status.ok:
                     resultstr = stringhelper.ResListToString(res.data);
@@ -151,7 +145,8 @@ namespace MyQrCodeScanner
                     return true;
                     break;
                 case result_status.nocode:
-                    TextHint.Text = "未识别到二维码，请重新选择";
+                    snackbar1.MessageQueue.Clear();
+                    snackbar1.MessageQueue.Enqueue("未识别到二维码，请重新选择");
                     break;
             }
             return false;
@@ -168,14 +163,13 @@ namespace MyQrCodeScanner
             {
                 case result_status.error:
                     resultstr = res.data[0].data;
-                    TextHint.Text = resultstr;
                     break;
                 case result_status.ok:
                     resultstr = stringhelper.ResListToString(res.data);
 
                     if (res.data.Count == 1 || !res.haslocation)
                     {
-                        ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true,false);
+                        ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, false);
                         this.Hide();
                         bool? rv = rw.ShowDialog();
                         if (rv == true)
@@ -194,11 +188,11 @@ namespace MyQrCodeScanner
                     return true;
                     break;
                 case result_status.nocode:
-                    TextHint.Text = "未识别到二维码，请重新选择";
                     break;
             }
             return false;
         }
+        #endregion
 
         #region 多个二维码
         public class CanvasCodeResult
@@ -220,6 +214,8 @@ namespace MyQrCodeScanner
 
         public void ProcessMultiCode()
         {
+            this.Show();
+            texthint.Text = "检测到多个二维码，请将鼠标放在二维码上查看结果";
             canvasCodeResults = new List<CanvasCodeResult>();
             foreach (CodeWithLocation t in myResult.data)
             {

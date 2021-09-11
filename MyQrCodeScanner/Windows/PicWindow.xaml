@@ -3,46 +3,54 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyQrCodeScanner" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d" Icon="logo\logo.ico"
-        Title="屏幕捕获二维码扫描" 
-        Height="450" Width="800" 
-        WindowState="Maximized" Loaded="Window_Loaded">
+        xmlns:local="clr-namespace:MyQrCodeScanner"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="屏幕捕获二维码扫描"
+        Width="800" Height="450"
+        Icon="logo.ico" WindowState="Maximized"
+        mc:Ignorable="d">
     <Grid>
-        <Grid HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-              Margin="0,50,0,0">
-            <Image x:Name="image1"/>
-            <Canvas x:Name="canvas1" Background="#00FFFFFF"
-                    Width="{Binding ElementName=image1,Path=ActualWidth}"
-                    Height="{Binding ElementName=image1,Path=ActualHeight}" 
-                    MouseDown="Canvas_MouseDown" 
-                    MouseMove="Canvas_MouseMove" 
-                    MouseUp="Canvas_MouseUp"
-                    MouseLeave="Canvas_MouseLeave">
-                <Grid x:Name="MaskGrid" Width="0" Height="0" HorizontalAlignment="Right" >
-                    <Grid.Background>
-                        <ImageBrush
-                            x:Name="brush1"
-                            ImageSource="{Binding ElementName=image1,Path=Source}"
-                            Viewbox="0,0,1,1"
-                            Viewport="0,0,1,1"
-                            ViewboxUnits="RelativeToBoundingBox"
-                            TileMode="None"
-                            Stretch="Fill"
-                            AlignmentX="Center"
-                            AlignmentY="Center"/>
-                    </Grid.Background>
-                    <Border x:Name="maskborder" BorderThickness="0" Background="#33FF0000"></Border>
-                </Grid>
-            </Canvas>
-        </Grid>
-        <materialDesign:Card HorizontalAlignment="Center" 
-                             VerticalAlignment="Top" 
-                             Margin="5"
-                             Opacity="0.5">
-            <TextBlock x:Name="TextHint" Margin="10" FontSize="16" Foreground="Red">二维码识别成功</TextBlock>
-        </materialDesign:Card>
-        
+        <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                Margin="10"
+                BorderThickness="2"
+                BorderBrush="{DynamicResource PrimaryHueDarkBrush}">
+            <Grid Margin="10">
+                <Image x:Name="image1" />
+                <Canvas x:Name="canvas1"
+                        Width="{Binding ElementName=image1, Path=ActualWidth}"
+                        Height="{Binding ElementName=image1, Path=ActualHeight}"
+                        Background="#00FFFFFF" SizeChanged="canvas1_SizeChanged"
+                        MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove"
+                        MouseUp="Canvas_MouseUp" MouseLeave="Canvas_MouseLeave">
+                    <Grid x:Name="MaskGrid"
+                          Width="0" Height="0"
+                          HorizontalAlignment="Right"
+                          Opacity="0.4">
+                        <Grid.Background>
+                            <ImageBrush x:Name="brush1"
+                                        ImageSource="{Binding ElementName=image1, Path=Source}"
+                                        Viewbox="0,0,1,1" Viewport="0,0,1,1"
+                                        ViewboxUnits="RelativeToBoundingBox" TileMode="None"
+                                        Stretch="Fill" AlignmentX="Center"
+                                        AlignmentY="Center" />
+                        </Grid.Background>
+                        <Border x:Name="maskborder"
+                                Background="{DynamicResource PrimaryHueLightBrush}"
+                                BorderThickness="0" />
+                    </Grid>
+                </Canvas>
+                <materialDesign:Snackbar x:Name="snackbar1"
+                                         MinWidth="0"
+                                         HorizontalAlignment="Center" VerticalAlignment="Top"
+                                         Background="{DynamicResource PrimaryHueMidBrush}"
+                                         Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
+            </Grid>
+        </Border>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="texthint"
+                   Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
+                   FontSize="16">
+            请选择
+        </TextBlock>
     </Grid>
 </Window>
