@@ -7,7 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="扫描结果"
         Width="357.666" Height="339.041"
-        Icon="logo\logo.ico" Closing="Window_Closing"
+        Icon="logo.ico" Closing="Window_Closing"
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <!--<Grid>

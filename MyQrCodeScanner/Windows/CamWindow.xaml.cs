@@ -72,7 +72,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region Camera相关
+        #region Camera
         private void video_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             try
@@ -137,7 +137,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region Code扫描
+        #region 扫描
 
         private MyResult myResult;
 

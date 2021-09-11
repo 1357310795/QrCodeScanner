@@ -97,7 +97,7 @@ namespace MyQrCodeScanner
             var t = BitmapHelper.CaptureScreenToBitmap(0, 0,
                 ScreenHelper.GetLogicalWidth(), ScreenHelper.GetLogicalHeight());
             PicWindow m = new PicWindow(t);
-            m.Show();
+            m.PreScan();
             this.Close();
         }
         #endregion
@@ -114,10 +114,21 @@ namespace MyQrCodeScanner
         #region 本地图片识别
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            var img = OpenImageFile();
+            if (img != null)
+            {
+                PicWindow m = new PicWindow(img);
+                m.PreScan();
+                this.Close();
+            }
+        }
+
+        private BitmapImage OpenImageFile()
+        {
             var dlg = new OpenFileDialog
             {
                 Filter = "All documents (*.*)|*.*",
-                Multiselect=false
+                Multiselect = false
             };
             if (dlg.ShowDialog(this).GetValueOrDefault(false))
             {
@@ -131,16 +142,17 @@ namespace MyQrCodeScanner
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(this, ex.Message,"错误");
-                        return;
+                        MessageBox.Show(this, ex.Message, "内部错误");
+                        return null;
                     }
-                    
-                    PicWindow m = new PicWindow(s);
-                    m.Show();
-                    this.Close();
+
+                    return s;
                 }
+                else
+                    return null;
             }
-            
+            else
+                return null;
         }
 
         #endregion
