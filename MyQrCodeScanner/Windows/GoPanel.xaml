@@ -8,18 +8,31 @@
              Width="240" Height="200"
              Background="{x:Null}"
              d:DesignHeight="180" d:DesignWidth="240"
+             Loaded="UserControl_Loaded"
+             MouseLeave="UserControl_MouseLeave"
              mc:Ignorable="d">
     <Grid>
         <materialDesign:Card Margin="1">
             <DockPanel LastChildFill="True">
-                <StackPanel Margin="15,15,15,10"
-                            Orientation="Horizontal" DockPanel.Dock="Top">
+                <DockPanel Margin="15,15,15,10"
+                           LastChildFill="false" DockPanel.Dock="Top">
                     <Border Width="4" Height="20"
-                            Background="BlueViolet" />
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            DockPanel.Dock="Left" />
                     <TextBlock Margin="10,0"
                                Text="{Binding CodeType}"
+                               DockPanel.Dock="Left"
                                FontSize="20" />
-                </StackPanel>
+                    <Button x:Name="ButtonClose"
+                            Width="25" Height="25"
+                            Padding="0"
+                            Visibility="Collapsed"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            DockPanel.Dock="Right" Click="ButtonClose_Click">
+                        <materialDesign:PackIcon Width="20" Height="20"
+                                                 Kind="WindowClose" />
+                    </Button>
+                </DockPanel>
                 <Grid x:Name="uri_panel" DockPanel.Dock="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -30,7 +43,7 @@
                             Click="ButtonCopy_Click"
                             Style="{StaticResource MaterialDesignFlatButton}" />
                     <Border Grid.Column="1"
-                            BorderThickness="1,0,0,0" BorderBrush="#FFC1C1C1" />
+                            BorderThickness="1,0,0,0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
                     <Button Grid.Column="2"
                             Content="打开"
                             Click="ButtonGo_Click"
@@ -42,18 +55,19 @@
                     复制
                 </Button>
                 <Border Margin="0,0"
-                        BorderThickness="0,1,0,0" BorderBrush="#FFC1C1C1"
+                        BorderThickness="0,1,0,0" BorderBrush="{DynamicResource MaterialDesignDivider}"
                         DockPanel.Dock="Bottom" />
 
-                <TextBox TextWrapping="WrapWithOverflow" Margin="15,0"
+                <TextBox x:Name="text1"
+                         TextWrapping="Wrap" Margin="15,0,15,10"
                          Text="{Binding Data}"
-                         HorizontalScrollBarVisibility="Auto" BorderThickness="0"
-                         AutoWordSelection="True" IsReadOnly="True"
-                         IsUndoEnabled="False"
+                         AcceptsReturn="True" HorizontalScrollBarVisibility="Auto"
+                         BorderThickness="0" AutoWordSelection="True"
+                         IsReadOnly="True" IsUndoEnabled="False"
+                         GotMouseCapture="TextBox_GotMouseCapture"
                          FontSize="16" />
 
             </DockPanel>
         </materialDesign:Card>
-
     </Grid>
 </UserControl>

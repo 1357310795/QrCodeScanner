@@ -123,76 +123,6 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        //private void PicDecode(System.Drawing.Bitmap cur)
-        //{
-        //    if (cur == null)
-        //        return;
-        //    BinaryBitmap bitmap1;
-        //    try
-        //    {
-        //        MemoryStream ms = new MemoryStream();
-        //        cur.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-        //        byte[] bt = ms.GetBuffer();
-        //        ms.Close();
-        //        LuminanceSource source = new RGBLuminanceSource(bt, cur.Width, cur.Height);
-        //        bitmap1 = new BinaryBitmap(new ZXing.Common.HybridBinarizer(source));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return;
-        //    }
-
-        //    Result result = null;
-        //    try
-        //    {
-        //        //开始解码
-        //        result = new MultiFormatReader().decode(bitmap1);
-        //    }
-        //    catch (ReaderException ex)
-        //    {
-        //        resultstr = ex.ToString();
-        //        TextHint.Text = resultstr;
-        //    }
-        //    if (result != null)
-        //    {
-
-        //        resultstr = result.Text;
-
-        //        ResultWindow rw = new ResultWindow(result.Text);
-        //        rw.Show();
-
-        //    }
-        //    else
-        //    {
-        //        TextHint.Text = "未识别到二维码，请重新选择";
-        //    }
-        //}
-        //private void PicDecode1(System.Drawing.Bitmap cur)
-        //{
-        //    if (cur == null)
-        //        return;
-        //    resultstr = "";
-        //    try
-        //    {
-        //        QRCodeDecoder qrDecoder = new QRCodeDecoder();
-        //        QRCodeImage qrImage = new QRCodeBitmapImage(cur);
-        //        resultstr = qrDecoder.decode(qrImage, Encoding.UTF8);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultstr = ex.ToString();
-        //        TextHint.Text = resultstr;
-        //        TextHint.Text = "未识别到二维码，请重新选择";
-        //        return;
-        //    }
-
-        //        ResultWindow rw = new ResultWindow(resultstr);
-        //        rw.Show();
-
-
-
-        //}
-
         private MyResult myResult;
         private bool PicDecode2(System.Drawing.Bitmap cur)
         {
@@ -209,8 +139,15 @@ namespace MyQrCodeScanner
                     break;
                 case result_status.ok:
                     resultstr = stringhelper.ResListToString(res.data);
-                    ResultWindow rw = new ResultWindow(resultstr, false);
-                    rw.Show();
+                    ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, true);
+                    bool? rv = rw.ShowDialog();
+                    if (rv == true)
+                    {
+                        img = null;
+                        this.Show();
+                    }
+                    else
+                        this.Close();
                     return true;
                     break;
                 case result_status.nocode:
@@ -235,12 +172,21 @@ namespace MyQrCodeScanner
                     break;
                 case result_status.ok:
                     resultstr = stringhelper.ResListToString(res.data);
-                    //if (res.data.Count == 1 || !res.haslocation)
-                    //{
-                    //    ResultWindow rw = new ResultWindow(resultstr, false);
-                    //    rw.Show();
-                    //}
-                    //else
+
+                    if (res.data.Count == 1 || !res.haslocation)
+                    {
+                        ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true,false);
+                        this.Hide();
+                        bool? rv = rw.ShowDialog();
+                        if (rv == true)
+                        {
+                            img = null;
+                            this.Show();
+                        }
+                        else
+                            this.Close();
+                    }
+                    else
                     {
                         ProcessMultiCode();
                     }
@@ -260,6 +206,7 @@ namespace MyQrCodeScanner
             public string data;
             public string type;
             public List<Point> tubao;
+            public bool isPanelOpen;
 
             public CanvasCodeResult(string data, string type, List<Point> tubao)
             {
@@ -276,25 +223,41 @@ namespace MyQrCodeScanner
             canvasCodeResults = new List<CanvasCodeResult>();
             foreach (CodeWithLocation t in myResult.data)
             {
-                for (int i=0;i<t.points.Count;i++)
-                {
-                    t.points[i] = PicToCanvas(t.points[i]);
-                }
-                //t.points.ForEach(p => { p = PicToCanvas(p); });
-                //canvasCodeResults.Add(new CanvasCodeResult(t.data,t.type, calcConvexHull(t.points)));
-                CreatePoly(t.points);
-                //GoButton b = new GoButton();
-                //b.Click += GoButton_Click;
-                //b.Tag = t.data;
-                //canvas1.Children.Add(b);
-                //Canvas.SetTop(b, PicToCanvas(t.center).Y - 20);
-                //Canvas.SetLeft(b, PicToCanvas(t.center).X - 20);
+                var tubao = GrahamScan.convexHull(t.points);
+                canvasCodeResults.Add(new CanvasCodeResult(t.data, t.type, tubao));
             }
+            CreatePoly();
         }
 
-        public void CreatePoly(List<Point> l)
+        public void ClearResult()
         {
-            //M 10,10 L 100,10 90,50 100,100 Z
+            canvasCodeResults = null;
+            canvas1.Children.Clear();
+        }
+
+        public void ClearPoly()
+        {
+            canvas1.Children.Clear();
+            for (int i = 0; i < canvasCodeResults.Count; i++)
+                canvasCodeResults[i].isPanelOpen = false;
+        }
+
+        public void CreatePoly()
+        {
+            for (int i = 0; i < canvasCodeResults.Count; i++)
+            {
+                List<Point> list = new List<Point>();
+                for (int j = 0; j < canvasCodeResults[i].tubao.Count; j++)
+                {
+                    list.Add(PicToCanvas(canvasCodeResults[i].tubao[j]));
+                }
+                CreateOnePoly(list, i);
+            }
+
+        }
+
+        public void CreateOnePoly(List<Point> l, int tag)
+        {
             PathGeometry p = new PathGeometry();
             PathFigure pf = new PathFigure();
             pf.StartPoint = l[0];
@@ -302,16 +265,65 @@ namespace MyQrCodeScanner
             pf.Segments.Add(new PolyLineSegment(l, true));
             p.Figures.Add(pf);
             Path myPath = new Path();
-            myPath.Stroke = System.Windows.Media.Brushes.Black;
-            myPath.StrokeThickness = 1;
-            myPath.Fill = System.Windows.Media.Brushes.Azure;
+            myPath.Stroke = ((Brush)Application.Current.Resources["PrimaryHueDarkBrush"]).Clone();
+            myPath.StrokeThickness = 2;
+            myPath.Fill = ((Brush)Application.Current.Resources["PrimaryHueLightBrush"]).Clone();
+            myPath.Fill.Opacity = 0.3;
             myPath.Data = p;
+            myPath.Tag = tag;
             canvas1.Children.Add(myPath);
             Canvas.SetLeft(myPath, 0);
             Canvas.SetTop(myPath, 0);
+            myPath.MouseEnter += Poly_MouseEnter;
+            myPath.MouseLeave += Poly_MouseLeave;
         }
 
-        public System.Windows.Point PicToCanvas(System.Windows.Point p)
+        private void Poly_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Console.WriteLine(((Path)sender).Tag + " " + "Leave");
+        }
+
+        private void Poly_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Console.WriteLine(((Path)sender).Tag + " " + "Enter");
+            int i = (int)((Path)sender).Tag;
+            if (canvasCodeResults[i].isPanelOpen) return;
+            List<Point> list = new List<Point>();
+            for (int j = 0; j < canvasCodeResults[i].tubao.Count; j++)
+            {
+                list.Add(PicToCanvas(canvasCodeResults[i].tubao[j]));
+            }
+            Point c = GeometryHelper.Center(list);
+
+            GoPanel p = new GoPanel();
+            p.Data = canvasCodeResults[i].data;
+            p.CodeType = canvasCodeResults[i].type;
+            p.Tag = i;
+            p.ClosePanel += OnClosePanel;
+            canvas1.Children.Add(p);
+            Canvas.SetLeft(p, c.X - p.Width / 2);
+            Canvas.SetTop(p, c.Y - p.Height / 2);
+
+            canvasCodeResults[i].isPanelOpen = true;
+        }
+
+        private void OnClosePanel(object sender)
+        {
+            var p = ((GoPanel)sender);
+            canvas1.Children.Remove(p);
+            int i = (int)((GoPanel)sender).Tag;
+            canvasCodeResults[i].isPanelOpen = false;
+        }
+
+        private void canvas1_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (canvasCodeResults != null && canvasCodeResults.Count > 0)
+            {
+                ClearPoly(); CreatePoly();
+            }
+        }
+
+        public Point PicToCanvas(Point p)
         {
             return new System.Windows.Point(
                 p.X / back.Width * canvas1.ActualWidth,
@@ -321,84 +333,6 @@ namespace MyQrCodeScanner
         public double LengthToCanvas(double x)
         {
             return x / back.Width * canvas1.ActualWidth;
-        }
-
-        private List<Point> calcConvexHull(List<Point> list)
-        {
-            List<Point> resPoint = new List<Point>();
-            //查找最小坐标点
-            int minIndex = 0;
-            for (int i = 1; i < list.Count; i++)
-            {
-                if (list[i].Y < list[minIndex].Y)
-                {
-                    minIndex = i;
-                }
-            }
-            Point minPoint = list[minIndex];
-            resPoint.Add(list[minIndex]);
-            list.RemoveAt(minIndex);
-            //坐标点排序
-            list.Sort(
-                delegate (Point p1, Point p2)
-                {
-                    Vector baseVec = new Vector(1, 0);
-                    Vector p1Vec = new Vector(p1.X - minPoint.X, p1.Y - minPoint.Y);
-                    Vector p2Vec = new Vector(p2.X - minPoint.X, p2.Y - minPoint.Y);
-
-                    double up1 = p1Vec.X * baseVec.X;
-                    double down1 = Math.Sqrt(p1Vec.X * p1Vec.X + p1Vec.Y * p1Vec.Y);
-
-                    double up2 = p2Vec.X * baseVec.X;
-                    double down2 = Math.Sqrt(p2Vec.X * p2Vec.X + p2Vec.Y * p2Vec.Y);
-
-
-                    double cosP1 = up1 / down1;
-                    double cosP2 = up2 / down2;
-
-                    if (cosP1 > cosP2)
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return 1;
-                    }
-                }
-                );
-            resPoint.Add(list[0]);
-            resPoint.Add(list[1]);
-            for (int i = 2; i < list.Count; i++)
-            {
-                Point basePt = resPoint[resPoint.Count - 2];
-                Vector v1 = new Vector(list[i - 1].X - basePt.X, list[i - 1].Y - basePt.Y);
-                Vector v2 = new Vector(list[i].X - basePt.X, list[i].Y - basePt.Y);
-
-                if (v1.X * v2.Y - v1.Y * v2.X < 0)
-                {
-                    resPoint.RemoveAt(resPoint.Count - 1);
-                    while (true)
-                    {
-                        Point basePt2 = resPoint[resPoint.Count - 2];
-                        Vector v12 = new Vector(resPoint[resPoint.Count - 1].X - basePt2.X, resPoint[resPoint.Count - 1].Y - basePt2.Y);
-                        Vector v22 = new Vector(list[i].X - basePt2.X, list[i].Y - basePt2.Y);
-                        if (v12.X * v22.Y - v12.Y * v22.X < 0)
-                        {
-                            resPoint.RemoveAt(resPoint.Count - 1);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    resPoint.Add(list[i]);
-                }
-                else
-                {
-                    resPoint.Add(list[i]);
-                }
-            }
-            return resPoint;
         }
 
         #endregion

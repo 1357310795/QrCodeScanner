@@ -54,7 +54,6 @@
                     Margin="5"
                     Content="停止"
                     Click="btnStop_Click" />
-            <TextBlock VerticalAlignment="Center" Text="{Binding resultstr}" />
         </StackPanel>
 
     </Grid>
