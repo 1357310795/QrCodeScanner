@@ -7,7 +7,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="屏幕捕获二维码扫描"
         Width="800" Height="450"
+        Background="{DynamicResource MaterialDesignPaper}"
         Icon="logo.ico" WindowState="Maximized"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Grid>
         <Border HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -19,7 +21,8 @@
                 <Canvas x:Name="canvas1"
                         Width="{Binding ElementName=image1, Path=ActualWidth}"
                         Height="{Binding ElementName=image1, Path=ActualHeight}"
-                        Background="#00FFFFFF" SizeChanged="canvas1_SizeChanged"
+                        Background="#00FFFFFF"
+                        SizeChanged="canvas1_SizeChanged"
                         MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove"
                         MouseUp="Canvas_MouseUp" MouseLeave="Canvas_MouseLeave">
                     <Grid x:Name="MaskGrid"
@@ -46,7 +49,8 @@
                                          Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
             </Grid>
         </Border>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="texthint"
+        <TextBlock x:Name="texthint"
+                   HorizontalAlignment="Center" VerticalAlignment="Top"
                    Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                    Foreground="{DynamicResource PrimaryHueDarkBrush}"
                    FontSize="16">

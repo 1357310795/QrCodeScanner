@@ -1,6 +1,5 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
-using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,9 +41,13 @@ namespace MyQrCodeScanner
         #region 构造函数
         public CamWindow()
         {
+            GetVideoDevices();
+            var lastdevice = IniHelper.GetKeyValue("main", "LastVideoDevice", "", IniHelper.inipath);
+            foreach (FilterInfo d in VideoDevices)
+                if (d.Name == lastdevice)
+                    CurrentDevice = d;
             InitializeComponent();
             this.DataContext = this;
-            GetVideoDevices();
             this.Closing += MainWindow_Closing;
         }
         #endregion
@@ -119,6 +122,7 @@ namespace MyQrCodeScanner
                 _videoSource = new VideoCaptureDevice(CurrentDevice.MonikerString);
                 _videoSource.NewFrame += video_NewFrame;
                 _videoSource.Start();
+                IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.Name, IniHelper.inipath);
             }
             ClearResult();
             timer.Start();

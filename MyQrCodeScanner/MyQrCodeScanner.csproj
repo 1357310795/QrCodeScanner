@@ -74,6 +74,9 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
+    <Reference Include="Hardcodet.NotifyIcon.Wpf, Version=1.1.0.0, Culture=neutral, PublicKeyToken=682384a853a08aad, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.1.0\lib\net472\Hardcodet.NotifyIcon.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="libzbar-cil, Version=0.10.7922.37695, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\libzbar-cil.dll</HintPath>
@@ -85,7 +88,17 @@
       <HintPath>..\packages\MaterialDesignThemes.4.1.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -103,6 +116,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
     <Reference Include="zxing, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.6\lib\net47\zxing.dll</HintPath>
     </Reference>
@@ -115,10 +131,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Windows\GoButton.xaml.cs">
+    <Compile Include="Converters\Converters.cs" />
+    <Compile Include="Modules\ThemeHelper.cs" />
+    <Compile Include="ViewModels\NotifyIconViewModel.cs" />
+    <Compile Include="ViewModels\ThemeWindowViewModel.cs" />
+    <Compile Include="Views\FancyBalloon.xaml.cs">
+      <DependentUpon>FancyBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PDAWindow.xaml.cs">
+      <DependentUpon>PDAWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GoButton.xaml.cs">
       <DependentUpon>GoButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\GoPanel.xaml.cs">
+    <Compile Include="Views\GoPanel.xaml.cs">
       <DependentUpon>GoPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\AnimationHelper.cs" />
@@ -130,26 +156,37 @@
     <Compile Include="Modules\StringHelper.cs" />
     <Compile Include="Modules\IniHelper.cs" />
     <Compile Include="Modules\MyScanner.cs" />
-    <Compile Include="Modules\Tubao.cs" />
-    <Compile Include="Windows\PicWindow.xaml.cs">
+    <Compile Include="Modules\ConvexHullHelper.cs" />
+    <Compile Include="Views\PicWindow.xaml.cs">
       <DependentUpon>PicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InitWindow.xaml.cs">
       <DependentUpon>InitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ResultWindow.xaml.cs">
+    <Compile Include="Views\ResultWindow.xaml.cs">
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\ScreenHelper.cs" />
-    <Page Include="Windows\GoButton.xaml">
+    <Compile Include="Views\ThemeWindow.xaml.cs">
+      <DependentUpon>ThemeWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\FancyBalloon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\GoPanel.xaml">
+    <Page Include="Views\PDAWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\GoButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\PicWindow.xaml">
+    <Page Include="Views\GoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,7 +194,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\CamWindow.xaml">
+    <Page Include="Views\CamWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -165,11 +202,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Windows\CamWindow.xaml.cs">
+    <Compile Include="Views\CamWindow.xaml.cs">
       <DependentUpon>CamWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\ResultWindow.xaml">
+    <Page Include="Views\ResultWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ThemeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,7 +243,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Windows\logo.ico" />
+    <Resource Include="Views\logo.ico" />
     <Resource Include="logo\1024.png" />
     <Resource Include="logo\48.png" />
     <Content Include="libiconv-2.dll">
@@ -214,6 +255,7 @@
     <Content Include="libzbar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="logo.ico" />
     <Content Include="logo\Artboard.svg" />
     <Resource Include="logo\logo.ico" />
   </ItemGroup>

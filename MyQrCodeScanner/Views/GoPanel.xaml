@@ -10,6 +10,7 @@
              d:DesignHeight="180" d:DesignWidth="240"
              Loaded="UserControl_Loaded"
              MouseLeave="UserControl_MouseLeave"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              mc:Ignorable="d">
     <Grid>
         <materialDesign:Card Margin="1">
@@ -43,7 +44,8 @@
                             Click="ButtonCopy_Click"
                             Style="{StaticResource MaterialDesignFlatButton}" />
                     <Border Grid.Column="1"
-                            BorderThickness="1,0,0,0" BorderBrush="{DynamicResource MaterialDesignDivider}" />
+                            BorderThickness="1,0,0,0"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}" />
                     <Button Grid.Column="2"
                             Content="打开"
                             Click="ButtonGo_Click"
@@ -55,7 +57,8 @@
                     复制
                 </Button>
                 <Border Margin="0,0"
-                        BorderThickness="0,1,0,0" BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
                         DockPanel.Dock="Bottom" />
 
                 <TextBox x:Name="text1"

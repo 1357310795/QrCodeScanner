@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="MyQrCodeScanner.FancyBalloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyQrCodeScanner"
+             mc:Ignorable="d"  Background="{x:Null}" Height="77.442" Width="303.535">
+    <StackPanel Orientation="Vertical">
+        <TextBlock>简易二维码扫描将在后台运行</TextBlock>
+        <TextBlock>或者，您可以：</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <Button>我要关闭程序</Button>
+            <Button>暂停摄像头运行</Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
