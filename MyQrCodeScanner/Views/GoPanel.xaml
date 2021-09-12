@@ -20,7 +20,7 @@
                     <Border Width="4" Height="20"
                             Background="{DynamicResource PrimaryHueMidBrush}"
                             DockPanel.Dock="Left" />
-                    <TextBlock Margin="10,0"
+                    <TextBlock Margin="10,0" FontWeight="Bold"
                                Text="{Binding CodeType}"
                                DockPanel.Dock="Left"
                                FontSize="20" />

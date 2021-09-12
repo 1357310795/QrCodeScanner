@@ -156,8 +156,11 @@ namespace MyQrCodeScanner
         {
             if (cur == null)
                 return false;
+            var t1 = DateTime.Now.Ticks;
 
             var res = MyScanner.ScanCode(cur);
+            var t2 = DateTime.Now.Ticks;
+            Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
             myResult = res;
             switch (res.status)
             {
@@ -215,7 +218,7 @@ namespace MyQrCodeScanner
         public void ProcessMultiCode()
         {
             this.Show();
-            texthint.Text = "检测到多个二维码，请将鼠标放在二维码上查看结果";
+            texthint.Text = "检测到多个Code，请将鼠标放在Code上查看结果";
             canvasCodeResults = new List<CanvasCodeResult>();
             foreach (CodeWithLocation t in myResult.data)
             {
