@@ -1,5 +1,6 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -49,6 +50,7 @@ namespace MyQrCodeScanner
             InitializeComponent();
             this.DataContext = this;
             this.Closing += MainWindow_Closing;
+            snackbar1.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
         }
         #endregion
 
@@ -116,6 +118,8 @@ namespace MyQrCodeScanner
 
         private void StartCamera()
         {
+            ClearResult();
+            StopCamera();
             hinttext.Visibility= Visibility.Collapsed; 
             if (CurrentDevice != null)
             {
@@ -124,7 +128,6 @@ namespace MyQrCodeScanner
                 _videoSource.Start();
                 IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.Name, IniHelper.inipath);
             }
-            ClearResult();
             timer.Start();
         }
 
@@ -195,6 +198,8 @@ namespace MyQrCodeScanner
                         }
                         else
                         {
+                            snackbar1.MessageQueue.Clear();
+                            snackbar1.MessageQueue.Enqueue("检测到多个Code，请将鼠标放在Code上查看结果");
                             ProcessMultiCode();
                         }
                     });

@@ -58,6 +58,7 @@
             </StackPanel>
         </Button>
 
+
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
                     Orientation="Horizontal">
             <Button Width="150" Height="150"
@@ -90,25 +91,37 @@
                     Orientation="Horizontal">
             <TextBlock VerticalAlignment="Center"
                        Text="截取屏幕快捷键："
-                       FontSize="18" />
+                       FontSize="16" />
             <ComboBox Width="70"
                       Margin="10,0,0,0"
                       IsEditable="False" SelectedIndex="0"
                       ItemsSource="{Binding Types}"
                       SelectedItem="{Binding SelectType}"
-                      FontSize="18" />
-            <TextBlock Margin="15,0"
+                      FontSize="14" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="10,0"
                        Text="+"
-                       FontSize="20" />
+                       FontSize="18" />
             <ComboBox Width="80"
                       SelectedIndex="0" IsEditable="False"
                       ItemsSource="{Binding Keys}"
                       SelectedItem="{Binding SelectKey}"
-                      FontSize="18" />
-            <Button Margin="15,0"
+                      FontSize="14" />
+            <Button Margin="10,0"
                     Content="应用"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     Click="Save_Click" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Margin="10"
+                    Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" FontSize="12">识别引擎：</TextBlock>
+            <ComboBox Width="220"
+                      Margin="10,0,0,0"
+                      IsEditable="False"
+                      ItemsSource="{Binding Engines}"
+                      SelectedIndex="{Binding SelectedEngine}"
+                      FontSize="12" />
         </StackPanel>
     </Grid>
 </Window>

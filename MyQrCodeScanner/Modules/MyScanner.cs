@@ -48,7 +48,15 @@ namespace MyQrCodeScanner
             this.status = status;
             this.data = new List<CodeWithLocation>();
             this.data.Add(new CodeWithLocation(data.Data, data.Type.ToString(), data.Location));
-            this.haslocation = false;
+            this.haslocation = true;
+        }
+
+        public MyResult(result_status status, ZXing.Result data)
+        {
+            this.status = status;
+            this.data = new List<CodeWithLocation>();
+            this.data.Add(new CodeWithLocation(data.Text, data.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(data.ResultPoints)));
+            this.haslocation = true;
         }
 
         public MyResult(result_status status, List<CodeWithLocation> data)
@@ -57,30 +65,30 @@ namespace MyQrCodeScanner
             this.data = data;
             this.haslocation = false;
         }
+
         public MyResult(result_status status, string data)
         {
             this.status = status;
             this.data = new List<CodeWithLocation>();
-            this.data.Add(new CodeWithLocation(data,"QRCODE",new List<System.Windows.Point>() { new System.Windows.Point(0, 0)}));
+            this.data.Add(new CodeWithLocation(data,"CODE",new List<System.Windows.Point>() { new System.Windows.Point(0, 0)}));
             this.haslocation = false;
         }
     }
 
     public class MyScanner
     {
-        public static string method = "";
-
         public static MyResult ScanCode(Bitmap img)
         {
-            if (method=="")
-                method = IniHelper.GetKeyValue("main", "decodelib", "Zbar", IniHelper.inipath);
+            var method = (int)Application.Current.Resources["Engine"];
 
             try
             {
-                if (method == "Zxing")
+                if (method == 1)
                     return DecodeByZxing(img);
-                else if (method == "Zbar")
+                else if (method == 0)
                     return DecodeByZbar(img);
+                else if (method == 2)
+                    return DecodeByZxingMulti(img);
                 else
                     throw new Exception("找不到方法");
             }
@@ -93,15 +101,15 @@ namespace MyQrCodeScanner
 
         public static MyResult ScanCode(System.Windows.Media.Imaging.BitmapSource img)
         {
-            if (method == "")
-                method = IniHelper.GetKeyValue("main", "decodelib", "Zbar", IniHelper.inipath);
-
+            var method = (int)Application.Current.Resources["Engine"];
             try
             {
-                if (method == "Zxing")
+                if (method == 1)
                     return DecodeByZxing(img);
-                else if (method == "Zbar")
+                else if (method == 0)
                     return DecodeByZbar(img);
+                else if (method == 2)
+                    return DecodeByZxingMulti(img);
                 else
                     throw new Exception("找不到方法");
             }
@@ -119,6 +127,7 @@ namespace MyQrCodeScanner
                 return new MyResult(result_status.nocode, "");
             }
             ZXing.BarcodeReader reader = new ZXing.BarcodeReader();
+            reader.AutoRotate = true;
 
             ZXing.Result result = null;
             try
@@ -133,7 +142,7 @@ namespace MyQrCodeScanner
 
             if (result != null)
             {
-                return new MyResult(result_status.ok, result.Text);
+                return new MyResult(result_status.ok, result);
             }
             else
                 return new MyResult(result_status.nocode,"");
@@ -146,6 +155,7 @@ namespace MyQrCodeScanner
                 return new MyResult(result_status.nocode, "");
             }
             ZXing.Presentation.BarcodeReader reader = new ZXing.Presentation.BarcodeReader();
+            reader.AutoRotate = true;
 
             ZXing.Result result = null;
             try
@@ -160,7 +170,71 @@ namespace MyQrCodeScanner
 
             if (result != null)
             {
-                return new MyResult(result_status.ok, result.Text);
+                return new MyResult(result_status.ok, result);
+            }
+            else
+                return new MyResult(result_status.nocode, "");
+        }
+
+        private static MyResult DecodeByZxingMulti(Bitmap img)
+        {
+            if (img == null)
+            {
+                return new MyResult(result_status.nocode, "");
+            }
+            ZXing.BarcodeReader reader = new ZXing.BarcodeReader();
+            reader.AutoRotate = true;
+
+            ZXing.Result[] results = null;
+            try
+            {
+                results = reader.DecodeMultiple(img);
+            }
+            catch (ZXing.ReaderException ex)
+            {
+                //MessageBox.Show(resultstr, "内部错误");
+                return new MyResult(result_status.error, ex.ToString());
+            }
+
+            if (results != null && results.Length > 0)
+            {
+                var tmp = new MyResult(result_status.ok);
+                tmp.haslocation = true;
+                foreach (ZXing.Result result in results)
+                    tmp.data.Add(new CodeWithLocation(result.Text, result.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(result.ResultPoints)));
+                return tmp;
+            }
+            else
+                return new MyResult(result_status.nocode, "");
+        }
+
+        private static MyResult DecodeByZxingMulti(System.Windows.Media.Imaging.BitmapSource img)
+        {
+            if (img == null)
+            {
+                return new MyResult(result_status.nocode, "");
+            }
+            ZXing.Presentation.BarcodeReader reader = new ZXing.Presentation.BarcodeReader();
+            reader.AutoRotate = true;
+
+            ZXing.Result[] results = null;
+            try
+            {
+                results = reader.DecodeMultiple(img);
+            }
+            catch (ZXing.ReaderException ex)
+            {
+                //MessageBox.Show(resultstr, "内部错误");
+                return new MyResult(result_status.error, ex.ToString());
+            }
+
+            if (results != null && results.Length > 0)
+            {
+                var tmp = new MyResult(result_status.ok);
+                tmp.haslocation = true;
+                foreach (ZXing.Result result in results)
+                    tmp.data.Add(new CodeWithLocation(result.Text, result.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(result.ResultPoints)));
+                return tmp;
             }
             else
                 return new MyResult(result_status.nocode, "");
@@ -172,9 +246,9 @@ namespace MyQrCodeScanner
             using (ZBar.ImageScanner scanner = new ZBar.ImageScanner())
             {
                 //scanner.SetConfiguration(ZBar.SymbolType.None, ZBar.Config.Enable, 0);
-                scanner.SetConfiguration(ZBar.SymbolType.CODE39, ZBar.Config.Enable, 1);
-                scanner.SetConfiguration(ZBar.SymbolType.CODE128, ZBar.Config.Enable, 1);
-                scanner.SetConfiguration(ZBar.SymbolType.QRCODE, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.CODE39, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.CODE128, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.QRCODE, ZBar.Config.Enable, 1);
 
                 List<ZBar.Symbol> symbols = new List<ZBar.Symbol>();
                 symbols = scanner.Scan(pImg);
@@ -200,9 +274,9 @@ namespace MyQrCodeScanner
             using (ZBar.ImageScanner scanner = new ZBar.ImageScanner())
             {
                 //scanner.SetConfiguration(ZBar.SymbolType.None, ZBar.Config.Enable, 0);
-                scanner.SetConfiguration(ZBar.SymbolType.CODE39, ZBar.Config.Enable, 1);
-                scanner.SetConfiguration(ZBar.SymbolType.CODE128, ZBar.Config.Enable, 1);
-                scanner.SetConfiguration(ZBar.SymbolType.QRCODE, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.CODE39, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.CODE128, ZBar.Config.Enable, 1);
+                //scanner.SetConfiguration(ZBar.SymbolType.QRCODE, ZBar.Config.Enable, 1);
 
                 List<ZBar.Symbol> symbols = new List<ZBar.Symbol>();
                 symbols = scanner.Scan(pImg);
@@ -289,4 +363,18 @@ namespace MyQrCodeScanner
         }
     }
 
+    public static class ZxingPointExtensions
+    {
+        public static List<System.Windows.Point> ZxingPointToPoint(ZXing.ResultPoint[] rp)
+        {
+            List<System.Windows.Point> res=new List<System.Windows.Point>();
+            foreach (ZXing.ResultPoint p in rp)
+            {
+                if (p != null)
+                    res.Add(new System.Windows.Point(p.X, p.Y));
+            }
+                
+            return res;
+        }
+    }
 }

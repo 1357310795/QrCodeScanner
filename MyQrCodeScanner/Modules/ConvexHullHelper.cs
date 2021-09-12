@@ -88,6 +88,8 @@ namespace MyQrCodeScanner
 
         public static List<Point> convexHull(List<Point> points)
         {
+            if (points.Count < 4)
+                return points;
             //Console.WriteLine("# List of Point #");
             foreach (Point value in points)
             {

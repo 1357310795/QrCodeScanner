@@ -35,33 +35,10 @@ namespace MyQrCodeScanner
             ApplyHook();
             Thread t = new Thread(PrepareHotKey);
             t.Start();
+            SelectedEngine=Convert.ToInt32(IniHelper.GetKeyValue("main", "engine", "0", IniHelper.inipath));
         }
 
-        private void ApplyHook()
-        {
-            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
-            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
-            if (hWndSource != null) hWndSource.AddHook(WndProc);
-        }
-
-        private void PrepareHotKey()
-        {
-            
-            EType type = EType.Alt;
-            EKey eKey = EKey.Z;
-            Enum.TryParse<EType>(IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath), true, out type);
-            Enum.TryParse<EKey>(IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath), true, out eKey);
-            SelectKey = eKey;
-            SelectType = type;
-            try
-            {
-                RegisterHotkey(new HotKeyModel() { SelectKey = eKey, SelectType = type });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-        }
+        
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -127,8 +104,8 @@ namespace MyQrCodeScanner
             if (img != null)
             {
                 PicWindow m = new PicWindow(img);
-                m.PreScan();
                 this.Close();
+                m.PreScan();
             }
         }
 
@@ -178,7 +155,6 @@ namespace MyQrCodeScanner
 
         #region 快捷键设置
         public Array Keys { get { return Enum.GetValues(typeof(EKey)); } }
-
         public Array Types { get { return Enum.GetValues(typeof(EType)); } }
 
         private EKey _selectKey;
@@ -188,13 +164,38 @@ namespace MyQrCodeScanner
             get { return _selectKey; }
             set { _selectKey = value; RaisePropertyChanged("SelectKey"); }
         }
-
         public EType SelectType
         {
             get { return _selectType; }
             set { _selectType = value; RaisePropertyChanged("SelectType"); }
         }
-        
+
+        private void ApplyHook()
+        {
+            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
+            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
+            if (hWndSource != null) hWndSource.AddHook(WndProc);
+        }
+
+        private void PrepareHotKey()
+        {
+
+            EType type = EType.Alt;
+            EKey eKey = EKey.Z;
+            Enum.TryParse<EType>(IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath), true, out type);
+            Enum.TryParse<EKey>(IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath), true, out eKey);
+            SelectKey = eKey;
+            SelectType = type;
+            try
+            {
+                RegisterHotkey(new HotKeyModel() { SelectKey = eKey, SelectType = type });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             IniHelper.SetKeyValue("main", "EType", SelectType.ToString(), IniHelper.inipath);
@@ -212,6 +213,23 @@ namespace MyQrCodeScanner
             return HotKeyHelper.RegisterHotKey(h, hwnd);
         }
 
+
+        #endregion
+
+        #region 引擎设置
+        public Array Engines { get { return new string[3] { "Zbar多码模式（识别率高）", "Zxing单码模式（速度快，支持格式多）", "Zxing多码模式（支持格式多）" }; } }
+        private int selectedengine;
+        public int SelectedEngine
+        {
+            get { return selectedengine; }
+            set
+            {
+                selectedengine = value;
+                this.RaisePropertyChanged("SelectedEngine");
+                Application.Current.Resources["Engine"] = selectedengine;
+                IniHelper.SetKeyValue("main", "engine", selectedengine.ToString(), IniHelper.inipath);
+            }
+        }
 
         #endregion
 

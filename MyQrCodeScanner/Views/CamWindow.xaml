@@ -20,6 +20,11 @@
                     Height="{Binding ElementName=videoPlayer, Path=ActualHeight}"
                     Background="#00FFFFFF"
                     SizeChanged="canvas1_SizeChanged" />
+            <materialDesign:Snackbar x:Name="snackbar1"
+                                     MinWidth="0"
+                                     HorizontalAlignment="Center" VerticalAlignment="Top"
+                                     Background="{DynamicResource PrimaryHueMidBrush}"
+                                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
         </Grid>
         <TextBlock x:Name="hinttext"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
