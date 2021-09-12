@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using WPFCaptureScreenShot;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows.Interop;
-using MyQrCodeScanner.Modules;
 
 namespace MyQrCodeScanner
 {
@@ -42,9 +32,21 @@ namespace MyQrCodeScanner
         #region 主功能
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ApplyHook();
+            Thread t = new Thread(PrepareHotKey);
+            t.Start();
+        }
+
+        private void ApplyHook()
+        {
             hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
             HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
             if (hWndSource != null) hWndSource.AddHook(WndProc);
+        }
+
+        private void PrepareHotKey()
+        {
+            
             EType type = EType.Alt;
             EKey eKey = EKey.Z;
             Enum.TryParse<EType>(IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath), true, out type);
@@ -78,6 +80,12 @@ namespace MyQrCodeScanner
             }
             return IntPtr.Zero;
         }
+
+        private void ButtonTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ThemeWindow w = new ThemeWindow();
+            w.Show();
+        }
         #endregion
 
         #region 截图识别
@@ -105,8 +113,9 @@ namespace MyQrCodeScanner
         #region 摄像头识别
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            CamWindow m=new CamWindow();
-            m.Show();
+            CamWindow w=new CamWindow();
+            Application.Current.MainWindow = w;
+            w.Show();
             this.Close();
         }
         #endregion
@@ -155,6 +164,16 @@ namespace MyQrCodeScanner
                 return null;
         }
 
+        #endregion
+
+        #region 扫描枪
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            PDAWindow w = new PDAWindow();
+            Application.Current.MainWindow = w;
+            w.Show();
+            this.Close();
+        }
         #endregion
 
         #region 快捷键设置
@@ -211,5 +230,6 @@ namespace MyQrCodeScanner
         }
 
         #endregion
+
     }
 }

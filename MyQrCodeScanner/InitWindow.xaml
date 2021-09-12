@@ -4,60 +4,111 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyQrCodeScanner"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="简易二维码扫描" Height="279" Width="569" 
-        Icon="\logo\logo.ico"
-        Loaded="Window_Loaded">
+        Title="简易二维码扫描"
+        Width="727.4" Height="294.333"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        WindowStartupLocation="CenterScreen" Icon="logo\logo.ico"
+        Loaded="Window_Loaded"
+        mc:Ignorable="d">
     <Grid>
         <Grid Opacity="0.2">
             <Grid.Background>
-                <ImageBrush ImageSource="logo\1024.png"
-                            Viewbox="-0.3,-0.4,1.5,1.7"
-                            Viewport="0,0,0.22,0.35"
-                            Stretch="UniformToFill" TileMode="Tile"
-                            />
+                <ImageBrush ImageSource="logo\1024.png" Viewbox="-0.3,-0.4,1.5,1.7"
+                            Viewport="0,0,0.22,0.46" Stretch="UniformToFill"
+                            TileMode="Tile" />
             </Grid.Background>
         </Grid>
 
-        <TextBlock FontSize="16" Margin="10">版本：1.01</TextBlock>
-        <TextBlock Text="项目主页" Margin="10" HorizontalAlignment="Right" FontSize="16" Foreground="Blue" TextDecorations="Underline" MouseDown="TextBlock_MouseDown" VerticalAlignment="Top"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Content="截取屏幕" Margin="10"
-                    Width="150" Height="150" FontSize="18" Click="Button_Click"
-                    />
-            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Content="从摄像头捕获" Margin="10"
-                    Width="150" Height="150" FontSize="18" Click="Button_Click_1"
-                    />
-            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Content="扫描本地图片" Margin="10"
-                    Width="150" Height="150" FontSize="18" Click="Button_Click_2"
-                    />
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Margin="10"
+                   FontSize="16">
+            版本：1.1
+        </TextBlock>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Margin="10"
+                   Foreground="Blue"
+                   Text="项目主页"
+                   TextDecorations="Underline" MouseDown="TextBlock_MouseDown"
+                   FontSize="16" />
+        <Button Height="Auto"
+                HorizontalAlignment="Center" VerticalAlignment="Top"
+                Margin="8" Padding="0"
+                Click="ButtonTheme_Click"
+                Style="{StaticResource MaterialDesignFlatButton}">
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Path Fill="{DynamicResource PrimaryHueMidBrush}">
+                    <Path.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Path.LayoutTransform>
+                    <Path.Data>
+                        M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z
+                    </Path.Data>
+                </Path>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Margin="5,0"
+                           FontSize="18">
+                    主题设置
+                </TextBlock>
+            </StackPanel>
+        </Button>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Width="150" Height="150"
+                    Margin="10"
+                    Content="截取屏幕"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="Button_Click"
+                    FontSize="18" />
+            <Button Width="150" Height="150"
+                    Margin="10"
+                    Content="从摄像头捕获"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="Button_Click_1"
+                    FontSize="18" />
+            <Button Width="150" Height="150"
+                    Margin="10"
+                    Content="扫描本地图片"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="Button_Click_2"
+                    FontSize="18" />
+            <Button Width="150" Height="150"
+                    Margin="10" Padding="0"
+                    Content="作为扫描枪使用"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="Button_Click_3"
+                    FontSize="18" />
         </StackPanel>
-        <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
-            <TextBlock FontSize="18" Text="截取屏幕快捷键：" VerticalAlignment="Center" />
-            <ComboBox FontSize="18"
-                    Width="70"
-                    Margin="10,0,0,0"
-                    IsEditable="False"
-                    SelectedIndex="0"
-                    ItemsSource="{Binding Types}"
-                    SelectedItem="{Binding SelectType}" />
-            <TextBlock
-                    Text="+"
-                    Margin="15,0"
-                    FontSize="20" />
-            <ComboBox FontSize="18"
-                    Width="80"
-                    SelectedIndex="0"
-                    IsEditable="False"
-                    ItemsSource="{Binding Keys}"
-                    SelectedItem="{Binding SelectKey}" />
-            <Button Margin="15,0" 
-                    Style="{StaticResource MaterialDesignRaisedButton}"
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Margin="10"
+                    Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center"
+                       Text="截取屏幕快捷键："
+                       FontSize="18" />
+            <ComboBox Width="70"
+                      Margin="10,0,0,0"
+                      IsEditable="False" SelectedIndex="0"
+                      ItemsSource="{Binding Types}"
+                      SelectedItem="{Binding SelectType}"
+                      FontSize="18" />
+            <TextBlock Margin="15,0"
+                       Text="+"
+                       FontSize="20" />
+            <ComboBox Width="80"
+                      SelectedIndex="0" IsEditable="False"
+                      ItemsSource="{Binding Keys}"
+                      SelectedItem="{Binding SelectKey}"
+                      FontSize="18" />
+            <Button Margin="15,0"
                     Content="应用"
-                    Click="Save_Click"/>
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Click="Save_Click" />
         </StackPanel>
     </Grid>
 </Window>
