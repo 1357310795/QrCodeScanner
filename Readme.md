@@ -17,6 +17,7 @@ C# WPF 原生开发，在电脑上识别二维码。
 <video src="https://github.com/1357310795/QrCodeScanner/raw/master/screenshot/2021-09-12_11-36-03.mp4" controls="controls"  style="width:100%">
 您的浏览器不支持 video 标签。
 </video>
+![](https://github.com/1357310795/QrCodeScanner/raw/master/screenshot/2021-09-12_11-36-16.gif)
 
 ![](https://github.com/1357310795/QrCodeScanner/raw/master/screenshot/QQ截图20210912113011.png)
 
