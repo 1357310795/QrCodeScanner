@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Windows.Interop;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Management;
 
 namespace MyQrCodeScanner
 {
@@ -63,7 +64,15 @@ namespace MyQrCodeScanner
             Thread t = new Thread(PrepareHotKey);
             t.Start();
 
-            if (Environment.OSVersion.Version.Major == 11)
+            bool win11 = false;
+            ManagementClass manag = new ManagementClass("Win32_OperatingSystem");
+            ManagementObjectCollection managCollection = manag.GetInstances();
+            foreach (ManagementObject m in managCollection)
+            {
+                if (m["Name"].ToString().Contains("Windows 11"))
+                    win11 = true;
+            }
+            if (win11)
             {
                 WindowsIdentity id = WindowsIdentity.GetCurrent();
                 string computerName = id.Name;
@@ -71,10 +80,10 @@ namespace MyQrCodeScanner
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
                     ToggleAutoRun.IsEnabled = false;
-                    ToggleAutoRun.ToolTip = "在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。";
+                    TextAutoRun.ToolTip = "在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。";
                     goto SkipAutoRunInit;
                 }
-                
+
             }
             IsAutoRun = Autorun.IsSelfRun();
             SkipAutoRunInit :

@@ -105,7 +105,7 @@
                             Margin="0,6,0,0"
                             Orientation="Horizontal">
 
-                    <TextBlock Text="开机启动" FontSize="14" VerticalAlignment="Center" />
+                    <TextBlock Text="开机启动" FontSize="14" VerticalAlignment="Center" x:Name="TextAutoRun"/>
                     <ToggleButton Margin="8,3" x:Name="ToggleAutoRun"
                                   IsChecked="{Binding IsAutoRun}"
                                   Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" />
