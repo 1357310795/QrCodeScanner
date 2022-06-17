@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyQrCodeScanner"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        Title="ThemeWindow"
+        Title="主题设置"
         Width="600" Height="470"
         Background="{DynamicResource MaterialDesignPaper}"
         Loaded="Window_Loaded"
@@ -35,7 +35,9 @@
         </Grid.RowDefinitions>
         <StackPanel Margin="10,10,0,10" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Center">浅色</TextBlock>
-            <ToggleButton x:Name="toggle1" Margin="8,0,16,0" IsChecked="{Binding IsDark}"/>
+            <ToggleButton x:Name="toggle1"
+                          Margin="8,0,16,0"
+                          IsChecked="{Binding IsDark}" />
             <TextBlock VerticalAlignment="Center">深色</TextBlock>
         </StackPanel>
 
@@ -44,7 +46,9 @@
                    Text="选择颜色" />
 
         <ScrollViewer Grid.Row="3" FocusVisualStyle="{x:Null}">
-            <ItemsControl ItemsSource="{Binding Styles}" ItemTemplate="{StaticResource ItemStyle}">
+            <ItemsControl Margin="5,0"
+                          ItemsSource="{Binding Styles}"
+                          ItemTemplate="{StaticResource ItemStyle}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="14" />

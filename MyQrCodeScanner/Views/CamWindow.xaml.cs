@@ -12,16 +12,13 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ZXing;
 
 namespace MyQrCodeScanner
 {
     public partial class CamWindow : Window, INotifyPropertyChanged
     {
-        #region Public properties
-
+        #region Fields
         public ObservableCollection<FilterInfo> VideoDevices { get; set; }
-
         public FilterInfo CurrentDevice
         {
             get { return _currentDevice; }
@@ -30,16 +27,10 @@ namespace MyQrCodeScanner
         private FilterInfo _currentDevice;
         private System.Drawing.Bitmap img,imgbuffer;
         private System.Timers.Timer timer;
-
-        #endregion
-
-        #region Private fields
-
         private IVideoSource _videoSource;
-
         #endregion
 
-        #region 构造函数
+        #region Constructors
         public CamWindow()
         {
             GetVideoDevices();
@@ -54,7 +45,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 主功能
+        #region Window Events
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             StopCamera();
@@ -65,6 +56,13 @@ namespace MyQrCodeScanner
             AddTimer();
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            App.Current.MainWindow.Show();
+        }
+        #endregion
+
+        #region Main Function
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             StopCamera();
@@ -144,7 +142,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region 扫描
+        #region Scan
 
         private MyResult myResult;
 
@@ -213,7 +211,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 多个二维码
+        #region Multi Codes
         public class CanvasCodeResult
         {
             public string data;

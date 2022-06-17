@@ -22,10 +22,8 @@ namespace MyQrCodeScanner
 {
     public partial class PDAWindow : Window, INotifyPropertyChanged
     {
-        #region Public properties
-
+        #region Fields
         private string inputmode;
-
         public string InputMode
         {
             get { return inputmode; }
@@ -36,9 +34,7 @@ namespace MyQrCodeScanner
                 IniHelper.SetKeyValue("main", "inputmode", inputmode, IniHelper.inipath);
             }
         }
-
         private string audiopath;
-
         public string AudioPath
         {
             get { return audiopath; }
@@ -49,9 +45,7 @@ namespace MyQrCodeScanner
                 IniHelper.SetKeyValue("main", "audiopath", audiopath, IniHelper.inipath);
             }
         }
-
         private bool playaudio;
-
         public bool PlayAudio
         {
             get { return playaudio; }
@@ -62,9 +56,7 @@ namespace MyQrCodeScanner
                 IniHelper.SetKeyValue("main", "playaudio", playaudio.ToString(), IniHelper.inipath);
             }
         }
-
         public ObservableCollection<FilterInfo> VideoDevices { get; set; }
-
         public FilterInfo CurrentDevice
         {
             get { return _currentDevice; }
@@ -73,17 +65,11 @@ namespace MyQrCodeScanner
         private FilterInfo _currentDevice;
         private System.Drawing.Bitmap img,imgbuffer;
         private System.Timers.Timer timer;
-
-        #endregion
-
-        #region Private fields
-
         private IVideoSource _videoSource;
         TaskbarIcon myTaskbarIcon;
-
         #endregion
 
-        #region 构造函数
+        #region Constructors
         public PDAWindow()
         {
             AudioPath = IniHelper.GetKeyValue("main", "audiopath", "", IniHelper.inipath);
@@ -100,7 +86,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 主功能
+        #region Windows Events
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             //StopCamera();
@@ -120,7 +106,9 @@ namespace MyQrCodeScanner
             myTaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
             //_taskbar.DataContext = new NotifyIconViewModel();
         }
+        #endregion
 
+        #region Main Function
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             StopCamera();
@@ -219,7 +207,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region 扫描
+        #region Scan Task
 
         private void AddTimer()
         {
@@ -266,7 +254,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region 扫描后
+        #region After Scan
         private string MyResult;
 
         public void ClearResult()

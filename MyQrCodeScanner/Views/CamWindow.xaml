@@ -8,8 +8,8 @@
         Title="摄像头二维码扫描"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
-        Icon="logo.ico" Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen"
+        Closed="Window_Closed" Icon="logo.ico"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Grid>

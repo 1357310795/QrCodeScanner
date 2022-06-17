@@ -21,8 +21,7 @@ namespace MyQrCodeScanner
     /// </summary>
     public partial class ResultWindow : Window, INotifyPropertyChanged
     {
-        private bool cont;
-        private bool isdailog;
+        #region Constructors
         public ResultWindow(string res,string type,bool isdialog1,bool cancontinue)
         {
             InitializeComponent();
@@ -35,10 +34,10 @@ namespace MyQrCodeScanner
             if (!cancontinue)
                 grid1.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
         }
+        #endregion
 
-        #region 属性
+        #region Fields
         private string codetype;
-
         public string CodeType
         {
             get { return codetype; }
@@ -48,9 +47,7 @@ namespace MyQrCodeScanner
                 this.OnPropertyChanged("CodeType");
             }
         }
-
         private string data;
-
         public string Data
         {
             get { return data; }
@@ -61,6 +58,11 @@ namespace MyQrCodeScanner
             }
         }
 
+        private bool cont;
+        private bool isdailog;
+        #endregion
+
+        #region Main Function
         private bool CheckURI(string s)
         {
             try
@@ -72,13 +74,6 @@ namespace MyQrCodeScanner
                 return false;
             }
             return true;
-        }
-
-        #endregion
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetText(text1.Text);
         }
 
         private void ButtonCopy_Click(object sender, RoutedEventArgs e)
@@ -95,17 +90,25 @@ namespace MyQrCodeScanner
             this.Close();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (isdailog)
-                this.DialogResult = cont;
-        }
-
         private void ButtonGo_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(text1.Text);
             Application.Current.Shutdown();
         }
+        #endregion
+
+        #region Window Events
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(text1.Text);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isdailog)
+                this.DialogResult = cont;
+        }
+        #endregion
 
         #region INotifyPropertyChanged members
 

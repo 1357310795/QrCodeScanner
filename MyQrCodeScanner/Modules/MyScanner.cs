@@ -95,7 +95,6 @@ namespace MyQrCodeScanner
             catch(Exception ex)
             {
                 return new MyResult(result_status.error, ex.ToString());
-                Console.WriteLine(ex);
             }
         }
 
@@ -116,7 +115,6 @@ namespace MyQrCodeScanner
             catch (Exception ex)
             {
                 return new MyResult(result_status.error, ex.ToString());
-                Console.WriteLine(ex);
             }
         }
 
@@ -343,16 +341,12 @@ namespace MyQrCodeScanner
             {
                 case 0:
                     throw new ArgumentException("至少需要有一个点才能计算几何中心。", nameof(points));
-                    break;
                 case 1:
                     return points[0];
-                    break;
                 case 2:
                     return new System.Windows.Point((points[0].X + points[1].X) / 2, (points[0].Y + points[1].Y) / 2);
-                    break;
                 default:
                     return GeometryCenter(points);
-                    break;
             }
         }
 

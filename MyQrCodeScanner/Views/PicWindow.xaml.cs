@@ -12,7 +12,7 @@ namespace MyQrCodeScanner
 {
     public partial class PicWindow : Window
     {
-        #region 构造函数
+        #region Constructors
         public PicWindow(System.Drawing.Bitmap t)
         {
             InitializeComponent();
@@ -34,14 +34,14 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region private fields
+        #region Fields
         private System.Drawing.Bitmap img,back;
         private BitmapSource bs;
         private string resultstr;
         private SnackbarMessageQueue sm;
         #endregion
 
-        #region Canvas手动框选
+        #region Canvas Function
         private Point p0, p1, p2, p3;
         private bool enable_select=false;
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -105,7 +105,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 扫描
+        #region Scan
         private MyResult myResult;
 
         public void PreScan()
@@ -143,7 +143,6 @@ namespace MyQrCodeScanner
                     else
                         this.Close();
                     return true;
-                    break;
                 case result_status.nocode:
                     snackbar1.MessageQueue.Clear();
                     snackbar1.MessageQueue.Enqueue("未识别到二维码，请重新选择");
@@ -189,7 +188,6 @@ namespace MyQrCodeScanner
                     }
 
                     return true;
-                    break;
                 case result_status.nocode:
                     break;
             }
@@ -197,7 +195,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 多个二维码
+        #region Multi Codes
         public class CanvasCodeResult
         {
             public string data;
@@ -334,6 +332,18 @@ namespace MyQrCodeScanner
             return x / back.Width * canvas1.ActualWidth;
         }
 
+        #endregion
+
+        #region Window Events
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            App.Current.MainWindow.Show();
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Focus();
+            this.Activate();
+        }
         #endregion
     }
 }

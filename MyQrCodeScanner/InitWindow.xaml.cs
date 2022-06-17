@@ -9,6 +9,8 @@ using WPFCaptureScreenShot;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows.Interop;
+using System.Diagnostics;
+using System.Security.Principal;
 
 namespace MyQrCodeScanner
 {
@@ -17,11 +19,36 @@ namespace MyQrCodeScanner
     /// </summary>
     public partial class InitWindow : Window, INotifyPropertyChanged
     {
-        #region private field
+        #region Fields
         private IntPtr hwnd;
+        private bool isAutoRun;
+        public bool IsAutoRun
+        {
+            get { return isAutoRun; }
+            set
+            {
+                isAutoRun = value;
+                this.RaisePropertyChanged("IsAutoRun");
+                ChangeAutoRun();
+            }
+        }
+        private bool isStarOn;
+        public bool IsStarOn
+        {
+            get { return isStarOn; }
+            set
+            {
+                isStarOn = value;
+                this.RaisePropertyChanged("IsStarOn");
+                ChangeIsStarOn();
+            }
+        }
+
+        StarAnimation sa;
+
         #endregion
 
-        #region 构造函数
+        #region Constructors
         public InitWindow()
         {
             InitializeComponent();
@@ -29,20 +56,53 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 主功能
+        #region Window Events
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyHook();
             Thread t = new Thread(PrepareHotKey);
             t.Start();
-            SelectedEngine=Convert.ToInt32(IniHelper.GetKeyValue("main", "engine", "0", IniHelper.inipath));
+
+            if (Environment.OSVersion.Version.Major == 11)
+            {
+                WindowsIdentity id = WindowsIdentity.GetCurrent();
+                string computerName = id.Name;
+                WindowsPrincipal principal = new WindowsPrincipal(id);
+                if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    ToggleAutoRun.IsEnabled = false;
+                    ToggleAutoRun.ToolTip = "在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。";
+                    goto SkipAutoRunInit;
+                }
+                
+            }
+            IsAutoRun = Autorun.IsSelfRun();
+            SkipAutoRunInit :
+
+            sa = new StarAnimation(mygrid, cv1, this);
+            sa.SetStarNumber(40);
+            sa.SetStarSpeed(60);
+            sa.Init();
+
+            ReadSettings();
+            RegisterHotkey(new HotKeyModel()
+            {
+                SelectKey = SelectKey,
+                SelectType = SelectType
+            });
+
         }
 
-        
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+        #endregion
 
+        #region Main Function
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/1357310795/QrCodeScanner");
+            System.Diagnostics.Process.Start("explorer", "https://github.com/1357310795/QrCodeScanner");
         }
 
         private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wideParam, IntPtr longParam, ref bool handled)
@@ -63,9 +123,70 @@ namespace MyQrCodeScanner
             ThemeWindow w = new ThemeWindow();
             w.Show();
         }
+
+        private void ChangeAutoRun()
+        {
+            if (IsAutoRun != Autorun.IsSelfRun())
+            {
+                ProcessStartInfo processInfo = new ProcessStartInfo();
+                processInfo.Verb = "runas";
+                processInfo.LoadUserProfile = true;
+                processInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+                processInfo.Arguments = "/SetAutoRun" + (IsAutoRun ? "On" : "Off");
+                processInfo.RedirectStandardOutput = true;
+                processInfo.UseShellExecute = false;
+                Process p = null;
+                try
+                {
+                    p = Process.Start(processInfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("设置失败\n" + ex.Message);
+                    IsAutoRun = Autorun.IsSelfRun();
+                    return;
+                }
+
+                if (p == null)
+                {
+                    MessageBox.Show("设置失败");
+                    IsAutoRun = Autorun.IsSelfRun();
+                }
+                p.WaitForExit();
+                if (p.ExitCode != 114514 || IsAutoRun != Autorun.IsSelfRun())
+                {
+                    MessageBox.Show("设置失败\n" + p.StandardOutput.ReadToEnd());
+                    IsAutoRun = Autorun.IsSelfRun();
+                }
+            }
+        }
+
+        private void ChangeIsStarOn()
+        {
+            if (IsStarOn)
+            {
+                sa.Start();
+            }
+            else
+                sa.Pause();
+        }
+
+        private void ReadSettings()
+        {
+            SelectedEngine = Convert.ToInt32(IniHelper.GetKeyValue("main", "engine", "0", IniHelper.inipath));
+            SelectType = (EType)Enum.Parse(typeof(EType), IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath));
+            SelectKey = (EKey)Enum.Parse(typeof(EKey), IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath));
+            IsStarOn = Convert.ToBoolean(IniHelper.GetKeyValue("main", "IsStarOn", "true", IniHelper.inipath));
+        }
+
+        private void SaveSettings()
+        {
+            IniHelper.SetKeyValue("main", "engine", SelectedEngine.ToString(), IniHelper.inipath);
+            IniHelper.SetKeyValue("main", "IsStarOn", IsStarOn.ToString(), IniHelper.inipath);
+        }
         #endregion
 
-        #region 截图识别
+        #region Mode 1 - Capture
         private delegate void NoArgDelegate();
         
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -83,28 +204,30 @@ namespace MyQrCodeScanner
                 ScreenHelper.GetLogicalWidth(), ScreenHelper.GetLogicalHeight());
             PicWindow m = new PicWindow(t);
             m.PreScan();
-            this.Close();
+            this.Opacity = 1;
+            //m.Focus();
+            //this.Hide();
         }
         #endregion
 
-        #region 摄像头识别
+        #region Mode 2 - Camera
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             CamWindow w=new CamWindow();
-            Application.Current.MainWindow = w;
+            //Application.Current.MainWindow = w;
             w.Show();
-            this.Close();
+            this.Hide();
         }
         #endregion
 
-        #region 本地图片识别
+        #region Mode 3 - Picture
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             var img = OpenImageFile();
             if (img != null)
             {
                 PicWindow m = new PicWindow(img);
-                this.Close();
+                this.Hide();
                 m.PreScan();
             }
         }
@@ -143,7 +266,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region 扫描枪
+        #region Mode 4 - PDA
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             PDAWindow w = new PDAWindow();
@@ -153,7 +276,7 @@ namespace MyQrCodeScanner
         }
         #endregion
 
-        #region 快捷键设置
+        #region HotKey
         public Array Keys { get { return Enum.GetValues(typeof(EKey)); } }
         public Array Types { get { return Enum.GetValues(typeof(EType)); } }
 
@@ -216,7 +339,7 @@ namespace MyQrCodeScanner
 
         #endregion
 
-        #region 引擎设置
+        #region Engine
         public Array Engines { get { return new string[3] { "Zbar多码模式（识别率高）", "Zxing单码模式（速度快，支持格式多）", "Zxing多码模式（支持格式多）" }; } }
         private int selectedengine;
         public int SelectedEngine
@@ -248,6 +371,5 @@ namespace MyQrCodeScanner
         }
 
         #endregion
-
     }
 }

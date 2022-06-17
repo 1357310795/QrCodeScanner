@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,36 @@ namespace MyQrCodeScanner
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            if (Environment.CommandLine.Contains("/SetAutoRunOn"))
+            {
+                if (!Autorun.IsSelfRun())
+                {
+                    var res = Autorun.SetMeStart(true);
+                    Console.Out.WriteLine(res.result);
+                    if (res.success)
+                        App.Current.Shutdown(114514);
+                    else
+                        App.Current.Shutdown(-1);
+                }
+                App.Current.Shutdown(114514);
+                return;
+            }
+
+            if (Environment.CommandLine.Contains("/SetAutoRunOff"))
+            {
+                if (Autorun.IsSelfRun())
+                {
+                    var res = Autorun.SetMeStart(false);
+                    Console.Out.WriteLine(res.result);
+                    if (res.success)
+                        App.Current.Shutdown(114514);
+                    else
+                        App.Current.Shutdown(-1);
+                }
+                App.Current.Shutdown(114514);
+                return;
+            }
 
             ApplyTheme();
             this.MainWindow = new InitWindow();
@@ -32,6 +63,5 @@ namespace MyQrCodeScanner
             if (hue != "")
                 ThemeHelper.ChangeHue(hue);
         }
-
     }
 }

@@ -8,7 +8,8 @@
         Title="屏幕捕获二维码扫描"
         Width="800" Height="450"
         Background="{DynamicResource MaterialDesignPaper}"
-        Icon="logo.ico" WindowState="Maximized"
+        Loaded="Window_Loaded" Icon="logo.ico"
+        WindowState="Maximized" Closed="Window_Closed"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Grid>
