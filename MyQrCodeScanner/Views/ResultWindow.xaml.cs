@@ -92,8 +92,16 @@ namespace MyQrCodeScanner
 
         private void ButtonGo_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(text1.Text);
-            Application.Current.Shutdown();
+            try
+            {
+                System.Diagnostics.Process.Start(text1.Text);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("出现错误：\n" + ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            this.Close(); 
+            //Application.Current.Shutdown();
         }
         #endregion
 
