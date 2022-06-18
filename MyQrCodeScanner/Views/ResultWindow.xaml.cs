@@ -109,6 +109,7 @@ namespace MyQrCodeScanner
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(text1.Text);
+            this.Activate();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
