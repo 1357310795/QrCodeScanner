@@ -38,7 +38,6 @@ namespace MyQrCodeScanner
                     dkf,
                     sp
                 },
-                FillBehavior=FillBehavior.Stop
             };
         }
 
@@ -52,7 +51,7 @@ namespace MyQrCodeScanner
             dkf2.KeyTime = st;
             dkf2.Value = s;
             SplineDoubleKeyFrame sp = new SplineDoubleKeyFrame();
-            sp.KeyTime = d;
+            sp.KeyTime = st + d;
             string[] p = Bezier.Split(new char[]
             {
                 ','
@@ -72,7 +71,8 @@ namespace MyQrCodeScanner
                     dkf,
                     dkf2,
                     sp
-                }
+                },
+                FillBehavior = FillBehavior.HoldEnd
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -39,6 +40,7 @@ namespace MyQrCodeScanner
         private BitmapSource bs;
         private string resultstr;
         private SnackbarMessageQueue sm;
+        public bool isshortcut;
         #endregion
 
         #region Canvas Function
@@ -161,6 +163,24 @@ namespace MyQrCodeScanner
             var t2 = DateTime.Now.Ticks;
             Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
             myResult = res;
+
+            if (GlobalSettings.fastCaptureMode && isshortcut)
+            {
+                switch (res.status)
+                {
+                    case result_status.error:
+                        resultstr = res.data[0].data;
+                        break;
+                    case result_status.ok:
+                        resultstr = stringhelper.ResListToString(res.data);
+                        Clipboard.SetText(resultstr);
+                        break;
+                    case result_status.nocode:
+                        break;
+                }
+                return true;
+            }
+
             switch (res.status)
             {
                 case result_status.error:
@@ -168,7 +188,7 @@ namespace MyQrCodeScanner
                     break;
                 case result_status.ok:
                     resultstr = stringhelper.ResListToString(res.data);
-
+                    
                     if (res.data.Count == 1 || !res.haslocation)
                     {
                         ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, false);

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace MyQrCodeScanner
+namespace MyQrCodeScanner.Converters
 {
     public class CheckConverter : IValueConverter
     {
@@ -36,4 +36,19 @@ namespace MyQrCodeScanner
             return null;
         }
     }
+
+    public class BoolToInverseBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool? tmp = (bool?)value;
+            return !tmp.Value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Convert(value, targetType, parameter, culture);
+        }
+    }
+
 }

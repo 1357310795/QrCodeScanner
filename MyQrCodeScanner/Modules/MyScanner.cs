@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyQrCodeScanner.Modules;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -36,19 +37,48 @@ namespace MyQrCodeScanner
         public List<CodeWithLocation> data;
         public bool haslocation;
 
-        public MyResult(result_status status)
+        //public MyResult(result_status status)
+        //{
+        //    this.status = status;
+        //    this.data = new List<CodeWithLocation>();
+        //    this.haslocation = false;
+        //}
+
+        public MyResult(result_status status, List<ZBar.Symbol> results)
         {
             this.status = status;
+            this.haslocation = true;
             this.data = new List<CodeWithLocation>();
-            this.haslocation = false;
+            foreach (ZBar.Symbol symbol in results)
+                data.Add(new CodeWithLocation(symbol.Data, symbol.Type.ToString(), symbol.Location));
+            if (GlobalSettings.ignoreDup)
+                CheckDup();
         }
 
-        public MyResult(result_status status, ZBar.Symbol data)
+        private void CheckDup()
+        {
+            HashSet<string> h = new HashSet<string>();
+            List<CodeWithLocation> newlist = new List<CodeWithLocation>();
+            foreach (var code in data)
+            {
+                if (!h.Contains(code.data))
+                {
+                    h.Add(code.data);
+                    newlist.Add(code);
+                }
+            }
+            data = newlist;
+        }
+
+        public MyResult(result_status status, ZXing.Result[] results)
         {
             this.status = status;
-            this.data = new List<CodeWithLocation>();
-            this.data.Add(new CodeWithLocation(data.Data, data.Type.ToString(), data.Location));
             this.haslocation = true;
+            this.data = new List<CodeWithLocation>();
+            foreach (ZXing.Result result in results)
+                data.Add(new CodeWithLocation(result.Text, result.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(result.ResultPoints)));
+            if (GlobalSettings.ignoreDup)
+                CheckDup();
         }
 
         public MyResult(result_status status, ZXing.Result data)
@@ -57,13 +87,6 @@ namespace MyQrCodeScanner
             this.data = new List<CodeWithLocation>();
             this.data.Add(new CodeWithLocation(data.Text, data.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(data.ResultPoints)));
             this.haslocation = true;
-        }
-
-        public MyResult(result_status status, List<CodeWithLocation> data)
-        {
-            this.status = status;
-            this.data = data;
-            this.haslocation = false;
         }
 
         public MyResult(result_status status, string data)
@@ -196,11 +219,7 @@ namespace MyQrCodeScanner
 
             if (results != null && results.Length > 0)
             {
-                var tmp = new MyResult(result_status.ok);
-                tmp.haslocation = true;
-                foreach (ZXing.Result result in results)
-                    tmp.data.Add(new CodeWithLocation(result.Text, result.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(result.ResultPoints)));
-                return tmp;
+                return new MyResult(result_status.ok, results);
             }
             else
                 return new MyResult(result_status.nocode, "");
@@ -228,11 +247,7 @@ namespace MyQrCodeScanner
 
             if (results != null && results.Length > 0)
             {
-                var tmp = new MyResult(result_status.ok);
-                tmp.haslocation = true;
-                foreach (ZXing.Result result in results)
-                    tmp.data.Add(new CodeWithLocation(result.Text, result.BarcodeFormat.ToString(), ZxingPointExtensions.ZxingPointToPoint(result.ResultPoints)));
-                return tmp;
+                return new MyResult(result_status.ok, results);
             }
             else
                 return new MyResult(result_status.nocode, "");
@@ -253,11 +268,7 @@ namespace MyQrCodeScanner
 
                 if (symbols != null && symbols.Count > 0)
                 {
-                    var tmp = new MyResult(result_status.ok);
-                    tmp.haslocation = true;
-                    foreach (ZBar.Symbol symbol in symbols)
-                        tmp.data.Add(new CodeWithLocation(symbol.Data,symbol.Type.ToString(), symbol.Location));
-                    return tmp;
+                    return new MyResult(result_status.ok, symbols);
                 }
                 else
                 {
@@ -281,11 +292,7 @@ namespace MyQrCodeScanner
 
                 if (symbols != null && symbols.Count > 0)
                 {
-                    var tmp = new MyResult(result_status.ok);
-                    tmp.haslocation = true;
-                    foreach (ZBar.Symbol symbol in symbols)
-                        tmp.data.Add(new CodeWithLocation(symbol.Data,symbol.Type.ToString(), symbol.Location));
-                    return tmp;
+                    return new MyResult(result_status.ok, symbols);
                 }
                 else
                 {

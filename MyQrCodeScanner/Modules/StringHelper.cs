@@ -10,14 +10,14 @@ namespace MyQrCodeScanner
     {
         public static string ResListToString(List<CodeWithLocation> l)
         {
-            string res = "";
+            StringBuilder res = new StringBuilder();
             for (int i = 0; i < l.Count; i++)
             {
-                res += l[i].data;
+                res.Append(l[i].data);
                 if (i != l.Count - 1)
-                    res += "\n";
+                    res.Append("\n");
             }
-            return res;
+            return res.ToString();
         }
     }
     

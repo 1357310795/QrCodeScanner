@@ -100,11 +100,38 @@
     <Reference Include="Prism.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.ImageSharp.2.1.3\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive, Version=5.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.5.0.0\lib\net472\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -135,10 +162,48 @@
     <Compile Include="Modules\Autorun.cs" />
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="Modules\CommonResult.cs" />
+    <Compile Include="Modules\GlobalSettings.cs" />
+    <Compile Include="Modules\ScreenShot\Common\IsExternalInit.cs" />
+    <Compile Include="Modules\ScreenShot\Common\PointOrientation.cs" />
+    <Compile Include="Modules\ScreenShot\Common\PointProxy.cs" />
+    <Compile Include="Modules\ScreenShot\Common\ReadOnlyRect.cs" />
+    <Compile Include="Modules\ScreenShot\Common\RectProxy.cs" />
+    <Compile Include="Modules\ScreenShot\Common\ScreenshotMode.cs" />
+    <Compile Include="Modules\ScreenShot\Controls\ClipBox.cs" />
+    <Compile Include="Modules\ScreenShot\Controls\ClipBoxVisual.cs" />
+    <Compile Include="Modules\ScreenShot\Controls\DrawingControlBase.cs" />
+    <Compile Include="Modules\ScreenShot\Controls\Magnifier.cs" />
+    <Compile Include="Modules\ScreenShot\Controls\ZStackPanel.cs" />
+    <Compile Include="Modules\ScreenShot\Converters\PointOrientationToCursorConverter.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\Extensions.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\MonitorHelper.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\MonitorInfo.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\MouseMessage.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\ScreenshotHelper.cs" />
+    <Compile Include="Modules\ScreenShot\Helpers\Win32Helper.cs" />
+    <Compile Include="Modules\ScreenShot\Interop\DllNames.cs" />
+    <Compile Include="Modules\ScreenShot\Interop\NativeMethods.Gdi32.cs" />
+    <Compile Include="Modules\ScreenShot\Interop\NativeMethods.Other.cs" />
+    <Compile Include="Modules\ScreenShot\Interop\NativeMethods.User32.cs" />
+    <Compile Include="Modules\ScreenShot\Interop\Win32ErrorCodes.cs" />
+    <Compile Include="Modules\ScreenShot\Models\ScreenshotState.cs" />
+    <Compile Include="Modules\ScreenShot\Mvvm\RelayCommand.cs" />
+    <Compile Include="Modules\ScreenShot\Views\AreaScanFailUC.xaml.cs">
+      <DependentUpon>AreaScanFailUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ScreenShot\Views\AreaScanSuccUC.xaml.cs">
+      <DependentUpon>AreaScanSuccUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ScreenShot\Views\AreaScanUC.xaml.cs">
+      <DependentUpon>AreaScanUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\ScreenShot\Views\ClipWindow.xaml.cs">
+      <DependentUpon>ClipWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Star.cs" />
     <Compile Include="Modules\ThemeHelper.cs" />
     <Compile Include="ViewModels\NotifyIconViewModel.cs" />
-    <Compile Include="ViewModels\ThemeWindowViewModel.cs" />
+    <Compile Include="ViewModels\PaletteViewModel.cs" />
     <Compile Include="Views\FancyBalloon.xaml.cs">
       <DependentUpon>FancyBalloon.xaml</DependentUpon>
     </Compile>
@@ -171,9 +236,25 @@
       <DependentUpon>ResultWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\ScreenHelper.cs" />
-    <Compile Include="Views\ThemeWindow.xaml.cs">
-      <DependentUpon>ThemeWindow.xaml</DependentUpon>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Modules\ScreenShot\Views\AreaScanFailUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ScreenShot\Views\AreaScanSuccUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ScreenShot\Views\AreaScanUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\ScreenShot\Views\ClipWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\FancyBalloon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -214,7 +295,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ThemeWindow.xaml">
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

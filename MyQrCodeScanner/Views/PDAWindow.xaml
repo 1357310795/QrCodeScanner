@@ -5,6 +5,7 @@
         xmlns:local="clr-namespace:MyQrCodeScanner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:MyQrCodeScanner.Converters"
         Title="摄像头二维码扫描"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
@@ -14,7 +15,7 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Window.Resources>
-        <local:CheckConverter x:Key="CheckConverter" />
+        <converters:CheckConverter x:Key="CheckConverter" />
     </Window.Resources>
     <DockPanel>
         <DockPanel Margin="5"

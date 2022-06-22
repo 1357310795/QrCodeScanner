@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyQrCodeScanner.Modules;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -49,6 +50,8 @@ namespace MyQrCodeScanner
             }
 
             ApplyTheme();
+            GlobalSettings.ReadSettings();
+
             this.MainWindow = new InitWindow();
             this.MainWindow.Show();
         }

@@ -10,8 +10,9 @@ using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows.Interop;
 using System.Diagnostics;
-using System.Security.Principal;
-using System.Management;
+using MyQrCodeScanner.Views;
+using MyQrCodeScanner.Modules;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace MyQrCodeScanner
 {
@@ -21,32 +22,9 @@ namespace MyQrCodeScanner
     public partial class InitWindow : Window, INotifyPropertyChanged
     {
         #region Fields
-        private IntPtr hwnd;
-        private bool isAutoRun;
-        public bool IsAutoRun
-        {
-            get { return isAutoRun; }
-            set
-            {
-                isAutoRun = value;
-                this.RaisePropertyChanged("IsAutoRun");
-                ChangeAutoRun();
-            }
-        }
-        private bool isStarOn;
-        public bool IsStarOn
-        {
-            get { return isStarOn; }
-            set
-            {
-                isStarOn = value;
-                this.RaisePropertyChanged("IsStarOn");
-                ChangeIsStarOn();
-            }
-        }
-
-        StarAnimation sa;
-
+        public IntPtr hwnd;
+        public StarAnimation sa;
+        private bool isshortcut;
         #endregion
 
         #region Constructors
@@ -61,57 +39,37 @@ namespace MyQrCodeScanner
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyHook();
-            Thread t = new Thread(PrepareHotKey);
-            t.Start();
-
-            bool win11 = false;
-            ManagementClass manag = new ManagementClass("Win32_OperatingSystem");
-            ManagementObjectCollection managCollection = manag.GetInstances();
-            foreach (ManagementObject m in managCollection)
-            {
-                if (m["Name"].ToString().Contains("Windows 11"))
-                    win11 = true;
-            }
-            if (win11)
-            {
-                WindowsIdentity id = WindowsIdentity.GetCurrent();
-                string computerName = id.Name;
-                WindowsPrincipal principal = new WindowsPrincipal(id);
-                if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
-                {
-                    ToggleAutoRun.IsEnabled = false;
-                    TextAutoRun.ToolTip = "在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。";
-                    goto SkipAutoRunInit;
-                }
-
-            }
-            IsAutoRun = Autorun.IsSelfRun();
-            SkipAutoRunInit :
+            PrepareHotKey();
 
             sa = new StarAnimation(mygrid, cv1, this);
             sa.SetStarNumber(40);
             sa.SetStarSpeed(60);
             sa.Init();
-
-            ReadSettings();
-            RegisterHotkey(new HotKeyModel()
-            {
-                SelectKey = SelectKey,
-                SelectType = SelectType
-            });
-
+            if (GlobalSettings.isStarOn)
+                sa.Start();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            SaveSettings();
+            GlobalSettings.SaveSettings();
+            Application.Current.Shutdown();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized && GlobalSettings.hideToTray)
+            {
+                var myTaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
+                myTaskbarIcon.ShowBalloonTip("程序将在后台运行", "若要退出：右击托盘区图标点击退出程序", BalloonIcon.Info);
+                this.Hide();
+            }
         }
         #endregion
 
         #region Main Function
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer", "https://github.com/1357310795/QrCodeScanner");
+            Process.Start("explorer", "https://github.com/1357310795/QrCodeScanner");
         }
 
         private IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wideParam, IntPtr longParam, ref bool handled)
@@ -119,7 +77,7 @@ namespace MyQrCodeScanner
             switch (msg)
             {
                 case HotKeyManager.WM_HOTKEY:
-                    //Console.WriteLine("ok");
+                    isshortcut = true;
                     CaptureScreenStart();
                     handled = true;
                     break;
@@ -129,69 +87,27 @@ namespace MyQrCodeScanner
 
         private void ButtonTheme_Click(object sender, RoutedEventArgs e)
         {
-            ThemeWindow w = new ThemeWindow();
+            SettingsWindow w = new SettingsWindow(this);
             w.Show();
         }
 
-        private void ChangeAutoRun()
+        private void ApplyHook()
         {
-            if (IsAutoRun != Autorun.IsSelfRun())
+            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
+            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
+            if (hWndSource != null) hWndSource.AddHook(WndProc);
+        }
+
+        private void PrepareHotKey()
+        {
+            try
             {
-                ProcessStartInfo processInfo = new ProcessStartInfo();
-                processInfo.Verb = "runas";
-                processInfo.LoadUserProfile = true;
-                processInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
-                processInfo.Arguments = "/SetAutoRun" + (IsAutoRun ? "On" : "Off");
-                processInfo.RedirectStandardOutput = true;
-                processInfo.UseShellExecute = false;
-                Process p = null;
-                try
-                {
-                    p = Process.Start(processInfo);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("设置失败\n" + ex.Message);
-                    IsAutoRun = Autorun.IsSelfRun();
-                    return;
-                }
-
-                if (p == null)
-                {
-                    MessageBox.Show("设置失败");
-                    IsAutoRun = Autorun.IsSelfRun();
-                }
-                p.WaitForExit();
-                if (p.ExitCode != 114514 || IsAutoRun != Autorun.IsSelfRun())
-                {
-                    MessageBox.Show("设置失败\n" + p.StandardOutput.ReadToEnd());
-                    IsAutoRun = Autorun.IsSelfRun();
-                }
+                HotKeyHelper.RegisterHotKey(new HotKeyModel() { SelectKey = GlobalSettings.selectedKey, SelectType = GlobalSettings.selectedKeyType }, this.hwnd);
             }
-        }
-
-        private void ChangeIsStarOn()
-        {
-            if (IsStarOn)
+            catch (Exception ex)
             {
-                sa.Start();
+                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-            else
-                sa.Pause();
-        }
-
-        private void ReadSettings()
-        {
-            SelectedEngine = Convert.ToInt32(IniHelper.GetKeyValue("main", "engine", "0", IniHelper.inipath));
-            SelectType = (EType)Enum.Parse(typeof(EType), IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath));
-            SelectKey = (EKey)Enum.Parse(typeof(EKey), IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath));
-            IsStarOn = Convert.ToBoolean(IniHelper.GetKeyValue("main", "IsStarOn", "true", IniHelper.inipath));
-        }
-
-        private void SaveSettings()
-        {
-            IniHelper.SetKeyValue("main", "engine", SelectedEngine.ToString(), IniHelper.inipath);
-            IniHelper.SetKeyValue("main", "IsStarOn", IsStarOn.ToString(), IniHelper.inipath);
         }
         #endregion
 
@@ -205,6 +121,14 @@ namespace MyQrCodeScanner
 
         private void CaptureScreenStart()
         {
+            if (GlobalSettings.captureMode)
+                CaptureMainScreen();
+            else
+                HandyScreenshot.Helpers.ScreenshotHelper.StartScreenshot();
+        }
+
+        private void CaptureMainScreen()
+        {
             this.Hide();
             this.Opacity = 0;
             this.Dispatcher.Invoke(DispatcherPriority.Render, (NoArgDelegate)delegate { });
@@ -212,10 +136,11 @@ namespace MyQrCodeScanner
             var t = BitmapHelper.CaptureScreenToBitmap(0, 0,
                 ScreenHelper.GetLogicalWidth(), ScreenHelper.GetLogicalHeight());
             PicWindow m = new PicWindow(t);
+            m.isshortcut = isshortcut;
             m.PreScan();
             this.Opacity = 1;
-            //m.Focus();
-            //this.Hide();
+            if (GlobalSettings.fastCaptureMode)
+                this.Show();
         }
         #endregion
 
@@ -281,85 +206,22 @@ namespace MyQrCodeScanner
             PDAWindow w = new PDAWindow();
             Application.Current.MainWindow = w;
             w.Show();
-            this.Close();
+            this.Hide();
         }
-        #endregion
-
-        #region HotKey
-        public Array Keys { get { return Enum.GetValues(typeof(EKey)); } }
-        public Array Types { get { return Enum.GetValues(typeof(EType)); } }
-
-        private EKey _selectKey;
-        private EType _selectType;
-        public EKey SelectKey
-        {
-            get { return _selectKey; }
-            set { _selectKey = value; RaisePropertyChanged("SelectKey"); }
-        }
-        public EType SelectType
-        {
-            get { return _selectType; }
-            set { _selectType = value; RaisePropertyChanged("SelectType"); }
-        }
-
-        private void ApplyHook()
-        {
-            hwnd = ((HwndSource)PresentationSource.FromVisual(this)).Handle;
-            HwndSource hWndSource = HwndSource.FromHwnd(hwnd);
-            if (hWndSource != null) hWndSource.AddHook(WndProc);
-        }
-
-        private void PrepareHotKey()
-        {
-
-            EType type = EType.Alt;
-            EKey eKey = EKey.Z;
-            Enum.TryParse<EType>(IniHelper.GetKeyValue("main", "EType", "Alt", IniHelper.inipath), true, out type);
-            Enum.TryParse<EKey>(IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath), true, out eKey);
-            SelectKey = eKey;
-            SelectType = type;
-            try
-            {
-                RegisterHotkey(new HotKeyModel() { SelectKey = eKey, SelectType = type });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-        }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            IniHelper.SetKeyValue("main", "EType", SelectType.ToString(), IniHelper.inipath);
-            IniHelper.SetKeyValue("main", "EKey", SelectKey.ToString(), IniHelper.inipath);
-            RegisterHotkey(new HotKeyModel()
-                            {
-                                SelectKey = SelectKey,
-                                SelectType = SelectType
-                            });
-            MessageBox.Show("设置成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private bool RegisterHotkey(HotKeyModel h)
-        {
-            return HotKeyHelper.RegisterHotKey(h, hwnd);
-        }
-
-
         #endregion
 
         #region Engine
         public Array Engines { get { return new string[3] { "Zbar多码模式（识别率高）", "Zxing单码模式（速度快，支持格式多）", "Zxing多码模式（支持格式多）" }; } }
-        private int selectedengine;
+
         public int SelectedEngine
         {
-            get { return selectedengine; }
+            get { return GlobalSettings.selectedengine; }
             set
             {
-                selectedengine = value;
+                GlobalSettings.selectedengine = value;
                 this.RaisePropertyChanged("SelectedEngine");
-                Application.Current.Resources["Engine"] = selectedengine;
-                IniHelper.SetKeyValue("main", "engine", selectedengine.ToString(), IniHelper.inipath);
+                Application.Current.Resources["Engine"] = GlobalSettings.selectedengine;
+                IniHelper.SetKeyValue("main", "engine", GlobalSettings.selectedengine.ToString(), IniHelper.inipath);
             }
         }
 

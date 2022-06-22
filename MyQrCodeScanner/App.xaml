@@ -5,6 +5,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:Views="clr-namespace:HandyScreenshot.Views"
              ShutdownMode="OnLastWindowClose">
     <Application.Resources>
         <ResourceDictionary>
@@ -23,13 +25,31 @@
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border Background="White"
                             BorderBrush="Black" BorderThickness="1">
-                        <TextBlock FontSize="12" Margin="5" Foreground="Black">简易二维码扫描 - 扫描枪模式</TextBlock>
+                        <TextBlock Margin="5"
+                                   Foreground="Black"
+                                   FontSize="12">
+                            简易二维码扫描
+                        </TextBlock>
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.DataContext>
                     <local:NotifyIconViewModel />
                 </tb:TaskbarIcon.DataContext>
             </tb:TaskbarIcon>
+            <DataTemplate x:Key="PaletteListItemStyle">
+                <Border Height="30"
+                        Margin="2"
+                        CornerRadius="1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}, Path=DataContext.ChangeHueCommand}" CommandParameter="{Binding}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Border.Background>
+                        <SolidColorBrush Color="{Binding}" />
+                    </Border.Background>
+                </Border>
+            </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple"
                                              SecondaryColor="Lime" />

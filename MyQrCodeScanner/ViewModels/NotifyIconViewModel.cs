@@ -16,10 +16,12 @@ namespace MyQrCodeScanner
             {
                 return new DelegateCommand
                 {
-                    CanExecuteFunc = () => Application.Current.MainWindow.IsVisible == false,
+                    CanExecuteFunc = () => true,//Application.Current.MainWindow.IsVisible == false,
                     CommandAction = () =>
                     {
+                        Application.Current.MainWindow.WindowState = WindowState.Normal;
                         Application.Current.MainWindow.Show();
+                        Application.Current.MainWindow.Activate();
                     }
                 };
             }

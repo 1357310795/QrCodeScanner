@@ -1,0 +1,53 @@
+﻿<Window x:Class="HandyScreenshot.Views.ClipWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:HandyScreenshot.Controls"
+        xmlns:converters="clr-namespace:HandyScreenshot.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:HandyScreenshot.Models"
+        Title="MainWindow"
+        BorderThickness="0"
+        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"
+        ResizeMode="NoResize" ShowInTaskbar="True" Topmost="True"
+        SnapsToDevicePixels="True" UseLayoutRounding="True"
+        WindowStyle="None" AllowsTransparency="True" Background="{x:Null}"
+        PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown"
+        PreviewMouseRightButtonUp="Window_PreviewMouseRightButtonUp"
+        PreviewMouseMove="Window_PreviewMouseMove"
+        mc:Ignorable="d">
+
+    <Window.Resources>
+        <converters:PointOrientationToCursorConverter x:Key="PointOrientationToCursorConverter" />
+    </Window.Resources>
+    
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding CloseCommand}" />
+    </Window.InputBindings>
+
+    <controls:ZStackPanel Cursor="{Binding State.Orientation, Mode=OneWay, Converter={StaticResource PointOrientationToCursorConverter}}">
+        <controls:ClipBox x:Name="ClipBox"
+                          Background="{Binding BackImage}"
+                          MonitorInfo="{Binding MonitorInfo}"
+                          RectProxy="{Binding State.ScreenshotRect}" />
+
+        <controls:Magnifier ColorGetter="{Binding ColorGetter}"
+                            MagnifiedTarget="{Binding ElementName=ClipBox, Path=Visual, Mode=OneWay}"
+                            MonitorInfo="{Binding MonitorInfo}"
+                            ScreenshotState="{Binding State}" />
+        <Label Focusable="True"/>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Background="#AA000000" Foreground="White"
+                   Visibility="Collapsed">
+            Window Actual Size:<Run Text="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Mode=OneWay}" />
+            <Run Text="{Binding Path=ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Mode=OneWay}" />
+            <LineBreak />
+            Monitor Pixel Size:<Run Text="{Binding Path=MonitorInfo.PhysicalScreenRect, Mode=OneWay}" />
+            <LineBreak />
+            Mode:<Run Text="{Binding Path=State.Mode, Mode=OneWay}" />
+            <LineBreak />
+            Orientation:<Run Text="{Binding Path=State.Orientation, Mode=OneWay}" />
+        </TextBlock>
+    </controls:ZStackPanel>
+</Window>
