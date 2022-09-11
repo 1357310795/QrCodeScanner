@@ -106,13 +106,13 @@ namespace MyQrCodeScanner
 
             try
             {
-                if (method == 1)
-                    return DecodeByZxing(img);
-                else if (method == 0)
-                    return DecodeByZbar(img);
-                else if (method == 2)
-                    return DecodeByZxingMulti(img);
-                else
+                //if (method == 1)
+                //    return DecodeByZxing(img);
+                //else if (method == 0)
+                //    return DecodeByZbar(img);
+                //else if (method == 2)
+                //    return DecodeByZxingMulti(img);
+                //else
                     throw new Exception("找不到方法");
             }
             catch(Exception ex)
@@ -126,13 +126,13 @@ namespace MyQrCodeScanner
             var method = (int)Application.Current.Resources["Engine"];
             try
             {
-                if (method == 1)
-                    return DecodeByZxing(img);
-                else if (method == 0)
-                    return DecodeByZbar(img);
-                else if (method == 2)
-                    return DecodeByZxingMulti(img);
-                else
+                //if (method == 1)
+                //    return DecodeByZxing(img);
+                //else if (method == 0)
+                //    return DecodeByZbar(img);
+                //else if (method == 2)
+                //    return DecodeByZxingMulti(img);
+                //else
                     throw new Exception("找不到方法");
             }
             catch (Exception ex)
@@ -154,6 +154,7 @@ namespace MyQrCodeScanner
             try
             {
                 result = reader.Decode(img);
+                img.Dispose();
             }
             catch (ZXing.ReaderException ex)
             {
@@ -182,6 +183,7 @@ namespace MyQrCodeScanner
             try
             {
                 result = reader.Decode(img);
+                
             }
             catch (ZXing.ReaderException ex)
             {
@@ -210,6 +212,7 @@ namespace MyQrCodeScanner
             try
             {
                 results = reader.DecodeMultiple(img);
+                img.Dispose();
             }
             catch (ZXing.ReaderException ex)
             {
@@ -265,6 +268,7 @@ namespace MyQrCodeScanner
 
                 List<ZBar.Symbol> symbols = new List<ZBar.Symbol>();
                 symbols = scanner.Scan(pImg);
+                pImg.Dispose();
 
                 if (symbols != null && symbols.Count > 0)
                 {
@@ -289,6 +293,7 @@ namespace MyQrCodeScanner
 
                 List<ZBar.Symbol> symbols = new List<ZBar.Symbol>();
                 symbols = scanner.Scan(pImg);
+                pImg.Dispose();
 
                 if (symbols != null && symbols.Count > 0)
                 {
@@ -333,6 +338,7 @@ namespace MyQrCodeScanner
 
             //dispose the Graphics object
             g.Dispose();
+            original.Dispose();
             return newBitmap;
         }
 

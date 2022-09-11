@@ -17,7 +17,7 @@ namespace MyQrCodeScanner
             BitmapImage bi = new BitmapImage();
             bi.BeginInit();
             MemoryStream ms = new MemoryStream();
-            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             ms.Seek(0, SeekOrigin.Begin);
             bi.StreamSource = ms;
             bi.EndInit();

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyQrCodeScanner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="屏幕捕获二维码扫描"
-        Width="800" Height="450"
+        Width="800" Height="450" 
         Background="{DynamicResource MaterialDesignPaper}"
         Loaded="Window_Loaded" Icon="logo.ico"
         WindowState="Maximized" Closed="Window_Closed"

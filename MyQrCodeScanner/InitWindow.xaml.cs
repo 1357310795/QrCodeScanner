@@ -141,6 +141,7 @@ namespace MyQrCodeScanner
             this.Opacity = 1;
             if (GlobalSettings.fastCaptureMode)
                 this.Show();
+            t.Dispose();
         }
         #endregion
 

@@ -357,6 +357,9 @@ namespace MyQrCodeScanner
         #region Window Events
         private void Window_Closed(object sender, EventArgs e)
         {
+            back?.Dispose();
+            img?.Dispose();
+            GC.Collect();
             App.Current.MainWindow.Show();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
