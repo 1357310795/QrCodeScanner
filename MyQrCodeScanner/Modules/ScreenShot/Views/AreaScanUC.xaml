@@ -15,7 +15,7 @@
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                          IsIndeterminate="True" Margin="0,4" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Visibility="Collapsed"
                          Value="0" HorizontalAlignment="Center" />
-            <TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Text="识别中" Margin="0,2,0,4" HorizontalAlignment="Center"/>
+            <TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Text="{DynamicResource Processing}" Margin="0,2,0,4" HorizontalAlignment="Center"/>
         </StackPanel>
         <Button Padding="2" Command="{Binding CloseCommand}" Background="{DynamicResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignFlatButton}" Height="Auto" Width="Auto" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4">
             <materialDesign:PackIcon Margin="0" Kind="Close" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Width="20" Height="20"/>

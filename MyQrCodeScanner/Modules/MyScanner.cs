@@ -106,13 +106,13 @@ namespace MyQrCodeScanner
 
             try
             {
-                //if (method == 1)
-                //    return DecodeByZxing(img);
-                //else if (method == 0)
-                //    return DecodeByZbar(img);
-                //else if (method == 2)
-                //    return DecodeByZxingMulti(img);
-                //else
+                if (method == 1)
+                    return DecodeByZxing(img);
+                else if (method == 0)
+                    return DecodeByZbar(img);
+                else if (method == 2)
+                    return DecodeByZxingMulti(img);
+                else
                     throw new Exception("找不到方法");
             }
             catch(Exception ex)
@@ -126,13 +126,13 @@ namespace MyQrCodeScanner
             var method = (int)Application.Current.Resources["Engine"];
             try
             {
-                //if (method == 1)
-                //    return DecodeByZxing(img);
-                //else if (method == 0)
-                //    return DecodeByZbar(img);
-                //else if (method == 2)
-                //    return DecodeByZxingMulti(img);
-                //else
+                if (method == 1)
+                    return DecodeByZxing(img);
+                else if (method == 0)
+                    return DecodeByZbar(img);
+                else if (method == 2)
+                    return DecodeByZxingMulti(img);
+                else
                     throw new Exception("找不到方法");
             }
             catch (Exception ex)

@@ -103,6 +103,16 @@ namespace MyQrCodeScanner.Views
                 ThemeHelper.ApplyBase(value);
             }
         }
+        public bool IsChinese
+        {
+            get { return GlobalSettings.isChinese; }
+            set
+            {
+                GlobalSettings.isChinese = value;
+                this.RaisePropertyChanged("IsChinese");
+                LangHelper.ChangeLang(value);
+            }
+        }
         public bool IgnoreDup
         {
             get { return GlobalSettings.ignoreDup; }
@@ -135,7 +145,7 @@ namespace MyQrCodeScanner.Views
                 if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
                 {
                     ToggleAutoRun.IsEnabled = false;
-                    TextAutoRun.ToolTip = "在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。";
+                    TextAutoRun.ToolTip = LangHelper.GetStr("Win11Issue");
                     goto SkipAutoRunInit;
                 }
 
@@ -163,20 +173,20 @@ namespace MyQrCodeScanner.Views
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("设置失败\n" + ex.Message);
+                    MessageBox.Show(LangHelper.GetStr("ApplyFail") + "\n" + ex.Message);
                     IsAutoRun = Autorun.IsSelfRun();
                     return;
                 }
 
                 if (p == null)
                 {
-                    MessageBox.Show("设置失败");
+                    MessageBox.Show(LangHelper.GetStr("ApplyFail"));
                     IsAutoRun = Autorun.IsSelfRun();
                 }
                 p.WaitForExit();
                 if (p.ExitCode != 114514 || IsAutoRun != Autorun.IsSelfRun())
                 {
-                    MessageBox.Show("设置失败\n" + p.StandardOutput.ReadToEnd());
+                    MessageBox.Show(LangHelper.GetStr("ApplyFail") + "\n" + p.StandardOutput.ReadToEnd());
                     IsAutoRun = Autorun.IsSelfRun();
                 }
             }
@@ -218,9 +228,9 @@ namespace MyQrCodeScanner.Views
                 SelectType = SelectedKeyType
             }, mw.hwnd);
             if (res)
-                MessageBox.Show("设置成功", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(LangHelper.GetStr("ApplySuccess"), LangHelper.GetStr("Info"), MessageBoxButton.OK, MessageBoxImage.Information);
             else
-                MessageBox.Show("注册热键失败！请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(LangHelper.GetStr("CheckHotKey"), LangHelper.GetStr("ErrorRegisterHotkeyFail"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
         #endregion
 

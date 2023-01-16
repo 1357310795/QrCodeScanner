@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,7 +82,7 @@ namespace MyQrCodeScanner
             text1.SelectAll();
             text1.Copy();
             ButtonCopy.Style = (Style)Application.Current.Resources["MaterialDesignRaisedButton"];
-            ButtonCopyText.Text = "已复制";
+            ButtonCopyText.Text = LangHelper.GetStr("Copied");
         }
 
         private void ButtonContinue_Click(object sender, RoutedEventArgs e)
@@ -98,7 +99,7 @@ namespace MyQrCodeScanner
             }
             catch(Exception ex)
             {
-                MessageBox.Show("出现错误：\n" + ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(LangHelper.GetStr("Error") + "：\n" + ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             this.Close(); 
             //Application.Current.Shutdown();

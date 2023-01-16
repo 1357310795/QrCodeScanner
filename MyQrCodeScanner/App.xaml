@@ -14,9 +14,9 @@
                 1
             </sys:Int32>
             <ContextMenu x:Key="SysTrayMenu">
-                <MenuItem Command="{Binding ShowWindowCommand}" Header="显示窗口" />
+                <MenuItem Command="{Binding ShowWindowCommand}" Header="{DynamicResource Show}" />
                 <Separator />
-                <MenuItem Command="{Binding ExitApplicationCommand}" Header="退出程序" />
+                <MenuItem Command="{Binding ExitApplicationCommand}" Header="{DynamicResource Exit}" />
             </ContextMenu>
             <tb:TaskbarIcon x:Key="Taskbar"
                             ContextMenu="{StaticResource SysTrayMenu}"
@@ -27,9 +27,8 @@
                             BorderBrush="Black" BorderThickness="1">
                         <TextBlock Margin="5"
                                    Foreground="Black"
-                                   FontSize="12">
-                            简易二维码扫描
-                        </TextBlock>
+                                   Text="{DynamicResource MainWindowTitle}"
+                                   FontSize="12" />
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.DataContext>
@@ -51,6 +50,7 @@
                 </Border>
             </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/zh-cn.xaml" />
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple"
                                              SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />

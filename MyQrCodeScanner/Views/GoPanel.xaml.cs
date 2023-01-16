@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyQrCodeScanner.Modules;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace MyQrCodeScanner
         private void ButtonCopy_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(Data);
-            ((Button)sender).Content = "已复制到剪切板";
+            ((Button)sender).Content = LangHelper.GetStr("CopiedToClipBoard");
         }
 
         private void ButtonGo_Click(object sender, RoutedEventArgs e)
@@ -112,7 +113,7 @@ namespace MyQrCodeScanner
         public event ClosePanelEventHandler ClosePanel;
         private void RaiseClosePanel()
         {
-            Console.WriteLine("关闭panel");
+            //Console.WriteLine("关闭panel");
             ClosePanel?.Invoke(this);
         }
 

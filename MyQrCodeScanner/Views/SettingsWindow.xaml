@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyQrCodeScanner.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:converters="clr-namespace:MyQrCodeScanner.Converters"
-        Title="设置"
+        Title="{DynamicResource Settings}"
         Width="590" Height="500"
         Background="{DynamicResource MaterialDesignPaper}"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
@@ -17,13 +17,13 @@
         <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryDark"
                     Style="{StaticResource MaterialDesignFilledTabControl}"
                     TabStripPlacement="Left">
-            <TabItem Header="功能设置">
+            <TabItem Header="{DynamicResource FunctionSettings}">
                 <StackPanel Margin="10,5,5,0" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="TextAutoRun"
                                    VerticalAlignment="Center"
                                    Margin="0,0,0,0"
-                                   Text="开机启动"
+                                   Text="{DynamicResource AutoRun}"
                                    FontSize="14" />
                         <ToggleButton x:Name="ToggleAutoRun"
                                       VerticalAlignment="Center"
@@ -34,7 +34,7 @@
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
                                    Margin="0,0,0,0"
-                                   Text="最小化时隐藏到托盘区"
+                                   Text="{DynamicResource MiniToTray}"
                                    FontSize="14" />
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
@@ -44,7 +44,7 @@
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
                                    Margin="0,0,0,0"
-                                   Text="忽略相同的条码"
+                                   Text="{DynamicResource IgnoreSame}"
                                    FontSize="14" />
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
@@ -55,20 +55,20 @@
                         <StackPanel.Resources>
                             <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
                         </StackPanel.Resources>
-                        <TextBlock VerticalAlignment="Center" FontSize="14">截屏模式：</TextBlock>
+                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource CaptureMode}"></TextBlock>
                         <RadioButton IsChecked="{Binding CaptureMode}" VerticalContentAlignment="Center">
-                            <TextBlock Text="主屏幕全屏截图" />
+                            <TextBlock Text="{DynamicResource FullScreen}" />
                         </RadioButton>
                         <RadioButton Margin="10,0,0,0"
                                      IsChecked="{Binding CaptureMode, Converter={StaticResource BoolToInverseBoolConverter}}"
                                      VerticalContentAlignment="Center">
-                            <TextBlock Text="区域截图" />
+                            <TextBlock Text="{DynamicResource ScreenRect}" />
                         </RadioButton>
                     </StackPanel>
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
                                    Margin="0,0,0,0"
-                                   Text="快速截图识别模式"
+                                   Text="{DynamicResource FastMode}"
                                    FontSize="14" />
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
@@ -77,7 +77,7 @@
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
-                                   Text="截取屏幕快捷键："
+                                   Text="{DynamicResource CaptureHotKey}"
                                    FontSize="14" />
                         <ComboBox Width="60"
                                   Margin="10,0,0,0"
@@ -95,15 +95,16 @@
                                   SelectedItem="{Binding SelectedKey}"
                                   FontSize="12" />
                         <Button Margin="10,0"
-                                Content="应用"
+                                Content="{DynamicResource Apply}"
                                 Style="{StaticResource MaterialDesignRaisedButton}"
                                 Click="Save_Click" />
                     </StackPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="UI设置">
+            <TabItem Header="{DynamicResource UISettings}">
                 <Grid Margin="10,5,5,5">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -111,7 +112,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
                                    Margin="0,0,0,0"
-                                   Text="背景动画"
+                                   Text="{DynamicResource BackAnimation}"
                                    FontSize="14" />
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
@@ -124,17 +125,33 @@
                         <StackPanel.Resources>
                             <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
                         </StackPanel.Resources>
-                        <TextBlock VerticalAlignment="Center" FontSize="14">主题：</TextBlock>
+                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource Theme}"></TextBlock>
                         <RadioButton IsChecked="{Binding IsDark}" VerticalContentAlignment="Center">
-                            <TextBlock Text="深色主题" />
+                            <TextBlock Text="{DynamicResource DarkTheme}" />
                         </RadioButton>
                         <RadioButton Margin="10,0,0,0"
                                      IsChecked="{Binding IsDark, Converter={StaticResource BoolToInverseBoolConverter}}"
                                      VerticalContentAlignment="Center">
-                            <TextBlock Text="浅色主题" />
+                            <TextBlock Text="{DynamicResource LightTheme}" />
                         </RadioButton>
                     </StackPanel>
-                    <ScrollViewer Grid.Row="2"
+                    <StackPanel Margin="0,5"
+                                Grid.Row="2"
+                                Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
+                        </StackPanel.Resources>
+                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource Language}"></TextBlock>
+                        <RadioButton IsChecked="{Binding IsChinese}" VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource Chinese}" />
+                        </RadioButton>
+                        <RadioButton Margin="10,0,0,0"
+                                     IsChecked="{Binding IsChinese, Converter={StaticResource BoolToInverseBoolConverter}}"
+                                     VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource English}" />
+                        </RadioButton>
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="3"
                                   FocusVisualStyle="{x:Null}"
                                   DataContext="{Binding PaletteVm}">
                         <ItemsControl Margin="0,2,0,0"

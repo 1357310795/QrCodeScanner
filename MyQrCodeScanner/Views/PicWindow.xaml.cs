@@ -115,8 +115,8 @@ namespace MyQrCodeScanner
             if (!PicDecode3(bs))
             {
                 snackbar1.MessageQueue.Clear();
-                snackbar1.MessageQueue.Enqueue("直接识别失败，请尝试手动框选要识别的二维码。");
-                texthint.Text = "请手动框选要识别的二维码";
+                snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("ManuallySelect"));
+                texthint.Text = LangHelper.GetStr("ManuallySelectTip");
                 enable_select = true;
                 this.Show();
             }
@@ -147,7 +147,7 @@ namespace MyQrCodeScanner
                     return true;
                 case result_status.nocode:
                     snackbar1.MessageQueue.Clear();
-                    snackbar1.MessageQueue.Enqueue("未识别到二维码，请重新选择");
+                    snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("NoCodeReselect"));
                     break;
             }
             return false;
@@ -161,7 +161,7 @@ namespace MyQrCodeScanner
 
             var res = MyScanner.ScanCode(cur);
             var t2 = DateTime.Now.Ticks;
-            Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
+            //Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
             myResult = res;
 
             if (GlobalSettings.fastCaptureMode && isshortcut)
@@ -236,7 +236,7 @@ namespace MyQrCodeScanner
         public void ProcessMultiCode()
         {
             this.Show();
-            texthint.Text = "检测到多个Code，请将鼠标放在Code上查看结果";
+            texthint.Text = LangHelper.GetStr("MultiCode");
             canvasCodeResults = new List<CanvasCodeResult>();
             foreach (CodeWithLocation t in myResult.data)
             {
@@ -357,7 +357,7 @@ namespace MyQrCodeScanner
         #region Window Events
         private void Window_Closed(object sender, EventArgs e)
         {
-            back?.Dispose();
+            //back?.Dispose();
             img?.Dispose();
             GC.Collect();
             App.Current.MainWindow.Show();

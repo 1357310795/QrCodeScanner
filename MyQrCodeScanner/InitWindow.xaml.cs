@@ -60,7 +60,7 @@ namespace MyQrCodeScanner
             if (this.WindowState == WindowState.Minimized && GlobalSettings.hideToTray)
             {
                 var myTaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
-                myTaskbarIcon.ShowBalloonTip("程序将在后台运行", "若要退出：右击托盘区图标点击退出程序", BalloonIcon.Info);
+                myTaskbarIcon.ShowBalloonTip(LangHelper.GetStr("RunInBackTipTitle"), LangHelper.GetStr("RunInBackTipText"), BalloonIcon.Info);
                 this.Hide();
             }
         }
@@ -106,7 +106,7 @@ namespace MyQrCodeScanner
             }
             catch (Exception ex)
             {
-                MessageBox.Show("错误：\n" + ex.Message + "请检查快捷键是否被占用。", "注册热键失败", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(LangHelper.GetStr("Error") + "\n" + ex.Message + LangHelper.GetStr("ErrorHotkeyUsed"), LangHelper.GetStr("ErrorRegisterHotkeyFail"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
         #endregion
@@ -141,7 +141,7 @@ namespace MyQrCodeScanner
             this.Opacity = 1;
             if (GlobalSettings.fastCaptureMode)
                 this.Show();
-            t.Dispose();
+            //t.Dispose();
         }
         #endregion
 
@@ -186,7 +186,7 @@ namespace MyQrCodeScanner
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(this, ex.Message, "内部错误");
+                        MessageBox.Show(this, ex.Message, LangHelper.GetStr("InternalError"));
                         return null;
                     }
 
@@ -212,7 +212,15 @@ namespace MyQrCodeScanner
         #endregion
 
         #region Engine
-        public Array Engines { get { return new string[3] { "Zbar多码模式（识别率高）", "Zxing单码模式（速度快，支持格式多）", "Zxing多码模式（支持格式多）" }; } }
+        public Array Engines { 
+            get { 
+                return new string[3] { 
+                    LangHelper.GetStr("ZbarMulti"), 
+                    LangHelper.GetStr("ZXingSingle"), 
+                    LangHelper.GetStr("ZXingMulti") 
+                }; 
+            } 
+        }
 
         public int SelectedEngine
         {

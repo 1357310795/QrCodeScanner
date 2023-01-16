@@ -51,6 +51,7 @@ namespace MyQrCodeScanner
 
             ApplyTheme();
             GlobalSettings.ReadSettings();
+            LangHelper.ChangeLang(GlobalSettings.isChinese);
 
             this.MainWindow = new InitWindow();
             this.MainWindow.Show();

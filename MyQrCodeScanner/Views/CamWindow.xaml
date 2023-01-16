@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:MyQrCodeScanner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="摄像头二维码扫描"
+        Title="{DynamicResource CamWindowTitle}"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
         Closed="Window_Closed" Icon="logo.ico"
@@ -29,8 +29,8 @@
         <TextBlock x:Name="hinttext"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    Margin="0,0,0,45"
-                   FontSize="36">
-            请选择摄像头，并点击开始按钮
+                   FontSize="36" Text="{DynamicResource SelectCameraAndStart}">
+            
         </TextBlock>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Margin="5,0"
@@ -39,19 +39,19 @@
                       Width="167" Height="30"
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
                       Margin="5"
-                      materialDesign:HintAssist.Hint="请选择摄像头设备"
+                      materialDesign:HintAssist.Hint="{DynamicResource SelectCamera}"
                       DisplayMemberPath="Name"
                       ItemsSource="{Binding VideoDevices}"
                       SelectedItem="{Binding CurrentDevice}" />
             <Button Width="67" Height="30"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Margin="5"
-                    Content="开始"
+                    Content="{DynamicResource Start}"
                     Click="btnStart_Click" />
             <Button Width="67" Height="30"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Margin="5"
-                    Content="停止"
+                    Content="{DynamicResource Stop}"
                     Click="btnStop_Click" />
         </StackPanel>
 

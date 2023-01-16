@@ -1,6 +1,7 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
 using MaterialDesignThemes.Wpf;
+using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -197,7 +198,7 @@ namespace MyQrCodeScanner
                         else
                         {
                             snackbar1.MessageQueue.Clear();
-                            snackbar1.MessageQueue.Enqueue("检测到多个Code，请将鼠标放在Code上查看结果");
+                            snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("MultiCode"));
                             ProcessMultiCode();
                         }
                     });

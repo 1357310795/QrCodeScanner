@@ -40,21 +40,22 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <Button Content="复制"
+                    <Button Content="{DynamicResource Copy}"
                             Click="ButtonCopy_Click"
                             Style="{StaticResource MaterialDesignFlatButton}" />
                     <Border Grid.Column="1"
                             BorderThickness="1,0,0,0"
                             BorderBrush="{DynamicResource MaterialDesignDivider}" />
                     <Button Grid.Column="2"
-                            Content="打开"
+                            Content="{DynamicResource Open}"
                             Click="ButtonGo_Click"
                             Style="{StaticResource MaterialDesignFlatButton}" />
                 </Grid>
                 <Button x:Name="text_panel"
                         Click="ButtonCopy_Click" DockPanel.Dock="Bottom"
+                       Content="{DynamicResource Copy}"
                         Style="{StaticResource MaterialDesignFlatButton}">
-                    复制
+                    
                 </Button>
                 <Border Margin="0,0"
                         BorderThickness="0,1,0,0"

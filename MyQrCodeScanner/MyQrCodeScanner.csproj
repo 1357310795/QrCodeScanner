@@ -163,6 +163,7 @@
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="Modules\CommonResult.cs" />
     <Compile Include="Modules\GlobalSettings.cs" />
+    <Compile Include="Modules\LangHelper.cs" />
     <Compile Include="Modules\ScreenShot\Common\IsExternalInit.cs" />
     <Compile Include="Modules\ScreenShot\Common\PointOrientation.cs" />
     <Compile Include="Modules\ScreenShot\Common\PointProxy.cs" />
@@ -252,6 +253,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\ScreenShot\Views\ClipWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\en-us.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\zh-cn.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

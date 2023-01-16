@@ -2,6 +2,7 @@
 using AForge.Video.DirectShow;
 using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Win32;
+using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -97,7 +98,7 @@ namespace MyQrCodeScanner
             }
             e.Cancel = true;
             this.Hide();
-            myTaskbarIcon.ShowBalloonTip("程序将在后台运行", "若要退出：右击托盘区图标点击退出程序", BalloonIcon.Info);
+            myTaskbarIcon.ShowBalloonTip(LangHelper.GetStr("RunInBackTipTitle"), LangHelper.GetStr("RunInBackTipText"), BalloonIcon.Info);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -296,7 +297,7 @@ namespace MyQrCodeScanner
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                MessageBox.Show(ex.ToString(), "播放音频时发生错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(ex.ToString(), LangHelper.GetStr("PlayAudioFail"), MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
         #endregion

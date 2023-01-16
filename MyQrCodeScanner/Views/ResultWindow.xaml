@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyQrCodeScanner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="扫描结果" 
+        Title="{DynamicResource ScanResult}" 
         Width="357.666" Height="339.041"
         Background="{DynamicResource MaterialDesignPaper}"
         Icon="logo.ico" Closing="Window_Closing"
@@ -289,8 +289,8 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,5"
                                              Kind="ArrowRightCircleOutline" />
-                    <TextBlock HorizontalAlignment="Center" FontSize="18">
-                        打开Uri
+                    <TextBlock HorizontalAlignment="Center" FontSize="18" Text="{DynamicResource OpenUri}">
+                        
                     </TextBlock>
                 </StackPanel>
             </Button>
@@ -307,8 +307,8 @@
                                              Kind="ContentCopy" />
                     <TextBlock x:Name="ButtonCopyText"
                                HorizontalAlignment="Center"
-                               FontSize="18">
-                        复制
+                               FontSize="18" Text="{DynamicResource Copy}">
+                        
                     </TextBlock>
                 </StackPanel>
             </Button>
@@ -323,8 +323,8 @@
                                              HorizontalAlignment="Center"
                                              Margin="0,0,0,5"
                                              Kind="QrcodeScan" />
-                    <TextBlock HorizontalAlignment="Center" FontSize="18">
-                        继续扫描
+                    <TextBlock HorizontalAlignment="Center" FontSize="18" Text="{DynamicResource ContinueScan}">
+                        
                     </TextBlock>
                 </StackPanel>
             </Button>

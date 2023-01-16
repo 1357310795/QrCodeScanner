@@ -13,7 +13,7 @@
         <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center" Background="{DynamicResource PrimaryHueDarkBrush}">
             <materialDesign:PackIcon Kind="CloseOutline" Height="32" Width="32"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4" />
             <TextBlock Margin="0,2,0,6" TextWrapping="Wrap" HorizontalAlignment="Center">
-                <Run Text="识别失败："/>
+                <Run Text="{DynamicResource ScanFail}"/>
                 <Run Text="{Binding Result}"/>
             </TextBlock>
             

@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:MyQrCodeScanner.Converters"
-        Title="摄像头二维码扫描"
+        Title="{DynamicResource MainWindowTitle}"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
         Icon="logo.ico" Loaded="Window_Loaded"
@@ -21,32 +21,30 @@
         <DockPanel Margin="5"
                    LastChildFill="False" DockPanel.Dock="Top">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                       FontSize="20">
-                摄像头：
-            </TextBlock>
+                       Text="{DynamicResource Camera}"
+                       FontSize="20" />
             <ComboBox x:Name="comboBox"
                       Width="167" Height="30"
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
                       Margin="5"
-                      materialDesign:HintAssist.Hint="请选择摄像头设备"
+                      materialDesign:HintAssist.Hint="{DynamicResource SelectCamera}"
                       DisplayMemberPath="Name"
                       ItemsSource="{Binding VideoDevices}"
                       SelectedItem="{Binding CurrentDevice}" />
             <Button Width="67" Height="30"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Margin="5"
-                    Content="开始"
+                    Content="{DynamicResource Start}"
                     Click="btnStart_Click" />
             <Button Width="67" Height="30"
                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Margin="5"
-                    Content="停止"
+                    Content="{DynamicResource Stop}"
                     Click="btnStop_Click" />
             <TextBlock Foreground="{DynamicResource MaterialDesignColumnHeader}"
+                       Text="{DynamicResource ClickXToMini}"
                        DockPanel.Dock="Right"
-                       FontSize="16">
-                点击×最小化到托盘区 ↑
-            </TextBlock>
+                       FontSize="16" />
             <MediaElement x:Name="player"
                           Width="0" Height="0"
                           Visibility="Hidden" />
@@ -55,39 +53,33 @@
                     Margin="5"
                     DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                       FontSize="20">
-                文本输入模式：
-            </TextBlock>
+                       Text="{DynamicResource TextInputMode}"
+                       FontSize="20" />
             <RadioButton Margin="5,0"
+                         Content="{DynamicResource PasteInto}"
                          IsChecked="{Binding InputMode, Mode=TwoWay, Converter={StaticResource CheckConverter}, ConverterParameter=1}"
-                         FontSize="16">
-                剪切板粘贴输入
-            </RadioButton>
+                         FontSize="16" />
             <RadioButton Margin="5,0"
+                         Content="{DynamicResource SendKey}"
                          IsChecked="{Binding InputMode, Mode=TwoWay, Converter={StaticResource CheckConverter}, ConverterParameter=2}"
-                         FontSize="16">
-                模拟键盘输入（请务必关闭输入法）
-            </RadioButton>
+                         FontSize="16" />
         </StackPanel>
         <DockPanel Margin="5" DockPanel.Dock="Top">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                       FontSize="20">
-                播放提示音：
-            </TextBlock>
+                       Text="{DynamicResource PlayAudio}"
+                       FontSize="20" />
             <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
                       Margin="5,0"
+                      Content="{DynamicResource Yes}"
                       IsChecked="{Binding PlayAudio, Mode=TwoWay}"
-                      FontSize="16">
-                是
-            </CheckBox>
-            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                      FontSize="16" />
+            <Button Content="{DynamicResource OpenFile}"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
                     DockPanel.Dock="Right" Click="ButtonOpenAudio_Click"
-                    IsEnabled="{Binding PlayAudio, Mode=OneWay}">
-                打开...
-            </Button>
+                    IsEnabled="{Binding PlayAudio, Mode=OneWay}" />
             <TextBox Margin="5"
                      Text="{Binding AudioPath, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="请输入音频文件路径"
+                     materialDesign:HintAssist.Hint="{DynamicResource AudioFilePath}"
                      IsEnabled="{Binding PlayAudio, Mode=OneWay}"
                      FontSize="16" />
         </DockPanel>
@@ -95,9 +87,8 @@
             <TextBlock x:Name="hinttext"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        Margin="0,0,0,45"
-                       FontSize="36">
-                请选择摄像头，并点击开始按钮
-            </TextBlock>
+                       Text="{DynamicResource SelectCameraAndStart}"
+                       FontSize="36" />
             <Image x:Name="videoPlayer" />
         </Grid>
     </DockPanel>

@@ -16,6 +16,7 @@ namespace MyQrCodeScanner.Modules
         public static bool captureMode;
         public static bool fastCaptureMode;
         public static bool isdark;
+        public static bool isChinese;
         public static bool hideToTray;
         public static bool ignoreDup;
 
@@ -26,6 +27,7 @@ namespace MyQrCodeScanner.Modules
             selectedKey = (EKey)Enum.Parse(typeof(EKey), IniHelper.GetKeyValue("main", "EKey", "Z", IniHelper.inipath));
             isStarOn = Convert.ToBoolean(IniHelper.GetKeyValue("main", "IsStarOn", "true", IniHelper.inipath));
             isdark = Convert.ToBoolean(IniHelper.GetKeyValue("main", "isdark", "false", IniHelper.inipath));
+            isChinese = Convert.ToBoolean(IniHelper.GetKeyValue("main", "isChinese", "true", IniHelper.inipath));
             captureMode = Convert.ToBoolean(IniHelper.GetKeyValue("main", "captureMode", "false", IniHelper.inipath));
             fastCaptureMode = Convert.ToBoolean(IniHelper.GetKeyValue("main", "fastCaptureMode", "false", IniHelper.inipath));
             hideToTray = Convert.ToBoolean(IniHelper.GetKeyValue("main", "hideToTray", "false", IniHelper.inipath));
@@ -40,6 +42,7 @@ namespace MyQrCodeScanner.Modules
             IniHelper.SetKeyValue("main", "fastCaptureMode", fastCaptureMode.ToString(), IniHelper.inipath);
             IniHelper.SetKeyValue("main", "hideToTray", hideToTray.ToString(), IniHelper.inipath);
             IniHelper.SetKeyValue("main", "ignoreDup", ignoreDup.ToString(), IniHelper.inipath);
+            IniHelper.SetKeyValue("main", "isChinese", isChinese.ToString(), IniHelper.inipath);
         }
     }
 }

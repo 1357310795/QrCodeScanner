@@ -198,9 +198,9 @@ namespace HandyScreenshot.Views
                 case result_status.ok:
                     return new CommonResult(true, stringhelper.ResListToString(res.data));
                 case result_status.nocode:
-                    return new CommonResult(false, "未检测到条码");
+                    return new CommonResult(false, LangHelper.GetStr("NoCode"));
             }
-            return new CommonResult(false, "系统错误");
+            return new CommonResult(false, LangHelper.GetStr("SystemError"));
         }
         #endregion
 
