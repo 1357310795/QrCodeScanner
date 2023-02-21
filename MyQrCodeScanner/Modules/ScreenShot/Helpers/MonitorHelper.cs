@@ -8,6 +8,9 @@ namespace HandyScreenshot.Helpers
 {
     public static class MonitorHelper
     {
+        [DllImport("user32.dll")]
+        static extern IntPtr GetDC(IntPtr ptr);
+
         private const double DefaultDpi = 96.0;
         private const uint MonitorDefaultToNull = 0;
 
@@ -37,7 +40,20 @@ namespace HandyScreenshot.Helpers
 
         public static (double scaleX, double scaleY) GetScaleFactorFromMonitor(IntPtr hMonitor)
         {
-            if (!DpiApiLevel3) throw new NotSupportedException();
+            if (!DpiApiLevel3)
+            {
+                var windowDc = GetDC(IntPtr.Zero);
+                if (windowDc == IntPtr.Zero)
+                    throw new Win32Exception("Getting window device context failed");
+
+                var dpiX1 = GetDeviceCaps(windowDc, DeviceCap.Logpixelsx);
+                var dpiY1 = GetDeviceCaps(windowDc, DeviceCap.Logpixelsy);
+
+                if (ReleaseDC(IntPtr.Zero, windowDc) == 0)
+                    throw new Win32Exception("Releasing window device context failed");
+
+                return (DefaultDpi / dpiX1, DefaultDpi / dpiY1);
+            }
 
             var ret = GetDpiForMonitor(hMonitor, MonitorDpiType.MdtEffectiveDpi, out var dpiX, out var dpiY);
             if (ret != 0)
