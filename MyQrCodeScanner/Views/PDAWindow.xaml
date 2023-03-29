@@ -63,6 +63,10 @@
                          Content="{DynamicResource SendKey}"
                          IsChecked="{Binding InputMode, Mode=TwoWay, Converter={StaticResource CheckConverter}, ConverterParameter=2}"
                          FontSize="16" />
+            <RadioButton Margin="5,0"
+                         Content="{DynamicResource CopyOnly}"
+                         IsChecked="{Binding InputMode, Mode=TwoWay, Converter={StaticResource CheckConverter}, ConverterParameter=3}"
+                         FontSize="16" />
         </StackPanel>
         <DockPanel Margin="5" DockPanel.Dock="Top">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"

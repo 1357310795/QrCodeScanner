@@ -40,6 +40,7 @@
     
     <sys:String x:Key="CopiedToClipBoard">Copied To ClipBoard</sys:String>
     <sys:String x:Key="Copied">Copied</sys:String>
+    <sys:String x:Key="CopyOnly">Copy To ClipBoard Only</sys:String>
     <sys:String x:Key="RunInBackTipTitle">The program is running at backgroud</sys:String>
     <sys:String x:Key="RunInBackTipText">To exit: right-click the tray icon and click Exit Program</sys:String>
     

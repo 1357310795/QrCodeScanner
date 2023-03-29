@@ -279,8 +279,10 @@ namespace MyQrCodeScanner
                     k.Keyboard.KeyPress(VirtualKeyCode.VK_V);
                     k.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
                 }
-                else
+                else if (InputMode == "2")
                     k.Keyboard.TextEntry(s);
+                else
+                    Clipboard.SetText(s);
             });
         }
 

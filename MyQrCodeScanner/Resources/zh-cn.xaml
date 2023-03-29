@@ -39,6 +39,7 @@
     
     <sys:String x:Key="CopiedToClipBoard">已复制到剪切板</sys:String>
     <sys:String x:Key="Copied">已复制</sys:String>
+    <sys:String x:Key="CopyOnly">仅复制到剪切板</sys:String>
     <sys:String x:Key="RunInBackTipTitle">程序将在后台运行</sys:String>
     <sys:String x:Key="RunInBackTipText">若要退出：右击托盘区图标点击退出程序</sys:String>
     
