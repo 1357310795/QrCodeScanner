@@ -28,6 +28,7 @@
     <sys:String x:Key="ZbarMulti">Zbar多码模式（识别率高）</sys:String>
     <sys:String x:Key="ZXingSingle">Zxing单码模式（速度快，支持格式多）</sys:String>
     <sys:String x:Key="ZXingMulti">Zxing多码模式（支持格式多）</sys:String>
+    <sys:String x:Key="OpenCV">微信OpenCV</sys:String>
 
     <sys:String x:Key="Start">开始</sys:String>
     <sys:String x:Key="Stop">停止</sys:String>

@@ -1,4 +1,5 @@
 ﻿using MyQrCodeScanner.Modules;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +7,9 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
+using System.Windows.Forms.VisualStyles;
 
 namespace MyQrCodeScanner
 {
@@ -50,7 +53,24 @@ namespace MyQrCodeScanner
             this.haslocation = true;
             this.data = new List<CodeWithLocation>();
             foreach (ZBar.Symbol symbol in results)
-                data.Add(new CodeWithLocation(symbol.Data, symbol.Type.ToString(), symbol.Location));
+                data.Add(new CodeWithLocation(symbol.Data, symbol.Type.ToString(), symbol.Location.Select(p => new System.Windows.Point(p.X, p.Y)).ToList()));
+            if (GlobalSettings.ignoreDup)
+                CheckDup();
+        }
+
+        public MyResult(result_status status, Mat[] rects, string[] strs)
+        {
+            this.status = status;
+            this.haslocation = true;
+            this.data = new List<CodeWithLocation>();
+            for (int i = 0; i < rects.Length; i++)
+                data.Add(new CodeWithLocation(strs[i], "CODE", 
+                    new List<System.Windows.Point>() { 
+                        new System.Windows.Point(rects[i].Get<float>(0,0), rects[i].Get<float>(0,1)),
+                        new System.Windows.Point(rects[i].Get<float>(1,0), rects[i].Get<float>(1,1)),
+                        new System.Windows.Point(rects[i].Get<float>(2,0), rects[i].Get<float>(2,1)),
+                        new System.Windows.Point(rects[i].Get<float>(3,0), rects[i].Get<float>(3,1)),
+                    }));
             if (GlobalSettings.ignoreDup)
                 CheckDup();
         }
@@ -100,6 +120,11 @@ namespace MyQrCodeScanner
 
     public class MyScanner
     {
+        const string _wechat_QCODE_detector_prototxt_path = "data/wechat_qrcode/detect.prototxt";
+        const string _wechat_QCODE_detector_caffe_model_path = "data/wechat_qrcode/detect.caffemodel";
+        const string _wechat_QCODE_super_resolution_prototxt_path = "data/wechat_qrcode/sr.prototxt";
+        const string _wechat_QCODE_super_resolution_caffe_model_path = "data/wechat_qrcode/sr.caffemodel";
+
         public static MyResult ScanCode(Bitmap img)
         {
             var method = (int)Application.Current.Resources["Engine"];
@@ -112,6 +137,8 @@ namespace MyQrCodeScanner
                     return DecodeByZbar(img);
                 else if (method == 2)
                     return DecodeByZxingMulti(img);
+                else if (method == 3)
+                    return DecodeByOpenCV(img);
                 else
                     throw new Exception("找不到方法");
             }
@@ -132,6 +159,8 @@ namespace MyQrCodeScanner
                     return DecodeByZbar(img);
                 else if (method == 2)
                     return DecodeByZxingMulti(img);
+                else if (method == 3)
+                    return DecodeByOpenCV(BitmapHelper.GetBitmap(img));
                 else
                     throw new Exception("找不到方法");
             }
@@ -139,6 +168,36 @@ namespace MyQrCodeScanner
             {
                 return new MyResult(result_status.error, ex.ToString());
             }
+        }
+
+        private static MyResult DecodeByOpenCV(Bitmap img)
+        {
+            if (img == null)
+            {
+                return new MyResult(result_status.nocode, "");
+            }
+            WeChatQRCode decoder = WeChatQRCode.Create(_wechat_QCODE_detector_prototxt_path, _wechat_QCODE_detector_caffe_model_path, _wechat_QCODE_super_resolution_prototxt_path, _wechat_QCODE_super_resolution_caffe_model_path);
+
+            Mat[] rects;
+            string[] texts;
+            try
+            {
+                Mat mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(img);
+                decoder.DetectAndDecode(mat, out rects, out texts);
+                mat.Dispose();
+            }
+            catch (ZXing.ReaderException ex)
+            {
+                //MessageBox.Show(resultstr, "内部错误");
+                return new MyResult(result_status.error, ex.ToString());
+            }
+
+            if (rects.Length != 0)
+            {
+                return new MyResult(result_status.ok, rects, texts);
+            }
+            else
+                return new MyResult(result_status.nocode, "");
         }
 
         private static MyResult DecodeByZxing(Bitmap img)

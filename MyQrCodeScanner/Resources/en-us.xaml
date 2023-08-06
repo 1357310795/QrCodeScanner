@@ -29,6 +29,7 @@
     <sys:String x:Key="ZbarMulti">Zbar Multi-Code (High Recognition Rate)</sys:String>
     <sys:String x:Key="ZXingSingle">Zxing Single-Code (Fast)</sys:String>
     <sys:String x:Key="ZXingMulti">Zxing Multi-Code (Many Formats Supported)</sys:String>
+    <sys:String x:Key="OpenCV">Wechat OpenCV</sys:String>
 
     <sys:String x:Key="Start">Start</sys:String>
     <sys:String x:Key="Stop">Stop</sys:String>

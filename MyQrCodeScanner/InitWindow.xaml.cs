@@ -214,10 +214,11 @@ namespace MyQrCodeScanner
         #region Engine
         public Array Engines { 
             get { 
-                return new string[3] { 
+                return new string[4] { 
                     LangHelper.GetStr("ZbarMulti"), 
                     LangHelper.GetStr("ZXingSingle"), 
-                    LangHelper.GetStr("ZXingMulti") 
+                    LangHelper.GetStr("ZXingMulti"), 
+                    LangHelper.GetStr("OpenCV")
                 }; 
             } 
         }
