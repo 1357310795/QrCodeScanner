@@ -22,6 +22,7 @@ using HandyScreenshot.Core.Common;
 using HandyScreenshot.Core.Interop;
 using Teru.Code.Models;
 using System.Linq;
+using QRCodeMagic.ViewModels;
 
 namespace QRCodeMagic
 {
@@ -59,7 +60,7 @@ namespace QRCodeMagic
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            GlobalSettings.SaveSettings();
+            GlobalSettings.Save();
             WindowPlacementHelper.SavePlacement(this);
         }
 
@@ -208,7 +209,7 @@ namespace QRCodeMagic
             m.isshortcut = isshortcut;
             m.PreScan();
             Opacity = 1;
-            if (GlobalSettings.fastCaptureMode)
+            if (GlobalSettings.fastMode)
                 Show();
             //t.Dispose();
         }

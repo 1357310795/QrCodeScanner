@@ -1,5 +1,6 @@
 ﻿using QRCodeMagic.Helpers;
 using QRCodeMagic.Services;
+using QRCodeMagic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -51,8 +52,8 @@ namespace QRCodeMagic
                 return;
             }
 
-            GlobalSettings.ReadSettings();
-            LangHelper.ChangeLang(GlobalSettings.isChinese);
+            GlobalSettings.Read();
+            LangHelper.ChangeLang(GlobalSettings.language);
             if (!GlobalSettings.allowMultipleInstances)
             {
                 if (mutex.IsRunning)

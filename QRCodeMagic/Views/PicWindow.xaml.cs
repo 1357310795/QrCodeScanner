@@ -2,6 +2,7 @@
 using MaterialDesignThemes.Wpf;
 using QRCodeMagic.Helpers;
 using QRCodeMagic.Services;
+using QRCodeMagic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -168,7 +169,7 @@ namespace QRCodeMagic.Views
             //Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
             myResult = res;
 
-            if (GlobalSettings.fastCaptureMode && isshortcut)
+            if (GlobalSettings.fastMode && isshortcut)
             {
                 switch (res.status)
                 {

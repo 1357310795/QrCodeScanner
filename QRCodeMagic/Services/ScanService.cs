@@ -1,5 +1,6 @@
 ﻿using OpenCvSharp;
 using QRCodeMagic.Helpers;
+using QRCodeMagic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

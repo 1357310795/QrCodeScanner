@@ -8,11 +8,11 @@ namespace QRCodeMagic.Helpers
 {
     public static class LangHelper
     {
-        public static void ChangeLang(bool chn)
+        public static void ChangeLang(string lang)
         {
             System.Windows.Application.Current.Resources.MergedDictionaries[0] = new System.Windows.ResourceDictionary()
             {
-                Source = new Uri(@"pack://application:,,,/QRCodeMagic;component/Resources/" + (!chn ? "en-us" : "zh-cn") + ".xaml", UriKind.RelativeOrAbsolute)
+                Source = new Uri(@"pack://application:,,,/QRCodeMagic;component/Resources/" + lang + ".xaml", UriKind.RelativeOrAbsolute)
             };
         }
 

@@ -54,16 +54,6 @@ namespace QRCodeMagic.Views
                 ChangeAutoRun();
             }
         }
-        public bool IsStarOn
-        {
-            get { return GlobalSettings.isStarOn; }
-            set
-            {
-                GlobalSettings.isStarOn = value;
-                this.OnPropertyChanged("IsStarOn");
-                ChangeIsStarOn();
-            }
-        }
         public bool CaptureMode
         {
             get { return GlobalSettings.captureMode; }
@@ -74,10 +64,10 @@ namespace QRCodeMagic.Views
         }
         public bool FastCaptureMode
         {
-            get { return GlobalSettings.fastCaptureMode; }
+            get { return GlobalSettings.fastMode; }
             set
             {
-                GlobalSettings.fastCaptureMode = value;
+                GlobalSettings.fastMode = value;
             }
         }
         public bool HideToTray
@@ -90,22 +80,22 @@ namespace QRCodeMagic.Views
         }
         public bool IsDark
         {
-            get { return GlobalSettings.isdark; }
+            get { return GlobalSettings.theme == "dark"; }
             set
             {
-                GlobalSettings.isdark = value;
+                GlobalSettings.theme = value ? "dark" : "light";
                 this.OnPropertyChanged("IsDark");
                 //ThemeHelper.ApplyBase(value);
             }
         }
         public bool IsChinese
         {
-            get { return GlobalSettings.isChinese; }
+            get { return GlobalSettings.language == "zh-cn"; }
             set
             {
-                GlobalSettings.isChinese = value;
+                GlobalSettings.language = value ? "zh-cn" : "en-us";
                 this.OnPropertyChanged("IsChinese");
-                LangHelper.ChangeLang(value);
+                LangHelper.ChangeLang(GlobalSettings.language);
             }
         }
         public bool IgnoreDup
