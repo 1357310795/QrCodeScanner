@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="QRCodeMagic.Views.GoPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:QRCodeMagic"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Width="240" Height="200"
+             Background="{x:Null}"
+             d:DesignHeight="180" d:DesignWidth="240"
+             Loaded="UserControl_Loaded"
+             MouseLeave="UserControl_MouseLeave"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             mc:Ignorable="d">
+    <Grid>
+        <materialDesign:Card Margin="1">
+            <DockPanel LastChildFill="True">
+                <DockPanel Margin="15,15,15,10"
+                           LastChildFill="false" DockPanel.Dock="Top">
+                    <Border Width="4" Height="20"
+                            Background="{DynamicResource PrimaryHueMidBrush}"
+                            DockPanel.Dock="Left" />
+                    <TextBlock Margin="10,0" FontWeight="Bold"
+                               Text="{Binding CodeType}"
+                               DockPanel.Dock="Left"
+                               FontSize="20" />
+                    <Button x:Name="ButtonClose"
+                            Width="25" Height="25"
+                            Padding="0"
+                            Visibility="Collapsed"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            DockPanel.Dock="Right" Click="ButtonClose_Click">
+                        <materialDesign:PackIcon Width="20" Height="20"
+                                                 Kind="WindowClose" />
+                    </Button>
+                </DockPanel>
+                <Grid x:Name="uri_panel" DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="{DynamicResource Copy}"
+                            Click="ButtonCopy_Click"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                    <Border Grid.Column="1"
+                            BorderThickness="1,0,0,0"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}" />
+                    <Button Grid.Column="2"
+                            Content="{DynamicResource Open}"
+                            Click="ButtonGo_Click"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                </Grid>
+                <Button x:Name="text_panel"
+                        Click="ButtonCopy_Click" DockPanel.Dock="Bottom"
+                       Content="{DynamicResource Copy}"
+                        Style="{StaticResource MaterialDesignFlatButton}">
+                    
+                </Button>
+                <Border Margin="0,0"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        DockPanel.Dock="Bottom" />
+
+                <TextBox x:Name="text1"
+                         TextWrapping="Wrap" Margin="15,0,15,10"
+                         Text="{Binding Data}"
+                         AcceptsReturn="True" HorizontalScrollBarVisibility="Auto"
+                         BorderThickness="0" AutoWordSelection="True"
+                         IsReadOnly="True" IsUndoEnabled="False"
+                         GotMouseCapture="TextBox_GotMouseCapture"
+                         FontSize="16" />
+
+            </DockPanel>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

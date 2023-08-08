@@ -1,0 +1,187 @@
+﻿<Window x:Class="QRCodeMagic.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QRCodeMagic.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:converters="clr-namespace:QRCodeMagic.Converters"
+        Title="{DynamicResource Settings}"
+        Width="590" Height="500"
+        Background="{DynamicResource MaterialDesignPaper}"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        FontSize="14"
+        mc:Ignorable="d">
+    <Grid>
+        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryDark"
+                    Style="{StaticResource MaterialDesignFilledTabControl}"
+                    TabStripPlacement="Left">
+            <TabItem Header="{DynamicResource FunctionSettings}">
+                <StackPanel Margin="10,5,5,0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="TextAutoRun"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource AutoRun}"
+                                   FontSize="14" />
+                        <ToggleButton x:Name="ToggleAutoRun"
+                                      VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding IsAutoRun}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource MiniToTray}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding HideToTray}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource IgnoreSame}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding IgnoreDup}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
+                        </StackPanel.Resources>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource CaptureMode}"
+                                   FontSize="14" />
+                        <RadioButton IsChecked="{Binding CaptureMode}" VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource FullScreen}" />
+                        </RadioButton>
+                        <RadioButton Margin="10,0,0,0"
+                                     IsChecked="{Binding CaptureMode, Converter={StaticResource BoolToInverseBoolConverter}}"
+                                     VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource ScreenRect}" />
+                        </RadioButton>
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource FastMode}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding FastCaptureMode}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource AllowMultipleInstances}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding AllowMultipleInstances}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource CaptureHotKey}"
+                                   FontSize="14" />
+                        <ComboBox Width="60"
+                                  Margin="10,0,0,0"
+                                  IsEditable="False" SelectedIndex="0"
+                                  ItemsSource="{Binding KeyTypes}"
+                                  SelectedItem="{Binding SelectedKeyType}"
+                                  FontSize="12" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="10,0"
+                                   Text="+"
+                                   FontSize="18" />
+                        <ComboBox Width="70"
+                                  SelectedIndex="0" IsEditable="False"
+                                  ItemsSource="{Binding Keys}"
+                                  SelectedItem="{Binding SelectedKey}"
+                                  FontSize="12" />
+                        <Button Margin="10,0"
+                                Content="{DynamicResource Apply}"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Click="Save_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{DynamicResource UISettings}">
+                <Grid Margin="10,5,5,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource BackAnimation}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding IsStarOn}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,5"
+                                Grid.Row="1"
+                                Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
+                        </StackPanel.Resources>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource Theme}"
+                                   FontSize="14" />
+                        <RadioButton IsChecked="{Binding IsDark}" VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource DarkTheme}" />
+                        </RadioButton>
+                        <RadioButton Margin="10,0,0,0"
+                                     IsChecked="{Binding IsDark, Converter={StaticResource BoolToInverseBoolConverter}}"
+                                     VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource LightTheme}" />
+                        </RadioButton>
+                    </StackPanel>
+                    <StackPanel Margin="0,5"
+                                Grid.Row="2"
+                                Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
+                        </StackPanel.Resources>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource Language}"
+                                   FontSize="14" />
+                        <RadioButton IsChecked="{Binding IsChinese}" VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource Chinese}" />
+                        </RadioButton>
+                        <RadioButton Margin="10,0,0,0"
+                                     IsChecked="{Binding IsChinese, Converter={StaticResource BoolToInverseBoolConverter}}"
+                                     VerticalContentAlignment="Center">
+                            <TextBlock Text="{DynamicResource English}" />
+                        </RadioButton>
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="3"
+                                  FocusVisualStyle="{x:Null}"
+                                  DataContext="{Binding PaletteVm}">
+                        <ItemsControl Margin="0,2,0,0"
+                                      ItemsSource="{Binding Styles}"
+                                      ItemTemplate="{StaticResource PaletteListItemStyle}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="14" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

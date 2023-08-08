@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="MainWindowTitle">简易条码扫描</sys:String>
+    <sys:String x:Key="CamWindowTitle">摄像头二维码扫描</sys:String>
+    <sys:String x:Key="Version">版本</sys:String>
+    <sys:String x:Key="RepoLink">项目主页</sys:String>
+    <sys:String x:Key="Settings">设置</sys:String>
+    <sys:String x:Key="EngineName">识别引擎：</sys:String>
+    <sys:String x:Key="Camera">摄像头：</sys:String>
+    <sys:String x:Key="FuncCaptureScreen">截取屏幕</sys:String>
+    <sys:String x:Key="FuncFromCamera">从摄像头捕获</sys:String>
+    <sys:String x:Key="FuncFromFile">扫描本地图片</sys:String>
+    <sys:String x:Key="FuncRunAsScanner">作为扫描枪使用</sys:String>
+    <sys:String x:Key="SelectCameraAndStart">请选择摄像头，并点击开始按钮</sys:String>
+    <sys:String x:Key="SelectCamera">请选择摄像头设备</sys:String>
+    <sys:String x:Key="ClickXToMini">点击×最小化到托盘区 ↑</sys:String>
+    <sys:String x:Key="TextInputMode">文本输入模式：</sys:String>
+    <sys:String x:Key="PasteInto">剪切板粘贴输入</sys:String>
+    <sys:String x:Key="SendKey">模拟键盘输入（请务必关闭输入法）</sys:String>
+    <sys:String x:Key="PlayAudio">播放提示音：</sys:String>
+    <sys:String x:Key="OpenFile">打开...</sys:String>
+    <sys:String x:Key="AudioFilePath">请输入音频文件路径</sys:String>
+    <sys:String x:Key="ScanResult">扫描结果</sys:String>
+    <sys:String x:Key="OpenUri">打开Uri</sys:String>
+    <sys:String x:Key="ContinueScan">继续扫描</sys:String>
+
+    <sys:String x:Key="ZbarMulti">Zbar多码模式（识别率高）</sys:String>
+    <sys:String x:Key="ZXingSingle">Zxing单码模式（速度快，支持格式多）</sys:String>
+    <sys:String x:Key="ZXingMulti">Zxing多码模式（支持格式多）</sys:String>
+    <sys:String x:Key="OpenCV">微信OpenCV</sys:String>
+
+    <sys:String x:Key="Start">开始</sys:String>
+    <sys:String x:Key="Stop">停止</sys:String>
+    <sys:String x:Key="Copy">复制</sys:String>
+    <sys:String x:Key="Open">打开</sys:String>
+    <sys:String x:Key="Apply">应用</sys:String>
+    <sys:String x:Key="Info">提示</sys:String>
+    <sys:String x:Key="Yes">是</sys:String>
+    
+    <sys:String x:Key="CopiedToClipBoard">已复制到剪切板</sys:String>
+    <sys:String x:Key="Copied">已复制</sys:String>
+    <sys:String x:Key="CopyOnly">仅复制到剪切板</sys:String>
+    <sys:String x:Key="RunInBackTipTitle">程序将在后台运行</sys:String>
+    <sys:String x:Key="RunInBackTipText">若要退出：右击托盘区图标点击退出程序</sys:String>
+    
+    <sys:String x:Key="Error">错误：</sys:String>
+    <sys:String x:Key="InternalError">内部错误</sys:String>
+    <sys:String x:Key="SystemError">系统错误</sys:String>
+    <sys:String x:Key="ErrorHotkeyUsed">请检查快捷键是否被占用。</sys:String>
+    <sys:String x:Key="ErrorRegisterHotkeyFail">注册热键失败</sys:String>
+    <sys:String x:Key="PlayAudioFail">播放音频时发生错误</sys:String>
+
+    <sys:String x:Key="ManuallySelect">直接识别失败，请尝试手动框选要识别的二维码。</sys:String>
+    <sys:String x:Key="ManuallySelectTip">请手动框选要识别的二维码</sys:String>
+    <sys:String x:Key="NoCodeReselect">未识别到二维码，请重新选择</sys:String>
+    <sys:String x:Key="NoCode">未识别到二维码</sys:String>
+    <sys:String x:Key="MultiCode">检测到多个Code，请将鼠标放在Code上查看结果</sys:String>
+    
+    <sys:String x:Key="FunctionSettings">功能设置</sys:String>
+    <sys:String x:Key="UISettings">UI设置</sys:String>
+    <sys:String x:Key="AutoRun">开机启动</sys:String>
+    <sys:String x:Key="MiniToTray">最小化时隐藏到托盘区</sys:String>
+    <sys:String x:Key="IgnoreSame">忽略相同的条码</sys:String>
+    <sys:String x:Key="CaptureMode">截屏模式：</sys:String>
+    <sys:String x:Key="FullScreen">主屏幕全屏截图</sys:String>
+    <sys:String x:Key="ScreenRect">区域截图</sys:String>
+    <sys:String x:Key="FastMode">快速截图识别模式</sys:String>
+    <sys:String x:Key="AllowMultipleInstances">允许打开多个程序实例</sys:String>
+    <sys:String x:Key="CaptureHotKey">截取屏幕快捷键：</sys:String>
+    <sys:String x:Key="BackAnimation">背景动画</sys:String>
+    <sys:String x:Key="Theme">主题：</sys:String>
+    <sys:String x:Key="DarkTheme">深色主题</sys:String>
+    <sys:String x:Key="LightTheme">浅色主题</sys:String>
+    <sys:String x:Key="Language">语言：</sys:String>
+    <sys:String x:Key="Chinese">中文</sys:String>
+    <sys:String x:Key="English">English</sys:String>
+
+    <sys:String x:Key="Win11Issue">在当前系统环境下，此选项不可用。请尝试以管理员权限运行程序。</sys:String>
+    <sys:String x:Key="ApplyFail">设置失败</sys:String>
+    <sys:String x:Key="ApplySuccess">设置成功</sys:String>
+    <sys:String x:Key="CheckHotKey">注册热键失败！请检查快捷键是否被占用。</sys:String>
+    <sys:String x:Key="Processing">识别中...</sys:String>
+    <sys:String x:Key="ScanFail">识别失败：</sys:String>
+    <sys:String x:Key="ResultCopied">识别结果已复制到剪切板</sys:String>
+    <sys:String x:Key="Show">显示窗口</sys:String>
+    <sys:String x:Key="Exit">退出程序</sys:String>
+    <sys:String x:Key="MutexAlertText">已禁止多个程序实例运行。您可以在“设置”里调整该选项</sys:String>
+</ResourceDictionary>

@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net7.0-windows</TargetFrameworks>
+    <!--<TargetFrameworks>net7.0-windows;net6.0-windows;net472-windows</TargetFrameworks>-->
+    <Nullable>disable</Nullable>
+    <UseWPF>true</UseWPF>
+	<LangVersion>11.0</LangVersion>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+	<Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AForge.Video" Version="2.2.5" />
+    <PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
+    <PackageReference Include="libzbar-cil-all" Version="1.0.7" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NHotkey.Wpf" Version="2.1.1" />
+    <PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.8.0.20230708" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="Teru.Code" Version="1.0.2" />
+    <PackageReference Include="Teru.Code.HandyScreenshot.Core" Version="1.0.1" />
+    <PackageReference Include="Teru.Code.WechatQrcode.Lite" Version="1.0.0.20230806" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\data\wechat_qrcode\detect.caffemodel">
+      <Link>data\wechat_qrcode\detect.caffemodel</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\data\wechat_qrcode\detect.prototxt">
+		<Link>data\wechat_qrcode\detect.prototxt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\data\wechat_qrcode\sr.caffemodel">
+		<Link>data\wechat_qrcode\sr.caffemodel</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\data\wechat_qrcode\sr.prototxt">
+		<Link>data\wechat_qrcode\sr.prototxt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

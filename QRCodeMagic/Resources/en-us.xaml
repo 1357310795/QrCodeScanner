@@ -1,0 +1,90 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
+    <sys:String x:Key="MainWindowTitle">Simple Code Scanner</sys:String>
+    <sys:String x:Key="CamWindowTitle">Simple Code Scanner - Camera</sys:String>
+    <sys:String x:Key="Version">Version</sys:String>
+    <sys:String x:Key="RepoLink">Repo Home</sys:String>
+    <sys:String x:Key="Settings">Settings</sys:String>
+    <sys:String x:Key="EngineName">Engine: </sys:String>
+    <sys:String x:Key="Camera">Camera Device: </sys:String>
+    <sys:String x:Key="FuncCaptureScreen">Capture Screen</sys:String>
+    <sys:String x:Key="FuncFromCamera">From Camera</sys:String>
+    <sys:String x:Key="FuncFromFile">From File</sys:String>
+    <sys:String x:Key="FuncRunAsScanner">Run As Scanner</sys:String>
+    <sys:String x:Key="SelectCameraAndStart">Please Select A Camera Device And Click Start</sys:String>
+    <sys:String x:Key="SelectCamera">Please Select A Camera</sys:String>
+    <sys:String x:Key="ClickXToMini">Click × To Minimize To System Tray ↑</sys:String>
+    <sys:String x:Key="TextInputMode">Text Entering Mode：</sys:String>
+    <sys:String x:Key="PasteInto">Paste From ClipBoard</sys:String>
+    <sys:String x:Key="SendKey">SendKey (Ensure IME has been closed)</sys:String>
+    <sys:String x:Key="PlayAudio">Play Sound：</sys:String>
+    <sys:String x:Key="OpenFile">Browse...</sys:String>
+    <sys:String x:Key="AudioFilePath">Audio File Path</sys:String>
+    <sys:String x:Key="ScanResult">Scan Result</sys:String>
+    <sys:String x:Key="OpenUri">Open Uri</sys:String>
+    <sys:String x:Key="ContinueScan">Continue</sys:String>
+
+    <sys:String x:Key="ZbarMulti">Zbar Multi-Code (High Recognition Rate)</sys:String>
+    <sys:String x:Key="ZXingSingle">Zxing Single-Code (Fast)</sys:String>
+    <sys:String x:Key="ZXingMulti">Zxing Multi-Code (Many Formats Supported)</sys:String>
+    <sys:String x:Key="OpenCV">Wechat OpenCV</sys:String>
+
+    <sys:String x:Key="Start">Start</sys:String>
+    <sys:String x:Key="Stop">Stop</sys:String>
+    <sys:String x:Key="Copy">Copy</sys:String>
+    <sys:String x:Key="Open">Open</sys:String>
+    <sys:String x:Key="Apply">Apply</sys:String>
+    <sys:String x:Key="Info">Info</sys:String>
+    <sys:String x:Key="Yes">Yes</sys:String>
+    
+    <sys:String x:Key="CopiedToClipBoard">Copied To ClipBoard</sys:String>
+    <sys:String x:Key="Copied">Copied</sys:String>
+    <sys:String x:Key="CopyOnly">Copy To ClipBoard Only</sys:String>
+    <sys:String x:Key="RunInBackTipTitle">The program is running at backgroud</sys:String>
+    <sys:String x:Key="RunInBackTipText">To exit: right-click the tray icon and click Exit Program</sys:String>
+    
+    <sys:String x:Key="Error">Error: </sys:String>
+    <sys:String x:Key="InternalError">Internal Error</sys:String>
+    <sys:String x:Key="SystemError">System Error</sys:String>
+    <sys:String x:Key="ErrorHotkeyUsed">Please check if the hotkey is available.</sys:String>
+    <sys:String x:Key="ErrorRegisterHotkeyFail">Failed to register hotkey</sys:String>
+    <sys:String x:Key="PlayAudioFail">An error occurred while playing audio</sys:String>
+
+    <sys:String x:Key="ManuallySelect">Direct recognition fails, please try to manually frame the QR code to be recognized</sys:String>
+    <sys:String x:Key="ManuallySelectTip">Please manually frame the QR code to be recognized</sys:String>
+    <sys:String x:Key="NoCodeReselect">No QR code detected, please select again</sys:String>
+    <sys:String x:Key="NoCode">No QR code detected</sys:String>
+    <sys:String x:Key="MultiCode">More than one Code is detected, please mouse over the Code to see the result</sys:String>
+    
+    <sys:String x:Key="FunctionSettings">Functions</sys:String>
+    <sys:String x:Key="UISettings">UI</sys:String>
+    <sys:String x:Key="AutoRun">Run at startup</sys:String>
+    <sys:String x:Key="MiniToTray">Hide to tray when minimized</sys:String>
+    <sys:String x:Key="IgnoreSame">Ignore the same barcodes</sys:String>
+    <sys:String x:Key="CaptureMode">Capture Mode: </sys:String>
+    <sys:String x:Key="FullScreen">Primary screen full screenshot</sys:String>
+    <sys:String x:Key="ScreenRect">Area Screenshot</sys:String>
+    <sys:String x:Key="FastMode">Quick screenshot recognition mode</sys:String>
+    <sys:String x:Key="AllowMultipleInstances">Allow opening multiple program instances</sys:String>
+    <sys:String x:Key="CaptureHotKey">Screen capture hotkey: </sys:String>
+    <sys:String x:Key="BackAnimation">Backgroud animation</sys:String>
+    <sys:String x:Key="Theme">Theme: </sys:String>
+    <sys:String x:Key="DarkTheme">Dark</sys:String>
+    <sys:String x:Key="LightTheme">Light</sys:String>
+    <sys:String x:Key="Language">Language: </sys:String>
+    <sys:String x:Key="Chinese">中文</sys:String>
+    <sys:String x:Key="English">English</sys:String>
+    
+    <sys:String x:Key="Win11Issue">This option is not available in the current system environment. Please try to run the program with administrator privileges.</sys:String>
+    <sys:String x:Key="ApplyFail">Apply Failed</sys:String>
+    <sys:String x:Key="ApplySuccess">Apply Succeed</sys:String>
+    <sys:String x:Key="CheckHotKey">Hotkeys registration failed! Please check if the hotkey is available.</sys:String>
+    <sys:String x:Key="Processing">Processing...</sys:String>
+    <sys:String x:Key="ScanFail">Scan failed: </sys:String>
+    <sys:String x:Key="ResultCopied">Result copied to clipboard</sys:String>
+    <sys:String x:Key="Show">Show</sys:String>
+    <sys:String x:Key="Exit">Exit</sys:String>
+    <sys:String x:Key="MutexAlertText">Multiple instances of the program have been disabled. You can adjust this option in Settings.</sys:String>
+</ResourceDictionary>

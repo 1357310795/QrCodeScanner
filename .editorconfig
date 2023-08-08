@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0168: 声明了变量，但从未使用过
+dotnet_diagnostic.CS0168.severity = none
