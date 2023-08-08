@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using QRCodeMagic.Helpers;
+using QRCodeMagic.Models;
 using QRCodeMagic.Services;
 using QRCodeMagic.ViewModels;
 using System;
@@ -113,7 +114,7 @@ namespace QRCodeMagic.Views
         #endregion
 
         #region Scan
-        private MyResult myResult;
+        private ScanResult myResult;
 
         public void PreScan()
         {
@@ -133,14 +134,14 @@ namespace QRCodeMagic.Views
                 return false;
 
             var res = ScanService.ScanCode(cur);
-            switch (res.status)
+            switch (res.State)
             {
-                case result_status.error:
-                    resultstr = res.data[0].data;
+                case ScanResultState.Error:
+                    resultstr = res.Data[0].Data;
                     break;
-                case result_status.ok:
-                    resultstr = res.data.Select(c => c.data).Aggregate((a, b) => a + "\n" + b);
-                    ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, true);
+                case ScanResultState.OK:
+                    resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
+                    ResultWindow rw = new ResultWindow(res.Data[0].Data, res.Data[0].Type, true, true);
                     bool? rv = rw.ShowDialog();
                     if (rv == true)
                     {
@@ -150,7 +151,7 @@ namespace QRCodeMagic.Views
                     else
                         this.Close();
                     return true;
-                case result_status.nocode:
+                case ScanResultState.NoCode:
                     snackbar1.MessageQueue.Clear();
                     snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("NoCodeReselect"));
                     break;
@@ -171,32 +172,32 @@ namespace QRCodeMagic.Views
 
             if (GlobalSettings.fastMode && isshortcut)
             {
-                switch (res.status)
+                switch (res.State)
                 {
-                    case result_status.error:
-                        resultstr = res.data[0].data;
+                    case ScanResultState.Error:
+                        resultstr = res.Data[0].Data;
                         break;
-                    case result_status.ok:
-                        resultstr = res.data.Select(c => c.data).Aggregate((a, b) => a + "\n" + b);
+                    case ScanResultState.OK:
+                        resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
                         Clipboard.SetText(resultstr);
                         break;
-                    case result_status.nocode:
+                    case ScanResultState.NoCode:
                         break;
                 }
                 return true;
             }
 
-            switch (res.status)
+            switch (res.State)
             {
-                case result_status.error:
-                    resultstr = res.data[0].data;
+                case ScanResultState.Error:
+                    resultstr = res.Data[0].Data;
                     break;
-                case result_status.ok:
-                    resultstr = res.data.Select(c => c.data).Aggregate((a, b) => a + "\n" + b);
+                case ScanResultState.OK:
+                    resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
                     
-                    if (res.data.Count == 1 || !res.haslocation)
+                    if (res.Data.Count == 1 || !res.HasLocation)
                     {
-                        ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, false);
+                        ResultWindow rw = new ResultWindow(res.Data[0].Data, res.Data[0].Type, true, false);
                         this.Hide();
                         bool? rv = rw.ShowDialog();
                         if (rv == true)
@@ -213,7 +214,7 @@ namespace QRCodeMagic.Views
                     }
 
                     return true;
-                case result_status.nocode:
+                case ScanResultState.NoCode:
                     break;
             }
             return false;
@@ -243,10 +244,10 @@ namespace QRCodeMagic.Views
             this.Show();
             texthint.Text = LangHelper.GetStr("MultiCode");
             canvasCodeResults = new List<CanvasCodeResult>();
-            foreach (CodeWithLocation t in myResult.data)
+            foreach (CodeWithLocation t in myResult.Data)
             {
-                var tubao = GrahamScan.convexHull(t.points);
-                canvasCodeResults.Add(new CanvasCodeResult(t.data, t.type, tubao));
+                var tubao = GrahamScan.convexHull(t.Points);
+                canvasCodeResults.Add(new CanvasCodeResult(t.Data, t.Type, tubao));
             }
             CreatePoly();
         }

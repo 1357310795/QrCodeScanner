@@ -51,6 +51,11 @@ namespace QRCodeMagic
         {
             PrepareHotKey();
             ScreenshotHelper.CaptureOK += ScreenshotHelper_CaptureOK;
+            var res = ScanService.IntiEngine();
+            if (!res.success)
+            {
+                MessageBox.Show(res.result);
+            }
         }
 
 
@@ -185,13 +190,13 @@ namespace QRCodeMagic
             var t2 = DateTime.Now.Ticks;
             //Console.WriteLine("识别用时：" + ((t2 - t1) / 10000).ToString() + "ms");
 
-            switch (res.status)
+            switch (res.State)
             {
-                case result_status.error:
-                    return new CommonResult(false, res.data[0].data);
-                case result_status.ok:
-                    return new CommonResult(true, res.data.Select(c => c.data).Aggregate((a, b) => a + "\n" + b));
-                case result_status.nocode:
+                case Models.ScanResultState.Error:
+                    return new CommonResult(false, res.Data[0].Data);
+                case Models.ScanResultState.OK:
+                    return new CommonResult(true, res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b));
+                case Models.ScanResultState.NoCode:
                     return new CommonResult(false, LangHelper.GetStr("NoCode"));
             }
             return new CommonResult(false, LangHelper.GetStr("SystemError"));

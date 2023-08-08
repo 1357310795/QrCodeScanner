@@ -227,21 +227,21 @@ namespace QRCodeMagic.Views
             }
 
             var res = ScanService.ScanCode(imgbuffer);
-            switch (res.status)
+            switch (res.State)
             {
-                case result_status.error:
+                case Models.ScanResultState.Error:
                     timer.Start();
                     break;
-                case result_status.ok:
-                    if (res.data[0].data != MyResult)
+                case Models.ScanResultState.OK:
+                    if (res.Data[0].Data != MyResult)
                     {
-                        if (res.data[0].data != "" && MyResult == "")
-                            DoPaste(res.data[0].data);
-                        MyResult = res.data[0].data;
+                        if (res.Data[0].Data != "" && MyResult == "")
+                            DoPaste(res.Data[0].Data);
+                        MyResult = res.Data[0].Data;
                     }
                     timer.Start();
                     break;
-                case result_status.nocode:
+                case Models.ScanResultState.NoCode:
                     MyResult = "";
                     timer.Start();
                     break;

@@ -3,6 +3,7 @@ using AForge.Video.DirectShow;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using QRCodeMagic.Helpers;
+using QRCodeMagic.Models;
 using QRCodeMagic.Services;
 using System;
 using System.Collections.Generic;
@@ -148,7 +149,7 @@ namespace QRCodeMagic.Views
 
         #region Scan
 
-        private MyResult myResult;
+        private ScanResult myResult;
 
         private void AddTimer()
         {
@@ -172,19 +173,19 @@ namespace QRCodeMagic.Views
 
             var res = ScanService.ScanCode(imgbuffer);
             myResult = res;
-            switch (res.status)
+            switch (res.State)
             {
-                case result_status.error:
+                case ScanResultState.Error:
                     timer.Start();
                     break;
-                case result_status.ok:
+                case ScanResultState.OK:
 
                     Dispatcher.Invoke(() =>
                     {
                         StopCamera();
-                        if (res.data.Count == 1 || !res.haslocation)
+                        if (res.Data.Count == 1 || !res.HasLocation)
                         {
-                            ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, true);
+                            ResultWindow rw = new ResultWindow(res.Data[0].Data, res.Data[0].Type, true, true);
                             Hide();
                             bool? rv = rw.ShowDialog();
                             if (rv == true)
@@ -207,7 +208,7 @@ namespace QRCodeMagic.Views
                     });
 
                     break;
-                case result_status.nocode:
+                case ScanResultState.NoCode:
                     timer.Start();
                     break;
             }
@@ -236,10 +237,10 @@ namespace QRCodeMagic.Views
         public void ProcessMultiCode()
         {
             canvasCodeResults = new List<CanvasCodeResult>();
-            foreach (CodeWithLocation t in myResult.data)
+            foreach (CodeWithLocation t in myResult.Data)
             {
-                var tubao = GrahamScan.convexHull(t.points);
-                canvasCodeResults.Add(new CanvasCodeResult(t.data, t.type, tubao));
+                var tubao = GrahamScan.convexHull(t.Points);
+                canvasCodeResults.Add(new CanvasCodeResult(t.Data, t.Type, tubao));
             }
             CreatePoly();
         }
