@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRCodeMagic"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
         Title="{DynamicResource MainWindowTitle}"
         Width="400" Height="520"
-        Background="{DynamicResource MaterialDesignPaper}"
-        StateChanged="Window_StateChanged" Closed="Window_Closed" Closing="Window_Closing"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Icon="/Resources/logo.ico"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        ui:WindowHelper.SystemBackdropType="Acrylic"
+        ui:TitleBar.ExtendViewIntoTitleBar="False"
+        ui:WindowHelper.UseAcrylicBackdrop="True"
+        StateChanged="Window_StateChanged" Closed="Window_Closed"
+        Closing="Window_Closing" Icon="/Resources/logo.ico"
         Loaded="Window_Loaded"
         mc:Ignorable="d">
     <Grid>
@@ -42,11 +44,10 @@
                 <Button Height="Auto"
                         HorizontalAlignment="Center" VerticalAlignment="Top"
                         Margin="8" Padding="0"
-                        Click="ButtonTheme_Click"
-                        Style="{StaticResource MaterialDesignFlatButton}">
+                        Click="ButtonTheme_Click">
                     <StackPanel Margin="5" Orientation="Horizontal">
-                        <materialDesign:PackIcon Width="32" Height="32"
-                                                 Kind="Cog" />
+                        <TextBlock Width="32" Height="32"
+                                   Text="Cog" />
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Margin="5,0"
                                    Text="{DynamicResource Settings}"
@@ -73,11 +74,13 @@
             </Grid>
             <UniformGrid Margin="10,0" Rows="2">
                 <UniformGrid.Resources>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignOutlinedButton}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButtonStyle}">
                         <Setter Property="Margin" Value="8" />
                         <Setter Property="Width" Value="Auto" />
                         <Setter Property="Height" Value="Auto" />
                         <Setter Property="FontSize" Value="18" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
                     </Style>
                 </UniformGrid.Resources>
                 <Button Content="{DynamicResource FuncCaptureScreen}" Click="Button_Click" />

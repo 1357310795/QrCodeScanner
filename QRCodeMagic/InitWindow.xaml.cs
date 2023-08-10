@@ -167,7 +167,10 @@ namespace QRCodeMagic
                     window.Content = new AreaScanFailUC();
                 });
             }
-            window.MouseLeftButtonDown += delegate { window.DragMove(); };
+            window.MouseLeftButtonDown += delegate (object sender, MouseButtonEventArgs e) { 
+                if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Released)
+                    window.DragMove(); 
+            };
             window.Topmost = false;
             window.ResizeMode = System.Windows.ResizeMode.NoResize;
 
@@ -193,7 +196,7 @@ namespace QRCodeMagic
             switch (res.State)
             {
                 case Models.ScanResultState.Error:
-                    return new CommonResult(false, res.Data[0].Data);
+                    return new CommonResult(false, res.Message);
                 case Models.ScanResultState.OK:
                     return new CommonResult(true, res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b));
                 case Models.ScanResultState.NoCode:

@@ -3,24 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:QRCodeMagic.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="80" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-             d:DesignWidth="200" Background="{x:Null}"
+             xmlns:local="clr-namespace:QRCodeMagic.Views"
+             Background="{x:Null}"
+             Foreground="White"
+             d:DesignHeight="300" d:DesignWidth="300"
              mc:Ignorable="d">
     <Grid>
-        <Border Background="{DynamicResource PrimaryHueDarkBrush}" Opacity="0.4"/>
-        <Border BorderBrush="{DynamicResource PrimaryHueDarkBrush}" BorderThickness="5"/>
-        <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Center"  Background="{DynamicResource PrimaryHueDarkBrush}">
-            <materialDesign:PackIcon Kind="CheckOutline" Height="32" Width="32" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4" />
-            <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" HorizontalAlignment="Center">
-                <Run Text="{DynamicResource ResultCopied}"/>
+        <Border Background="Coral" Opacity="0.4" />
+        <Border BorderBrush="Coral" BorderThickness="5" />
+        <StackPanel VerticalAlignment="Center"
+                    Margin="5"
+                    Background="Coral"
+                    Orientation="Vertical">
+            <TextBlock Width="32" Height="32"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Margin="0,4"
+                       Text="CheckOutline" />
+            <TextBlock HorizontalAlignment="Center"
+                       TextWrapping="Wrap" Margin="0,2,0,0">
+                <Run Text="{DynamicResource ResultCopied}" />
             </TextBlock>
-            <TextBlock Margin="0,2,0,6" TextWrapping="Wrap" HorizontalAlignment="Center">
-                <Run Text="{Binding Result}"/>
+            <TextBlock HorizontalAlignment="Center"
+                       TextWrapping="Wrap" Margin="0,2,0,6">
+                <Run Text="{Binding Result}" />
             </TextBlock>
         </StackPanel>
-        <Button Padding="2" Command="{Binding CloseCommand}" Background="{DynamicResource PrimaryHueDarkBrush}" Style="{StaticResource MaterialDesignFlatButton}" Height="Auto" Width="Auto" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4">
-            <materialDesign:PackIcon Margin="0" Kind="Close" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Width="20" Height="20"/>
+        <Button Width="Auto" Height="Auto"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="4" Padding="2"
+                Background="Coral"
+                Command="{Binding CloseCommand}">
+            <TextBlock Width="20" Height="20"
+                       Margin="0"
+                       Foreground="White"
+                       Text="Close" />
         </Button>
     </Grid>
 </UserControl>

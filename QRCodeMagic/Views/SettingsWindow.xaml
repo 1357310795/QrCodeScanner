@@ -4,19 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRCodeMagic.Views"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:converters="clr-namespace:QRCodeMagic.Converters"
         Title="{DynamicResource Settings}"
         Width="590" Height="500"
-        Background="{DynamicResource MaterialDesignPaper}"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         FontSize="14"
         mc:Ignorable="d">
     <Grid>
-        <TabControl materialDesign:ColorZoneAssist.Mode="PrimaryDark"
-                    Style="{StaticResource MaterialDesignFilledTabControl}"
-                    TabStripPlacement="Left">
+        <TabControl TabStripPlacement="Left">
             <TabItem Header="{DynamicResource FunctionSettings}">
                 <StackPanel Margin="10,5,5,0" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
@@ -29,7 +24,7 @@
                                       VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding IsAutoRun}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                      />
                     </StackPanel>
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
@@ -39,7 +34,7 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding HideToTray}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                     />
                     </StackPanel>
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
@@ -49,7 +44,7 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding IgnoreDup}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                       />
                     </StackPanel>
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <StackPanel.Resources>
@@ -75,7 +70,7 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding FastCaptureMode}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                       />
                     </StackPanel>
                     <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
@@ -85,7 +80,7 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding AllowMultipleInstances}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                       />
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center"
@@ -108,7 +103,6 @@
                                   FontSize="12" />
                         <Button Margin="10,0"
                                 Content="{DynamicResource Apply}"
-                                Style="{StaticResource MaterialDesignRaisedButton}"
                                 Click="Save_Click" />
                     </StackPanel>
                 </StackPanel>
@@ -129,7 +123,7 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding IsStarOn}"
-                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                                       />
                     </StackPanel>
                     <StackPanel Margin="0,5"
                                 Grid.Row="1"

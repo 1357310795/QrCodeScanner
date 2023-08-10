@@ -4,19 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QRCodeMagic.Views"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="{DynamicResource MainWindowTitle}"
-        Width="800" Height="450" 
-        Background="{DynamicResource MaterialDesignPaper}"
+        Width="800" Height="450"
         Loaded="Window_Loaded" Icon="/Resources/logo.ico"
         WindowState="Maximized" Closed="Window_Closed"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Grid>
         <Border HorizontalAlignment="Center" VerticalAlignment="Center"
                 Margin="10"
-                BorderThickness="2"
-                BorderBrush="{DynamicResource PrimaryHueDarkBrush}">
+                BorderThickness="2">
             <Grid Margin="10">
                 <Image x:Name="image1" />
                 <Canvas x:Name="canvas1"
@@ -43,17 +39,14 @@
                                 BorderThickness="0" />
                     </Grid>
                 </Canvas>
-                <materialDesign:Snackbar x:Name="snackbar1"
-                                         MinWidth="0"
-                                         HorizontalAlignment="Center" VerticalAlignment="Top"
-                                         Background="{DynamicResource PrimaryHueMidBrush}"
-                                         Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                <Border x:Name="snackbar1"
+                        MinWidth="0"
+                        HorizontalAlignment="Center" VerticalAlignment="Top" />
             </Grid>
         </Border>
         <TextBlock x:Name="texthint"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                   Foreground="{DynamicResource PrimaryHueDarkBrush}"
                    FontSize="16">
             请选择
         </TextBlock>

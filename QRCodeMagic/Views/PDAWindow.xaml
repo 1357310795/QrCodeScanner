@@ -2,16 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:QRCodeMagic.Converters"
         Title="{DynamicResource MainWindowTitle}"
         Width="900" Height="665"
-        Background="{DynamicResource MaterialDesignPaper}"
         Icon="/Resources/logo.ico" Loaded="Window_Loaded"
         Closing="MainWindow_Closing"
         WindowStartupLocation="CenterScreen"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">
     <Window.Resources>
         <converters:CheckConverter x:Key="CheckConverter" />
@@ -26,7 +23,6 @@
                       Width="167" Height="30"
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
                       Margin="5"
-                      materialDesign:HintAssist.Hint="{DynamicResource SelectCamera}"
                       DisplayMemberPath="Name"
                       ItemsSource="{Binding VideoDevices}"
                       SelectedItem="{Binding CurrentDevice}" />
@@ -40,7 +36,7 @@
                     Margin="5"
                     Content="{DynamicResource Stop}"
                     Click="btnStop_Click" />
-            <TextBlock Foreground="{DynamicResource MaterialDesignColumnHeader}"
+            <TextBlock 
                        Text="{DynamicResource ClickXToMini}"
                        DockPanel.Dock="Right"
                        FontSize="16" />
@@ -77,12 +73,10 @@
                       IsChecked="{Binding PlayAudio, Mode=TwoWay}"
                       FontSize="16" />
             <Button Content="{DynamicResource OpenFile}"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
                     DockPanel.Dock="Right" Click="ButtonOpenAudio_Click"
                     IsEnabled="{Binding PlayAudio, Mode=OneWay}" />
             <TextBox Margin="5"
                      Text="{Binding AudioPath, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="{DynamicResource AudioFilePath}"
                      IsEnabled="{Binding PlayAudio, Mode=OneWay}"
                      FontSize="16" />
         </DockPanel>

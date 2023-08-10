@@ -34,16 +34,6 @@ namespace QRCodeMagic.Views
         }
         #endregion
 
-        private SkinViewModel paletteVm;
-        public SkinViewModel PaletteVm
-        {
-            get { return paletteVm; }
-            set
-            {
-                paletteVm = value;
-                this.OnPropertyChanged("PaletteVm");
-            }
-        }
         public bool IsAutoRun
         {
             get { return GlobalSettings.isAutoRun; }
@@ -119,9 +109,6 @@ namespace QRCodeMagic.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            PaletteVm = new SkinViewModel();
-            PaletteVm.OnLoaded();
-            
             if (OSVersionHelper.IsWindows11OrGreater)
             {
                 WindowsIdentity id = WindowsIdentity.GetCurrent();

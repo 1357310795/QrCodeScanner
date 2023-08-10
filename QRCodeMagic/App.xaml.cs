@@ -64,7 +64,7 @@ namespace QRCodeMagic
                 }
             }
 
-            this.MainWindow = new InitWindow();
+            this.MainWindow = new MainWindow();
             this.MainWindow.Show();
         }
     }

@@ -1,7 +1,6 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MaterialDesignThemes.Wpf;
 using QRCodeMagic.Helpers;
 using QRCodeMagic.Models;
 using QRCodeMagic.Services;
@@ -46,7 +45,7 @@ namespace QRCodeMagic.Views
             InitializeComponent();
             DataContext = this;
             Closing += MainWindow_Closing;
-            snackbar1.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+            //snackbar1.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
         }
         #endregion
 
@@ -201,8 +200,8 @@ namespace QRCodeMagic.Views
                         }
                         else
                         {
-                            snackbar1.MessageQueue.Clear();
-                            snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("MultiCode"));
+                            //snackbar1.MessageQueue.Clear();
+                            //snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("MultiCode"));
                             ProcessMultiCode();
                         }
                     });

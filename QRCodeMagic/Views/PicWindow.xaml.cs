@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MaterialDesignThemes.Wpf;
 using QRCodeMagic.Helpers;
 using QRCodeMagic.Models;
 using QRCodeMagic.Services;
@@ -26,8 +25,8 @@ namespace QRCodeMagic.Views
             back = t;
             image1.Source = BitmapHelper.ToBitmapImage(back);
             bs = BitmapHelper.ToBitmapSource(t);
-            sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
-            snackbar1.MessageQueue = sm;
+            //sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+            //snackbar1.MessageQueue = sm;
         }
 
         public PicWindow(BitmapSource t)
@@ -36,8 +35,8 @@ namespace QRCodeMagic.Views
             back = BitmapHelper.ToBitmap(t);
             bs = t;
             image1.Source = t;
-            sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
-            snackbar1.MessageQueue = sm;
+            //sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+            //snackbar1.MessageQueue = sm;
         }
         #endregion
 
@@ -45,7 +44,7 @@ namespace QRCodeMagic.Views
         private System.Drawing.Bitmap img,back;
         private BitmapSource bs;
         private string resultstr;
-        private SnackbarMessageQueue sm;
+        //private SnackbarMessageQueue sm;
         public bool isshortcut;
         #endregion
 
@@ -120,8 +119,8 @@ namespace QRCodeMagic.Views
         {
             if (!PicDecode3(bs))
             {
-                snackbar1.MessageQueue.Clear();
-                snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("ManuallySelect"));
+                //snackbar1.MessageQueue.Clear();
+                //snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("ManuallySelect"));
                 texthint.Text = LangHelper.GetStr("ManuallySelectTip");
                 enable_select = true;
                 this.Show();
@@ -137,7 +136,7 @@ namespace QRCodeMagic.Views
             switch (res.State)
             {
                 case ScanResultState.Error:
-                    resultstr = res.Data[0].Data;
+                    resultstr = res.Message;
                     break;
                 case ScanResultState.OK:
                     resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
@@ -152,8 +151,8 @@ namespace QRCodeMagic.Views
                         this.Close();
                     return true;
                 case ScanResultState.NoCode:
-                    snackbar1.MessageQueue.Clear();
-                    snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("NoCodeReselect"));
+                    //snackbar1.MessageQueue.Clear();
+                    //snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("NoCodeReselect"));
                     break;
             }
             return false;
@@ -175,7 +174,7 @@ namespace QRCodeMagic.Views
                 switch (res.State)
                 {
                     case ScanResultState.Error:
-                        resultstr = res.Data[0].Data;
+                        resultstr = res.Message;
                         break;
                     case ScanResultState.OK:
                         resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
@@ -190,7 +189,7 @@ namespace QRCodeMagic.Views
             switch (res.State)
             {
                 case ScanResultState.Error:
-                    resultstr = res.Data[0].Data;
+                    resultstr = res.Message;
                     break;
                 case ScanResultState.OK:
                     resultstr = res.Data.Select(c => c.Data).Aggregate((a, b) => a + "\n" + b);
