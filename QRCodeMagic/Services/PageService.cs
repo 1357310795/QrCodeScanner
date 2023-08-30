@@ -23,10 +23,15 @@ public class PageService : IPageService
 
     public PageService()
     {
+        _pages.Add(nameof(HomePage), typeof(HomePage));
         _pages.Add(nameof(EncodePage), typeof(EncodePage));
         _pages.Add(nameof(DecodePage), typeof(DecodePage));
         _pages.Add(nameof(DrawPage), typeof(DrawPage));
+        _pages.Add(nameof(DetectPage), typeof(DetectPage));
+        _pages.Add(nameof(ToolsPage), typeof(ToolsPage));
         _pages.Add(nameof(SettingsPage), typeof(SettingsPage));
+        _pages.Add(nameof(AboutPage), typeof(AboutPage));
+        _pages.Add(nameof(CameraPage), typeof(CameraPage));
     }
 
     public Type GetPageType(string key)

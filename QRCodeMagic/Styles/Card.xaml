@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="http://schemas.modernwpf.com/2019"
+                    xmlns:ext="clr-namespace:QRCodeMagic.Extensions">
+    <Style x:Key="CardStyle" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid TextElement.Foreground="{DynamicResource TextFillColorSecondaryBrush}" Background="{DynamicResource ControlAltFillColorSecondaryBrush}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ui:FontIcon VerticalAlignment="Center" Margin="8"
+                                             Glyph="{Binding Path=(ext:CardHeaderExtension.Glyph), 
+                                                    RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock VerticalAlignment="Center"
+                                           Grid.Column="1" Margin="2,0,0,0"
+                                           Text="{TemplateBinding ext:CardHeaderExtension.Title}" />
+                            </Grid>
+                            <Border Height="1"
+                                    Grid.Row="1"
+                                    Background="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              Grid.Row="2"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Content="{TemplateBinding Content}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

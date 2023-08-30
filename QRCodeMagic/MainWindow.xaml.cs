@@ -1,5 +1,6 @@
 ﻿using ModernWpf.Controls.Primitives;
 using ModernWpf.SampleApp;
+using QRCodeMagic.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,12 @@ namespace QRCodeMagic
             NavigationRootPage page = new NavigationRootPage();
             MainContent.Content = page;
             LoadingText.Visibility = Visibility.Collapsed;
+
+            var res = ScanService.IntiEngine();
+            if (!res.success)
+            {
+                MessageBox.Show(res.result);
+            }
         }
     }
 }

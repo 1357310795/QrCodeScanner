@@ -60,6 +60,11 @@
 
                 <ui:XamlControlsResources />
 
+                <ResourceDictionary Source="/Styles/NavigationView.xaml"/>
+                <ResourceDictionary Source="/Styles/Segmented.xaml"/>
+                <ResourceDictionary Source="/Styles/Pivot.xaml"/>
+                <ResourceDictionary Source="/Styles/Card.xaml"/>
+
                 <!--  Font Overrides  -->
                 <!--<sc:FontOverrides FontFamily="Comic Sans MS" />-->
                 <!--<ResourceDictionary>

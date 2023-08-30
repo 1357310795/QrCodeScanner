@@ -5,6 +5,7 @@ using QRCodeMagic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -98,11 +99,12 @@ namespace QRCodeMagic.Services
             }
 
             Mat[] rects;
+            Mat[] matrix;
             string[] texts;
             try
             {
                 Mat mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(img);
-                opencv_decoder.DetectAndDecode(mat, out rects, out texts);
+                opencv_decoder.Detect(mat, out rects, out matrix, out texts);
                 mat.Dispose();
             }
             catch (Exception ex)
@@ -112,7 +114,7 @@ namespace QRCodeMagic.Services
 
             if (rects.Length != 0)
             {
-                return new ScanResult(ScanResultState.OK, rects, texts);
+                return new ScanResult(ScanResultState.OK, rects, matrix, texts);
             }
             else
                 return new ScanResult(ScanResultState.NoCode, "");

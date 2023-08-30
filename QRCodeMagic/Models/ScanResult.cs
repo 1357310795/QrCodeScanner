@@ -3,6 +3,7 @@ using QRCodeMagic.Helpers;
 using QRCodeMagic.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using ZXing.Common;
 
 namespace QRCodeMagic.Models
 {
@@ -33,6 +34,7 @@ namespace QRCodeMagic.Models
         public string Message { get; set; }
         public List<CodeWithLocation> Data { get; set; }
         public bool HasLocation { get; set; }
+        public List<BitMatrix> Matrix { get; set; }
 
         //Zbar multi
         public ScanResult(ScanResultState status, List<ZBar.Symbol> results)
@@ -60,6 +62,37 @@ namespace QRCodeMagic.Models
                         new System.Windows.Point(rects[i].Get<float>(2,0), rects[i].Get<float>(2,1)),
                         new System.Windows.Point(rects[i].Get<float>(3,0), rects[i].Get<float>(3,1)),
                     }));
+            if (GlobalSettings.ignoreDup)
+                CheckDup();
+        }
+        public ScanResult(ScanResultState status, Mat[] rects, Mat[] matrix, string[] strs)
+        {
+            this.State = status;
+            this.HasLocation = true;
+            this.Data = new List<CodeWithLocation>();
+            this.Matrix = new List<BitMatrix>();
+            for (int i = 0; i < rects.Length; i++)
+            {
+                Data.Add(new CodeWithLocation(strs[i], "CODE",
+                   new List<System.Windows.Point>() {
+                        new System.Windows.Point(rects[i].Get<float>(0,0), rects[i].Get<float>(0,1)),
+                        new System.Windows.Point(rects[i].Get<float>(1,0), rects[i].Get<float>(1,1)),
+                        new System.Windows.Point(rects[i].Get<float>(2,0), rects[i].Get<float>(2,1)),
+                        new System.Windows.Point(rects[i].Get<float>(3,0), rects[i].Get<float>(3,1)),
+                   }));
+
+                bool[][] tmp = new bool[matrix[i].Height][];
+
+                for (int p = 0; p < matrix[i].Height; p++)
+                {
+                    tmp[p] = new bool[matrix[i].Width];
+                    for (int q = 0; q < matrix[i].Width; q++)
+                        tmp[p][q] = matrix[i].Get<byte>(q, p) == 1;
+                }
+                    
+                Matrix.Add(BitMatrix.parse(tmp));
+            }
+               
             if (GlobalSettings.ignoreDup)
                 CheckDup();
         }
@@ -100,6 +133,7 @@ namespace QRCodeMagic.Models
             this.Message = message;
             this.HasLocation = false;
         }
+
 
         private void CheckDup()
         {
