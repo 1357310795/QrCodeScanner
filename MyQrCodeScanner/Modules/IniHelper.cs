@@ -1,56 +1,39 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MyQrCodeScanner
 {
     public class IniHelper
     {
-        [DllImport("kernel32")]
-        public static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString, string lpFileName);
 
-        [DllImport("kernel32")]
-        public static extern long WritePrivateProfileString(string section, string val, string filePath);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
-        [DllImport("kernel32", CharSet = CharSet.Ansi, EntryPoint = "GetPrivateProfileStringA", ExactSpelling = true, SetLastError = true)]
-        public static extern int GetPrivateProfileString([MarshalAs(UnmanagedType.VBByRefStr)] ref string lpApplicationName, [MarshalAs(UnmanagedType.VBByRefStr)] ref string lpKeyName, [MarshalAs(UnmanagedType.VBByRefStr)] ref string lpDefault, [MarshalAs(UnmanagedType.VBByRefStr)] ref string lpReturnedString, int nSize, [MarshalAs(UnmanagedType.VBByRefStr)] ref string lpFileName);
-
-        public static string GetKeyValue(string sectionName, string keyName, string defaultText, string filename)
+        public static string GetKeyValue(string sectionName, string keyName, string defaultText, string filename = "DEFAULT")
         {
+            if (filename == "DEFAULT") filename = inipath;
             int BufferSize = 255;
-            string keyValue = Strings.Space(BufferSize);
+            StringBuilder keyValue = new StringBuilder(BufferSize);
             string text = "";
-            int Rvalue = IniHelper.GetPrivateProfileString(ref sectionName, ref keyName, ref text, ref keyValue, BufferSize, ref filename);
+            uint Rvalue = GetPrivateProfileString(sectionName, keyName, text, keyValue, (uint)BufferSize, filename);
             bool flag = Rvalue == 0;
             if (flag)
             {
-                keyValue = defaultText;
+                return defaultText;
             }
             else
             {
-                keyValue = IniHelper.GetIniValue(keyValue);
+                return keyValue.ToString();
             }
-            return keyValue;
         }
 
-        public static string GetIniValue(string msg)
+        public static bool SetKeyValue(string Section, string Key, string Value, string iniFilePath = "DEFAULT")
         {
-            int PosChr0 = msg.IndexOf('\0');
-            bool flag = PosChr0 != -1;
-            if (flag)
-            {
-                msg = msg.Substring(0, PosChr0);
-            }
-            return msg;
-        }
-
-        public static bool SetKeyValue(string Section, string Key, string Value, string iniFilePath)
-        {
+            if (iniFilePath == "DEFAULT") iniFilePath = inipath;
             string pat = Path.GetDirectoryName(iniFilePath);
             bool flag = !Directory.Exists(pat);
             if (flag)
@@ -62,11 +45,10 @@ namespace MyQrCodeScanner
             {
                 File.Create(iniFilePath).Close();
             }
-            long OpStation = IniHelper.WritePrivateProfileString(Section, Key, Value, iniFilePath);
-            bool flag3 = OpStation == 0L;
-            return !flag3;
+            bool r = WritePrivateProfileString(Section, Key, Value, iniFilePath);
+            return r;
         }
 
-        public static string inipath = Environment.GetEnvironmentVariable("LocalAppData") + "\\QrCodeScanner\\Settings.ini";
+        public static string inipath = Path.Combine(PathHelper.AppDataPath, "Settings.ini");
     }
 }

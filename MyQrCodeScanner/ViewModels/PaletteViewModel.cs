@@ -1,19 +1,18 @@
-﻿using MaterialDesignColors;
-using Prism.Commands;
-using Prism.Mvvm;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MaterialDesignColors;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Media;
 
 namespace MyQrCodeScanner
 {
-    public class SkinViewModel : BindableBase
+    public class SkinViewModel : ObservableObject
     {
         public SkinViewModel()
         {
             Styles = new ObservableCollection<Color>();
-            ChangeHueCommand = new DelegateCommand<object>(ThemeHelper.ChangeHue);
-            ToggleBaseCommand = new DelegateCommand<object>(ThemeHelper.ApplyBase);
+            ChangeHueCommand = new RelayCommand<object>(ThemeHelper.ChangeHue);
+            ToggleBaseCommand = new RelayCommand<object>(ThemeHelper.ApplyBase);
             
         }
 
@@ -28,14 +27,14 @@ namespace MyQrCodeScanner
         public ObservableCollection<Color> Styles
         {
             get { return _styles; }
-            set { _styles = value; RaisePropertyChanged(); }
+            set { _styles = value; OnPropertyChanged(); }
         }
 
         //改变颜色
-        public DelegateCommand<object> ChangeHueCommand { get; }
+        public RelayCommand<object> ChangeHueCommand { get; }
 
         //改变主题
-        public DelegateCommand<object> ToggleBaseCommand { get; }
+        public RelayCommand<object> ToggleBaseCommand { get; }
 
     }
 }

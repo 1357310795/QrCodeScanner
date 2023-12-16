@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,8 +22,8 @@ namespace MyQrCodeScanner
             {
                 ','
             });
-            Point controlPoint = new Point(Conversions.ToDouble(p[0]), Conversions.ToDouble(p[1]));
-            Point controlPoint2 = new Point(Conversions.ToDouble(p[2]), Conversions.ToDouble(p[3]));
+            Point controlPoint = new Point(double.Parse(p[0]), double.Parse(p[1]));
+            Point controlPoint2 = new Point(double.Parse(p[2]), double.Parse(p[3]));
             sp.KeySpline = new KeySpline
             {
                 ControlPoint1 = controlPoint,
@@ -56,8 +55,8 @@ namespace MyQrCodeScanner
             {
                 ','
             });
-            Point controlPoint = new Point(Conversions.ToDouble(p[0]), Conversions.ToDouble(p[1]));
-            Point controlPoint2 = new Point(Conversions.ToDouble(p[2]), Conversions.ToDouble(p[3]));
+            Point controlPoint = new Point(double.Parse(p[0]), double.Parse(p[1]));
+            Point controlPoint2 = new Point(double.Parse(p[2]), double.Parse(p[3]));
             sp.KeySpline = new KeySpline
             {
                 ControlPoint1 = controlPoint,

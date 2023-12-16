@@ -19,6 +19,7 @@ namespace MyQrCodeScanner.Modules
         public static bool isChinese;
         public static bool hideToTray;
         public static bool ignoreDup;
+        public static bool isInputEnter;
 
         public static void ReadSettings()
         {
@@ -32,6 +33,7 @@ namespace MyQrCodeScanner.Modules
             fastCaptureMode = Convert.ToBoolean(IniHelper.GetKeyValue("main", "fastCaptureMode", "false", IniHelper.inipath));
             hideToTray = Convert.ToBoolean(IniHelper.GetKeyValue("main", "hideToTray", "false", IniHelper.inipath));
             ignoreDup = Convert.ToBoolean(IniHelper.GetKeyValue("main", "ignoreDup", "false", IniHelper.inipath));
+            isInputEnter = Convert.ToBoolean(IniHelper.GetKeyValue("main", "isInputEnter", "false", IniHelper.inipath));
         }
 
         public static void SaveSettings()
@@ -43,6 +45,7 @@ namespace MyQrCodeScanner.Modules
             IniHelper.SetKeyValue("main", "hideToTray", hideToTray.ToString(), IniHelper.inipath);
             IniHelper.SetKeyValue("main", "ignoreDup", ignoreDup.ToString(), IniHelper.inipath);
             IniHelper.SetKeyValue("main", "isChinese", isChinese.ToString(), IniHelper.inipath);
+            IniHelper.SetKeyValue("main", "isInputEnter", isInputEnter.ToString(), IniHelper.inipath);
         }
     }
 }

@@ -1,15 +1,8 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace WPFCaptureScreenShot
 {
-	[StandardModule]
 	public sealed class WindowsMonitorAPI
 	{
 		// Token: 0x0600009E RID: 158

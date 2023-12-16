@@ -69,6 +69,7 @@
     <sys:String x:Key="FastMode">Quick screenshot recognition mode</sys:String>
     <sys:String x:Key="CaptureHotKey">Screen capture hotkey: </sys:String>
     <sys:String x:Key="BackAnimation">Backgroud animation</sys:String>
+    <sys:String x:Key="InputEnter">Add Enter at the end of the scanner input</sys:String>
     <sys:String x:Key="Theme">Theme: </sys:String>
     <sys:String x:Key="DarkTheme">Dark</sys:String>
     <sys:String x:Key="LightTheme">Light</sys:String>

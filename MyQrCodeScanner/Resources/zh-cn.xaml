@@ -68,6 +68,7 @@
     <sys:String x:Key="FastMode">快速截图识别模式</sys:String>
     <sys:String x:Key="CaptureHotKey">截取屏幕快捷键：</sys:String>
     <sys:String x:Key="BackAnimation">背景动画</sys:String>
+    <sys:String x:Key="InputEnter">扫描枪输入末尾添加Enter</sys:String>
     <sys:String x:Key="Theme">主题：</sys:String>
     <sys:String x:Key="DarkTheme">深色主题</sys:String>
     <sys:String x:Key="LightTheme">浅色主题</sys:String>

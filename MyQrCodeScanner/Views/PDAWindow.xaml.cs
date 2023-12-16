@@ -283,6 +283,9 @@ namespace MyQrCodeScanner
                     k.Keyboard.TextEntry(s);
                 else
                     Clipboard.SetText(s);
+
+                if (GlobalSettings.isInputEnter)
+                    k.Keyboard.KeyPress(VirtualKeyCode.RETURN);
             });
         }
 

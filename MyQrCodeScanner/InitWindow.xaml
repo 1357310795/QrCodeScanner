@@ -10,7 +10,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         StateChanged="Window_StateChanged" Closed="Window_Closed"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        WindowStartupLocation="CenterScreen" Icon="logo\logo.ico"
+        WindowStartupLocation="CenterScreen" Icon="Resources\logo.ico"
         Loaded="Window_Loaded"
         mc:Ignorable="d">
     <Grid>
@@ -31,7 +31,7 @@
                            Margin="10"
                            FontSize="16">
                     <Run Text="{DynamicResource Version}" />
-                    <Run Text="v1.4" />
+                    <Run Text="v1.5" />
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top"
                            Margin="10"

@@ -122,6 +122,15 @@ namespace MyQrCodeScanner.Views
             }
         }
 
+        public bool IsInputEnter
+        {
+            get { return GlobalSettings.isInputEnter; }
+            set
+            {
+                GlobalSettings.isInputEnter = value;
+            }
+        }
+
         private InitWindow mw;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -129,15 +138,8 @@ namespace MyQrCodeScanner.Views
             PaletteVm = new SkinViewModel();
             PaletteVm.OnLoaded();
             
-            bool win11 = false;
-            ManagementClass manag = new ManagementClass("Win32_OperatingSystem");
-            ManagementObjectCollection managCollection = manag.GetInstances();
-            foreach (ManagementObject m in managCollection)
-            {
-                if (m["Name"].ToString().Contains("Windows 11"))
-                    win11 = true;
-            }
-            if (win11)
+            
+            if (OSVersionHelper.IsWindows11OrGreater)
             {
                 WindowsIdentity id = WindowsIdentity.GetCurrent();
                 string computerName = id.Name;

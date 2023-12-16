@@ -55,7 +55,9 @@
                         <StackPanel.Resources>
                             <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
                         </StackPanel.Resources>
-                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource CaptureMode}"></TextBlock>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource CaptureMode}"
+                                   FontSize="14" />
                         <RadioButton IsChecked="{Binding CaptureMode}" VerticalContentAlignment="Center">
                             <TextBlock Text="{DynamicResource FullScreen}" />
                         </RadioButton>
@@ -73,6 +75,16 @@
                         <ToggleButton VerticalAlignment="Center"
                                       Margin="8,3"
                                       IsChecked="{Binding FastCaptureMode}"
+                                      Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="0,0,0,0"
+                                   Text="{DynamicResource InputEnter}"
+                                   FontSize="14" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      Margin="8,3"
+                                      IsChecked="{Binding IsInputEnter}"
                                       Style="{StaticResource MaterialDesignSwitchToggleButton}" />
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
@@ -125,7 +137,9 @@
                         <StackPanel.Resources>
                             <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
                         </StackPanel.Resources>
-                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource Theme}"></TextBlock>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource Theme}"
+                                   FontSize="14" />
                         <RadioButton IsChecked="{Binding IsDark}" VerticalContentAlignment="Center">
                             <TextBlock Text="{DynamicResource DarkTheme}" />
                         </RadioButton>
@@ -141,7 +155,9 @@
                         <StackPanel.Resources>
                             <converters:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
                         </StackPanel.Resources>
-                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="{DynamicResource Language}"></TextBlock>
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="{DynamicResource Language}"
+                                   FontSize="14" />
                         <RadioButton IsChecked="{Binding IsChinese}" VerticalContentAlignment="Center">
                             <TextBlock Text="{DynamicResource Chinese}" />
                         </RadioButton>
