@@ -127,7 +127,7 @@ namespace MyQrCodeScanner
 
         public static MyResult ScanCode(Bitmap img)
         {
-            var method = (int)Application.Current.Resources["Engine"];
+            var method = GlobalSettings.selectedengine;
 
             try
             {
@@ -150,7 +150,7 @@ namespace MyQrCodeScanner
 
         public static MyResult ScanCode(System.Windows.Media.Imaging.BitmapSource img)
         {
-            var method = (int)Application.Current.Resources["Engine"];
+            var method = GlobalSettings.selectedengine;
             try
             {
                 if (method == 1)

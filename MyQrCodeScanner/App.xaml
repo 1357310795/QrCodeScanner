@@ -10,9 +10,6 @@
              ShutdownMode="OnLastWindowClose">
     <Application.Resources>
         <ResourceDictionary>
-            <sys:Int32 x:Key="Engine">
-                1
-            </sys:Int32>
             <ContextMenu x:Key="SysTrayMenu">
                 <MenuItem Command="{Binding ShowWindowCommand}" Header="{DynamicResource Show}" />
                 <Separator />

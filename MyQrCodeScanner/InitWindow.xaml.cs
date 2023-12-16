@@ -230,7 +230,6 @@ namespace MyQrCodeScanner
             {
                 GlobalSettings.selectedengine = value;
                 this.RaisePropertyChanged("SelectedEngine");
-                Application.Current.Resources["Engine"] = GlobalSettings.selectedengine;
                 IniHelper.SetKeyValue("main", "engine", GlobalSettings.selectedengine.ToString(), IniHelper.inipath);
             }
         }
