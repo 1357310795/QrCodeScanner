@@ -8,7 +8,7 @@
         Title="{DynamicResource ScanResult}" 
         Width="357.666" Height="339.041"
         Background="{DynamicResource MaterialDesignPaper}"
-        Icon="logo.ico" Closing="Window_Closing"
+        Icon="/Resources/logo.ico" Closing="Window_Closing"
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">

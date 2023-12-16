@@ -8,7 +8,7 @@
         Title="{DynamicResource CamWindowTitle}"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
-        Closed="Window_Closed" Icon="logo.ico"
+        Closed="Window_Closed" Icon="/Resources/logo.ico"
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">

@@ -8,7 +8,7 @@
         Title="{DynamicResource MainWindowTitle}"
         Width="800" Height="450" 
         Background="{DynamicResource MaterialDesignPaper}"
-        Loaded="Window_Loaded" Icon="logo.ico"
+        Loaded="Window_Loaded" Icon="/Resources/logo.ico"
         WindowState="Maximized" Closed="Window_Closed"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         mc:Ignorable="d">

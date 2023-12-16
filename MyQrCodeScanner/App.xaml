@@ -18,10 +18,11 @@
                 <Separator />
                 <MenuItem Command="{Binding ExitApplicationCommand}" Header="{DynamicResource Exit}" />
             </ContextMenu>
+            <BitmapImage x:Key="logo" UriSource="/Resources/logo.ico"></BitmapImage>
             <tb:TaskbarIcon x:Key="Taskbar"
                             ContextMenu="{StaticResource SysTrayMenu}"
                             DoubleClickCommand="{Binding ShowWindowCommand}"
-                            IconSource="logo.ico">
+                            IconSource="Resources/logo2.ico">
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border Background="White"
                             BorderBrush="Black" BorderThickness="1">

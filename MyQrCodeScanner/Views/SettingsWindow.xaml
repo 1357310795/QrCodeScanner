@@ -9,7 +9,8 @@
         Title="{DynamicResource Settings}"
         Width="590" Height="500"
         Background="{DynamicResource MaterialDesignPaper}"
-        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
+        Icon="/Resources/logo.ico" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         FontSize="14"
         mc:Ignorable="d">

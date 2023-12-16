@@ -10,7 +10,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         StateChanged="Window_StateChanged" Closed="Window_Closed"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        WindowStartupLocation="CenterScreen" Icon="Resources\logo.ico"
+        WindowStartupLocation="CenterScreen" Icon="{StaticResource logo}"
         Loaded="Window_Loaded"
         mc:Ignorable="d">
     <Grid>

@@ -9,7 +9,7 @@
         Title="{DynamicResource MainWindowTitle}"
         Width="900" Height="665"
         Background="{DynamicResource MaterialDesignPaper}"
-        Icon="logo.ico" Loaded="Window_Loaded"
+        Icon="/Resources/logo.ico" Loaded="Window_Loaded"
         Closing="MainWindow_Closing"
         WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"

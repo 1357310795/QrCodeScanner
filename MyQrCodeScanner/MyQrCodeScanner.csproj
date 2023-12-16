@@ -17,9 +17,13 @@
 	
 	<ItemGroup>
 		<None Remove="Resources\logo.ico" />
+		<None Remove="Resources\logo2.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="Resources\logo2.ico">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
 		<Content Include="Resources\logo.ico">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
