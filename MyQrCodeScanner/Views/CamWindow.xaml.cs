@@ -1,34 +1,44 @@
-﻿using AForge.Video;
-using AForge.Video.DirectShow;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
+using MediaFoundation;
 using MyQrCodeScanner.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using Teru.Code.Webcam.MF;
 
 namespace MyQrCodeScanner
 {
     public partial class CamWindow : Window, INotifyPropertyChanged
     {
         #region Fields
-        public ObservableCollection<FilterInfo> VideoDevices { get; set; }
-        public FilterInfo CurrentDevice
+        private WebCamSampleGrabberPresenter player;
+
+        public List<MediaFoundationDeviceInfo> VideoDevices { get; set; }
+        public MediaFoundationDeviceInfo CurrentDevice
         {
             get { return _currentDevice; }
             set { _currentDevice = value; this.OnPropertyChanged("CurrentDevice"); }
         }
-        private FilterInfo _currentDevice;
-        private System.Drawing.Bitmap img,imgbuffer;
+
+        private MediaFoundationDeviceInfo _currentDevice;
+
+        private WriteableBitmap img, imgbuffer;
+
+        private WriteableBitmap? m_Bmp;
+        public WriteableBitmap Image => m_Bmp;
+
         private System.Timers.Timer timer;
-        private IVideoSource _videoSource;
         #endregion
 
         #region Constructors
@@ -36,8 +46,8 @@ namespace MyQrCodeScanner
         {
             GetVideoDevices();
             var lastdevice = IniHelper.GetKeyValue("main", "LastVideoDevice", "", IniHelper.inipath);
-            foreach (FilterInfo d in VideoDevices)
-                if (d.Name == lastdevice)
+            foreach (MediaFoundationDeviceInfo d in VideoDevices)
+                if (d.FriendlyName == lastdevice)
                     CurrentDevice = d;
             InitializeComponent();
             this.DataContext = this;
@@ -77,34 +87,30 @@ namespace MyQrCodeScanner
         #endregion
 
         #region Camera
-        private void video_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
-        {
-            try
-            {
-                BitmapImage bi;
-                imgbuffer = img;
-                img = (System.Drawing.Bitmap)eventArgs.Frame.Clone();
-                //Console.WriteLine("f");
-                bi = BitmapHelper.GetBitmapImage(img);
-                
-                bi.Freeze(); // avoid cross thread operations and prevents leaks
-                Dispatcher.BeginInvoke(new ThreadStart(delegate { videoPlayer.Source = bi; }));
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Error on _videoSource_NewFrame:\n" + exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                StopCamera();
-            }
-        }
+        //private void video_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        //{
+        //    try
+        //    {
+        //        BitmapImage bi;
+        //        imgbuffer = img;
+        //        img = (System.Drawing.Bitmap)eventArgs.Frame.Clone();
+        //        //Console.WriteLine("f");
+        //        bi = BitmapHelper.GetBitmapImage(img);
+
+        //        bi.Freeze(); // avoid cross thread operations and prevents leaks
+        //        Dispatcher.BeginInvoke(new ThreadStart(delegate { videoPlayer.Source = bi; }));
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        MessageBox.Show("Error on _videoSource_NewFrame:\n" + exc.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        StopCamera();
+        //    }
+        //}
 
 
         private void GetVideoDevices()
         {
-            VideoDevices = new ObservableCollection<FilterInfo>();
-            foreach (FilterInfo filterInfo in new FilterInfoCollection(FilterCategory.VideoInputDevice))
-            {
-                VideoDevices.Add(filterInfo);
-            }
+            VideoDevices = MediaFoundationHelper.GetVideoCaptureDevices();
             if (VideoDevices.Any())
             {
                 CurrentDevice = VideoDevices[0];
@@ -119,26 +125,162 @@ namespace MyQrCodeScanner
         {
             ClearResult();
             StopCamera();
-            hinttext.Visibility= Visibility.Collapsed; 
+            hinttext.Visibility= Visibility.Collapsed;
             if (CurrentDevice != null)
             {
-                _videoSource = new VideoCaptureDevice(CurrentDevice.MonikerString);
-                _videoSource.NewFrame += video_NewFrame;
-                _videoSource.Start();
-                IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.Name, IniHelper.inipath);
+                var f = MediaFoundationHelper.GetVideoFormats(CurrentDevice);
+                f.Sort((x, y) => Math.Abs(x.FrameSizeHeight - 1080).CompareTo(Math.Abs(y.FrameSizeHeight - 1080)));
+
+                m_Bmp = new WriteableBitmap((int)f[0].FrameSizeWidth, (int)f[0].FrameSizeHeight, 96, 96, PixelFormats.Bgra32, null);
+
+                if (player != null)
+                {
+                    StopCamera();
+                }
+                Init(CurrentDevice, f[0]);
+
+                Thread thread = new Thread(delegate ()
+                {
+                    this.player.StartSession();
+                });
+                thread.SetApartmentState(ApartmentState.MTA);
+                thread.Start();
+
+                IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.FriendlyName, IniHelper.inipath);
             }
             timer.Start();
         }
 
         private void StopCamera()
         {
-            if (_videoSource != null && _videoSource.IsRunning)
+            if (player != null)
             {
-                _videoSource.SignalToStop();
-                _videoSource.NewFrame -= new NewFrameEventHandler(video_NewFrame);
+                Thread thread = new Thread(delegate ()
+                {
+                    this.player.StopSession();
+                });
+                thread.SetApartmentState(ApartmentState.MTA);
+                thread.Start();
+
+                DetachMediaPresenterEvents();
+                player.ShutDown();
             }
             img = null;
             timer.Stop();
+        }
+
+        private void Init(MediaFoundationDeviceInfo videoDevice, MediaFoundationVideoFormatInfo videoFormat)
+        {
+            this.player = new WebCamSampleGrabberPresenter();
+            this.player.FlipVertically = false;
+            this.player.FlipHorizontally = false;
+            this.AttachMediaPresenterEvents();
+            this.player.AudioCaptureDevice = null;
+            this.player.VideoCaptureDevice = videoDevice;
+            this.player.VideoCaptureFormat = videoFormat;
+            this.player.Initialize();
+        }
+
+        private void AttachMediaPresenterEvents()
+        {
+            this.player.FrameReady += this.Player_FrameReady;
+            this.player.PropertyChanged += this.Player_PropertyChanged;
+            this.player.MediaSessionError += this.Player_MediaSessionError;
+        }
+
+        private void DetachMediaPresenterEvents()
+        {
+            this.player.FrameReady -= this.Player_FrameReady;
+            this.player.PropertyChanged -= this.Player_PropertyChanged;
+            this.player.MediaSessionError -= this.Player_MediaSessionError;
+        }
+
+        private void Player_FrameReady(object sender, FrameEventArgs e)
+        {
+            //Debug.WriteLine($"Player_FrameReady: {e.Width}x{e.Height}");
+
+            using (MediaBufferLock mediaBufferLock = new MediaBufferLock(e.Buffer))
+            {
+                int num = 0;
+                IntPtr intPtr;
+                HResult hresult = mediaBufferLock.LockBuffer(e.Stride, e.Height, out intPtr, out num);
+                if (hresult != HResult.S_OK)
+                {
+                    return;
+                }
+                try
+                {
+                    m_Bmp?.Dispatcher.Invoke(() =>
+                    {
+                        m_Bmp.Lock();
+                        //Debug.WriteLine(m_Bmp.BackBufferStride);
+                        MediaFoundationHelper.CopyMemory(m_Bmp.BackBuffer, intPtr, (uint)(e.Height * e.Width * 4));
+                        m_Bmp.AddDirtyRect(new System.Windows.Int32Rect(0, 0, m_Bmp.PixelWidth, m_Bmp.PixelHeight));
+                        m_Bmp.Unlock();
+
+                        imgbuffer = img;
+                        img = Image;
+                        Dispatcher.BeginInvoke(new ThreadStart(delegate { videoPlayer.Source = Image; }));
+
+                    }, System.Windows.Threading.DispatcherPriority.Background);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(e);
+                }
+                finally
+                {
+
+                }
+            }
+
+        }
+
+        private void Player_MediaSessionError(object sender, HResult result, Exception ex)
+        {
+            if (result == HResult.MF_E_HW_MFT_FAILED_START_STREAMING)
+            {
+                MessageBox.Show("The camera is unavailable.");
+                return;
+            }
+            if (result == HResult.E_ACCESSDENIED || result == HResult.MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED)
+            {
+                MessageBox.Show("Access to the camera is denied.");
+            }
+        }
+
+        private void Player_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SessionState")
+            {
+                if (this.player.SessionState == MFMediaSessionState.Started)
+                {
+                    base.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(delegate ()
+                    {
+                        CommandManager.InvalidateRequerySuggested();
+                    }));
+                    return;
+                }
+                //if (this.player.SessionState == MFMediaSessionState.Stopped)
+                //{
+                //    RawColorBGRA black = default(RawColorBGRA);
+                //    base.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(delegate ()
+                //    {
+                //        if (this.d3dDevice != null)
+                //        {
+                //            this.d3dDevice.ColorFill(this.surface, black);
+                //        }
+                //    }));
+                //    return;
+                //}
+                //if (this.player.SessionState == MFMediaSessionState.Ready)
+                //{
+                //    base.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(delegate ()
+                //    {
+                //        this.OnPlayerInitialized();
+                //    }));
+                //}
+            }
         }
 
         #endregion

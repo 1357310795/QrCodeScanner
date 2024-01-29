@@ -28,7 +28,7 @@
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
                       Margin="5"
                       materialDesign:HintAssist.Hint="{DynamicResource SelectCamera}"
-                      DisplayMemberPath="Name"
+                      DisplayMemberPath="FriendlyName"
                       ItemsSource="{Binding VideoDevices}"
                       SelectedItem="{Binding CurrentDevice}" />
             <Button Width="67" Height="30"
@@ -45,7 +45,7 @@
                        Text="{DynamicResource ClickXToMini}"
                        DockPanel.Dock="Right"
                        FontSize="16" />
-            <MediaElement x:Name="player"
+            <MediaElement x:Name="MediaElement1"
                           Width="0" Height="0"
                           Visibility="Hidden" />
         </DockPanel>
