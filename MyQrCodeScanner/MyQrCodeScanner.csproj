@@ -30,9 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AForge" Version="2.2.5" />
-		<PackageReference Include="AForge.Video" Version="2.2.5" />
-		<PackageReference Include="AForge.Video.DirectShow" Version="2.2.5" />
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.6" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
@@ -44,6 +41,7 @@
 		<PackageReference Include="NHotkey.Wpf" Version="2.1.1" />
 		<PackageReference Include="Teru.Code" Version="1.0.2" />
 		<PackageReference Include="Teru.Code.HandyScreenshot.Core" Version="1.0.1" />
+		<PackageReference Include="Teru.Code.Webcam" Version="1.0.1" />
 		<PackageReference Include="Teru.Code.WechatQrcode.Lite" Version="1.0.0.20230813" />
 		<PackageReference Include="ZXing.Net" Version="0.16.9" />
 		<PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />

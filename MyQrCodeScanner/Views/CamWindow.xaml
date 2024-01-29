@@ -40,7 +40,7 @@
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
                       Margin="5"
                       materialDesign:HintAssist.Hint="{DynamicResource SelectCamera}"
-                      DisplayMemberPath="Name"
+                      DisplayMemberPath="FriendlyName"
                       ItemsSource="{Binding VideoDevices}"
                       SelectedItem="{Binding CurrentDevice}" />
             <Button Width="67" Height="30"
