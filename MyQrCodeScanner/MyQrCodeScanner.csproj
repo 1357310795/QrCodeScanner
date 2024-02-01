@@ -39,7 +39,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="NHotkey.Wpf" Version="2.1.1" />
 		<PackageReference Include="Teru.Code" Version="1.0.3" />
-		<PackageReference Include="Teru.Code.HandyScreenshot.Core" Version="1.0.1" />
+		<PackageReference Include="Teru.Code.HandyScreenshot.Core" Version="1.0.4" />
 		<PackageReference Include="Teru.Code.Webcam" Version="1.0.1" />
 		<PackageReference Include="Teru.Code.WechatQrcode.Lite" Version="1.0.0.20230813" />
 		<PackageReference Include="ZXing.Net" Version="0.16.9" />

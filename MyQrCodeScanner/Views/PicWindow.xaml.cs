@@ -19,7 +19,6 @@ namespace MyQrCodeScanner
             InitializeComponent();
             back = t;
             image1.Source = BitmapHelper.GetBitmapImage(back);
-            bs = BitmapHelper.GetBitmapSource(t);
             sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
             snackbar1.MessageQueue = sm;
         }
@@ -28,7 +27,6 @@ namespace MyQrCodeScanner
         {
             InitializeComponent();
             back = BitmapHelper.GetBitmap(t);
-            bs = t;
             image1.Source = t;
             sm = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
             snackbar1.MessageQueue = sm;
@@ -37,7 +35,6 @@ namespace MyQrCodeScanner
 
         #region Fields
         private System.Drawing.Bitmap img,back;
-        private BitmapSource bs;
         private string resultstr;
         private SnackbarMessageQueue sm;
         public bool isshortcut;
@@ -112,7 +109,7 @@ namespace MyQrCodeScanner
 
         public void PreScan()
         {
-            if (!PicDecode3(bs))
+            if (!PicDecode3(back))
             {
                 snackbar1.MessageQueue.Clear();
                 snackbar1.MessageQueue.Enqueue(LangHelper.GetStr("ManuallySelect"));
@@ -153,7 +150,7 @@ namespace MyQrCodeScanner
             return false;
         }
 
-        private bool PicDecode3(BitmapSource cur)
+        private bool PicDecode3(System.Drawing.Bitmap cur)
         {
             if (cur == null)
                 return false;

@@ -204,11 +204,7 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-            finally
-            {
-                img.Dispose();
-                //GC.Collect(2);
-            }
+
             if (rects.Length != 0)
             {
                 return new MyResult(result_status.ok, rects, texts);
@@ -237,10 +233,7 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-            finally
-            {
-                img.Dispose();
-            }
+
             if (result != null)
             {
                 return new MyResult(result_status.ok, result);
@@ -299,10 +292,7 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-            finally
-            {
-                img.Dispose();
-            }
+
             if (results != null && results.Length > 0)
             {
                 return new MyResult(result_status.ok, results);

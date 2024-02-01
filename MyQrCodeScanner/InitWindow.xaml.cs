@@ -13,6 +13,8 @@ using System.Diagnostics;
 using MyQrCodeScanner.Views;
 using MyQrCodeScanner.Modules;
 using Hardcodet.Wpf.TaskbarNotification;
+using HandyScreenshot.Core.Helpers;
+using HandyScreenshot.Views;
 
 namespace MyQrCodeScanner
 {
@@ -124,7 +126,19 @@ namespace MyQrCodeScanner
             if (GlobalSettings.captureMode)
                 CaptureMainScreen();
             else
-                HandyScreenshot.Helpers.ScreenshotHelper.StartScreenshot();
+            {
+                var monitorInfos = MonitorHelper.GetMonitorInfos();
+
+                foreach (var monitorInfo in monitorInfos)
+                {
+                    var clip = new ClipWindow(
+                        ScreenshotHelper.CaptureScreen(monitorInfo.PhysicalScreenRect),
+                        monitorInfo);
+                    ScreenshotHelper.SetWindowRect(clip, monitorInfo.PhysicalScreenRect);
+                    clip.Initialize();
+                    clip.Show();
+                }
+            }
         }
 
         private void CaptureMainScreen()
