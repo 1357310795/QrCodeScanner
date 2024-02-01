@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -11,10 +9,8 @@ using HandyScreenshot.Common;
 using HandyScreenshot.Helpers;
 using HandyScreenshot.Mvvm;
 using HandyScreenshot.Models;
-using SixLabors.ImageSharp.Processing;
 using MyQrCodeScanner;
 using MyQrCodeScanner.Models;
-using System.Threading;
 using MyQrCodeScanner.Modules;
 
 namespace HandyScreenshot.Views
@@ -43,7 +39,7 @@ namespace HandyScreenshot.Views
         private static readonly byte[] SampleBytes = new byte[4];
         public Func<int, int, Color> ColorGetter { get; set; }
         public BitmapImage BackImage { get; set; }
-        public BitmapImage AreaImage { get; set; }
+        public BitmapSource AreaImage { get; set; }
         public MonitorInfo MonitorInfo { get; }
         public System.Drawing.Bitmap Image { get; set; }
         public MemoryStream ImageStream { get; set; }
@@ -167,20 +163,7 @@ namespace HandyScreenshot.Views
 
         private void ProcessAreaImage()
         {
-            this.ImageStream.Position = 0;
-            var rawimage = SixLabors.ImageSharp.Image.Load(this.ImageStream);
-            SixLabors.ImageSharp.Rectangle cropRectangle = new SixLabors.ImageSharp.Rectangle(State.ScreenshotRect.X - MonitorInfo.PhysicalScreenRect.X, State.ScreenshotRect.Y - MonitorInfo.PhysicalScreenRect.Y, State.ScreenshotRect.Width, State.ScreenshotRect.Height);
-            rawimage.Mutate(x => x.Crop(cropRectangle));
-
-            var after = new MemoryStream();
-            rawimage.Save(after, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
-
-            AreaImage = new BitmapImage();
-            AreaImage.BeginInit();
-            AreaImage.StreamSource = after;
-            AreaImage.CacheOption = BitmapCacheOption.OnLoad;
-            AreaImage.EndInit();
-            after.Dispose();
+            AreaImage = new CroppedBitmap(BackImage, new Int32Rect(State.ScreenshotRect.X - MonitorInfo.PhysicalScreenRect.X, State.ScreenshotRect.Y - MonitorInfo.PhysicalScreenRect.Y, State.ScreenshotRect.Width, State.ScreenshotRect.Height));
         }
 
         private CommonResult PicDecode()

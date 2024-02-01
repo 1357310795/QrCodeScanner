@@ -1,19 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using HandyScreenshot.Common;
-using HandyScreenshot.Models;
 using HandyScreenshot.Views;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Processing.Extensions;
 using static HandyScreenshot.Interop.NativeMethods;
 
 namespace HandyScreenshot.Helpers

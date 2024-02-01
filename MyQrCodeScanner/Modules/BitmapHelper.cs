@@ -57,12 +57,22 @@ namespace MyQrCodeScanner
         public static System.Drawing.Bitmap GetBitmap(BitmapSource source)
         {
             MemoryStream ms = new MemoryStream();
-            source.Dispatcher.Invoke(() =>
+            if (source.Dispatcher == null)
             {
                 BitmapEncoder encoder = new BmpBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(source));
                 encoder.Save(ms);
-            });
+            }
+            else
+            {
+                source.Dispatcher.Invoke(() =>
+                {
+                    BitmapEncoder encoder = new BmpBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(source));
+                    encoder.Save(ms);
+                });
+            }
+            
             var bitmap = new System.Drawing.Bitmap(ms);
             ms.Dispose();
             return bitmap;
