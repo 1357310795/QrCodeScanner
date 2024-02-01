@@ -31,7 +31,7 @@
                            Margin="10"
                            FontSize="16">
                     <Run Text="{DynamicResource Version}" />
-                    <Run Text="v1.51" />
+                    <Run Text="v1.52" />
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top"
                            Margin="10"

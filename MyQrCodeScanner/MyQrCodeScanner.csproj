@@ -5,9 +5,9 @@
     <TargetFramework>net472-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<Version>1.5.1.0</Version>
-	<AssemblyVersion>1.5.1.0</AssemblyVersion>
-	<FileVersion>1.5.1.0</FileVersion>
+	<Version>1.5.2.0</Version>
+	<AssemblyVersion>1.5.2.0</AssemblyVersion>
+	<FileVersion>1.5.2.0</FileVersion>
     <UseWPF>true</UseWPF>
 	<LangVersion>11.0</LangVersion>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
