@@ -1,13 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
 using MediaFoundation;
 using MyQrCodeScanner.Modules;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Teru.Code.Services;
 using Teru.Code.Webcam.MF;
 
 namespace MyQrCodeScanner
@@ -38,7 +34,7 @@ namespace MyQrCodeScanner
         private WriteableBitmap? m_Bmp;
         public WriteableBitmap Image => m_Bmp;
 
-        private System.Timers.Timer timer;
+        private LoopWorker worker;
         #endregion
 
         #region Constructors
@@ -64,7 +60,7 @@ namespace MyQrCodeScanner
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AddTimer();
+            AddWorker();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -148,7 +144,7 @@ namespace MyQrCodeScanner
 
                 IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.FriendlyName, IniHelper.inipath);
             }
-            timer.Start();
+            worker.StartRun();
         }
 
         private void StopCamera()
@@ -166,7 +162,7 @@ namespace MyQrCodeScanner
                 player.ShutDown();
             }
             img = null;
-            timer.Stop();
+            worker.StopRun();
         }
 
         private void Init(MediaFoundationDeviceInfo videoDevice, MediaFoundationVideoFormatInfo videoFormat)
@@ -289,24 +285,20 @@ namespace MyQrCodeScanner
 
         private MyResult myResult;
 
-        private void AddTimer()
+        private void AddWorker()
         {
-            timer = new System.Timers.Timer();
-            timer.Interval = 500;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timertick);
+            worker = new LoopWorker();
+            worker.Interval = 500;
+            worker.CanRun += () => true;
+            worker.OnError += Worker_OnError;
+            worker.Go += Worker_Go;
         }
 
-        private void timertick(object sender, System.Timers.ElapsedEventArgs e)
+        private TaskState Worker_Go(CancellationTokenSource cts)
         {
-            PicDecode1();
-        }
-
-        private void PicDecode1()
-        {
-            timer.Stop();
             if (imgbuffer == null)
             {
-                timer.Start(); return;
+                return TaskState.Started;
             }
 
             var res = MyScanner.ScanCode(imgbuffer);
@@ -314,8 +306,7 @@ namespace MyQrCodeScanner
             switch (res.status)
             {
                 case result_status.error:
-                    timer.Start();
-                    break;
+                    return TaskState.Started;
                 case result_status.ok:
 
                     this.Dispatcher.Invoke(() =>
@@ -323,7 +314,7 @@ namespace MyQrCodeScanner
                         StopCamera();
                         if (res.data.Count == 1 || !res.haslocation)
                         {
-                            ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true,true);
+                            ResultWindow rw = new ResultWindow(res.data[0].data, res.data[0].type, true, true);
                             this.Hide();
                             bool? rv = rw.ShowDialog();
                             if (rv == true)
@@ -345,12 +336,17 @@ namespace MyQrCodeScanner
                         }
                     });
 
-                    break;
+                    return TaskState.Done;
                 case result_status.nocode:
-                    timer.Start();
-                    break;
+                    return TaskState.Started;
             }
-                
+            return TaskState.Started;
+        }
+
+        private bool Worker_OnError(Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
+            return false;
         }
         #endregion
 

@@ -125,6 +125,20 @@ namespace MyQrCodeScanner
         const string _wechat_QCODE_super_resolution_prototxt_path = "data/wechat_qrcode/sr.prototxt";
         const string _wechat_QCODE_super_resolution_caffe_model_path = "data/wechat_qrcode/sr.caffemodel";
 
+        static WeChatQRCode opencvDecoder;
+
+        public static void Init()
+        {
+            try
+            {
+                opencvDecoder = WeChatQRCode.Create(_wechat_QCODE_detector_prototxt_path, _wechat_QCODE_detector_caffe_model_path, _wechat_QCODE_super_resolution_prototxt_path, _wechat_QCODE_super_resolution_caffe_model_path);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("OpenCV 初始化失败，请检查文件是否缺失");
+            }
+        }
+
         public static MyResult ScanCode(Bitmap img)
         {
             var method = GlobalSettings.selectedengine;
@@ -176,14 +190,13 @@ namespace MyQrCodeScanner
             {
                 return new MyResult(result_status.nocode, "");
             }
-            WeChatQRCode decoder = WeChatQRCode.Create(_wechat_QCODE_detector_prototxt_path, _wechat_QCODE_detector_caffe_model_path, _wechat_QCODE_super_resolution_prototxt_path, _wechat_QCODE_super_resolution_caffe_model_path);
 
             Mat[] rects;
             string[] texts;
             try
             {
                 Mat mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(img);
-                decoder.DetectAndDecode(mat, out rects, out texts);
+                opencvDecoder.DetectAndDecode(mat, out rects, out texts);
                 mat.Dispose();
             }
             catch (ZXing.ReaderException ex)
@@ -191,7 +204,11 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-
+            finally
+            {
+                img.Dispose();
+                //GC.Collect(2);
+            }
             if (rects.Length != 0)
             {
                 return new MyResult(result_status.ok, rects, texts);
@@ -220,7 +237,10 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-
+            finally
+            {
+                img.Dispose();
+            }
             if (result != null)
             {
                 return new MyResult(result_status.ok, result);
@@ -241,8 +261,9 @@ namespace MyQrCodeScanner
             ZXing.Result result = null;
             try
             {
-                result = reader.Decode(img);
-                
+                img.Dispatcher.Invoke(() => {
+                    result = reader.Decode(img);
+                });
             }
             catch (ZXing.ReaderException ex)
             {
@@ -278,7 +299,10 @@ namespace MyQrCodeScanner
                 //MessageBox.Show(resultstr, "内部错误");
                 return new MyResult(result_status.error, ex.ToString());
             }
-
+            finally
+            {
+                img.Dispose();
+            }
             if (results != null && results.Length > 0)
             {
                 return new MyResult(result_status.ok, results);
@@ -299,7 +323,9 @@ namespace MyQrCodeScanner
             ZXing.Result[] results = null;
             try
             {
-                results = reader.DecodeMultiple(img);
+                img.Dispatcher.Invoke(() => {
+                    results = reader.DecodeMultiple(img);
+                });
             }
             catch (ZXing.ReaderException ex)
             {

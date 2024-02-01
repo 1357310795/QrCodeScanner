@@ -63,8 +63,9 @@ namespace MyQrCodeScanner
                 encoder.Frames.Add(BitmapFrame.Create(source));
                 encoder.Save(ms);
             });
-
-            return new System.Drawing.Bitmap(ms);
+            var bitmap = new System.Drawing.Bitmap(ms);
+            ms.Dispose();
+            return bitmap;
         }
 
         public static System.Drawing.Bitmap RenderVisual(UIElement elt, int x, int y)

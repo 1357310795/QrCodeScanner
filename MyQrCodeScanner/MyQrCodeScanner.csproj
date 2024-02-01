@@ -32,14 +32,14 @@
 	<ItemGroup>
 		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.6" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
 		<PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
 		<PackageReference Include="libzbar-cil-all" Version="1.0.7" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="NHotkey.Wpf" Version="2.1.1" />
-		<PackageReference Include="Teru.Code" Version="1.0.2" />
+		<PackageReference Include="Teru.Code" Version="1.0.3" />
 		<PackageReference Include="Teru.Code.HandyScreenshot.Core" Version="1.0.1" />
 		<PackageReference Include="Teru.Code.Webcam" Version="1.0.1" />
 		<PackageReference Include="Teru.Code.WechatQrcode.Lite" Version="1.0.0.20230813" />

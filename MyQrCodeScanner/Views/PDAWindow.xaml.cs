@@ -1,28 +1,19 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using MediaFoundation;
-using MediaFoundation.OPM;
 using Microsoft.Win32;
 using MyQrCodeScanner.Modules;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using Teru.Code.Services;
 using Teru.Code.Webcam.MF;
 using WindowsInput;
 using WindowsInput.Native;
-using ZXing;
 
 namespace MyQrCodeScanner
 {
@@ -78,7 +69,7 @@ namespace MyQrCodeScanner
         private WriteableBitmap? m_Bmp;
         public WriteableBitmap Image => m_Bmp;
 
-        private System.Timers.Timer timer;
+        private LoopWorker worker;
         TaskbarIcon myTaskbarIcon;
         #endregion
 
@@ -115,7 +106,7 @@ namespace MyQrCodeScanner
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AddTimer();
+            AddWorker();
             myTaskbarIcon = (TaskbarIcon)FindResource("Taskbar");
             //_taskbar.DataContext = new NotifyIconViewModel();
         }
@@ -214,7 +205,7 @@ namespace MyQrCodeScanner
                 IniHelper.SetKeyValue("main", "LastVideoDevice", CurrentDevice.FriendlyName, IniHelper.inipath);
             }
             ClearResult();
-            timer.Start();
+            worker.StartRun();
         }
 
         private void StopCamera()
@@ -232,7 +223,7 @@ namespace MyQrCodeScanner
                 player.ShutDown();
             }
             img = null;
-            timer.Stop();
+            worker.StopRun();
         }
 
         private void Init(MediaFoundationDeviceInfo videoDevice, MediaFoundationVideoFormatInfo videoFormat)
@@ -352,32 +343,33 @@ namespace MyQrCodeScanner
 
         #region Scan Task
 
-        private void AddTimer()
+        private void AddWorker()
         {
-            timer = new System.Timers.Timer();
-            timer.Interval = 300;
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timertick);
+            worker = new LoopWorker();
+            worker.Interval = 500;
+            worker.CanRun += () => true;
+            worker.OnError += Worker_OnError;
+            worker.Go += Worker_Go;
         }
 
-        private void timertick(object sender, System.Timers.ElapsedEventArgs e)
+        private bool Worker_OnError(Exception ex)
         {
-            PicDecode1();
+            MessageBox.Show(ex.ToString());
+            return false;
         }
 
-        private void PicDecode1()
+        private TaskState Worker_Go(CancellationTokenSource cts)
         {
-            timer.Stop();
             if (imgbuffer == null)
             {
-                timer.Start(); return;
+                return TaskState.Started;
             }
 
             var res = MyScanner.ScanCode(imgbuffer);
             switch (res.status)
             {
                 case result_status.error:
-                    timer.Start();
-                    break;
+                    return TaskState.Started;
                 case result_status.ok:
                     if (res.data[0].data != MyResult)
                     {
@@ -385,14 +377,12 @@ namespace MyQrCodeScanner
                             DoPaste(res.data[0].data);
                         MyResult = res.data[0].data;
                     }
-                    timer.Start();
-                    break;
+                    return TaskState.Started;
                 case result_status.nocode:
                     MyResult = "";
-                    timer.Start();
-                    break;
+                    return TaskState.Started;
             }
-                
+            return TaskState.Started;
         }
 
         #endregion
